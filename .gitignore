@@ -1,0 +1,22 @@
+# Node dependencies
+node_modules/
+dist/
+npm-debug.log*
+
+# Hyperledger Fabric binaries, crypto credentials, and temp stores
+blockchain/bin/
+blockchain/config/
+blockchain/fabric-samples/
+*.tar.gz
+*.block
+*.tx
+wallet/
+crypto-config/
+
+# Environment and IDE
+.env
+.DS_Store
+.vscode/
+explorer/blockchain-explorer/
+fabric-samples/
+blockchain/fabric-samples/
