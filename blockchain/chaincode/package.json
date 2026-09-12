@@ -1,21 +1,18 @@
 {
-  "name": "chaincode",
+  "name": "hakiardhi-chaincode",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "HakiArdhi Land Record Smart Contract",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "fabric-chaincode-node server --chaincode-address=0.0.0.0:9999 --chaincode-id=$CHAINCODE_ID"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "fabric-contract-api": "^2.5.8",
-    "fabric-shim": "^2.5.8"
+    "fabric-contract-api": "^2.5.3",
+    "fabric-shim": "^2.5.3"
   },
   "devDependencies": {
-    "@types/node": "^22.20.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^7.0.2"
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
   }
 }
