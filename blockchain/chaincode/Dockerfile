@@ -1,15 +1,25 @@
-FROM hyperledger/fabric-nodeenv:2.5
+FROM node:20-alpine AS build
 
-USER root
+WORKDIR /usr/src/app
+
+COPY package*.json tsconfig.json ./
+RUN npm install
+
+COPY src/ ./src/
+RUN npm run build
+
+FROM node:20-alpine
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-COPY node_modules ./node_modules
-COPY dist ./dist
+RUN npm install --omit=dev
+
+COPY --from=build /usr/src/app/dist ./dist
 
 ENV PORT=9999
 ENV CHAINCODE_SERVER_ADDRESS=0.0.0.0:9999
 
 EXPOSE 9999
 
-CMD ["sh", "-c", "npm start"]
+CMD ["npm", "start", "--", "--peer.address", "0.0.0.0:9999"]

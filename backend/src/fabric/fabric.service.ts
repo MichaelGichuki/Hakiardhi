@@ -90,4 +90,45 @@ export class FabricService implements OnModuleInit, OnModuleDestroy {
     );
     return JSON.parse(Buffer.from(resultBytes).toString('utf-8'));
   }
+
+  async initiateTransfer(transferId: string, parcelNumber: string, buyerNationalIdHash: string, documentHash: string) {
+    await this.contract.submitTransaction(
+      'LandContract:initiateTransfer',
+      transferId,
+      parcelNumber,
+      buyerNationalIdHash,
+      documentHash,
+    );
+    return { success: true, transferId, parcelNumber, status: 'INITIATED' };
+  }
+
+  async landownerRespond(transferId: string, consentStatus: string, remarks: string) {
+    await this.contract.submitTransaction(
+      'LandContract:landownerRespond',
+      transferId,
+      consentStatus,
+      remarks,
+    );
+    return { success: true, transferId, consentStatus, remarks };
+  }
+
+  async verifyDocuments(transferId: string, areDocumentsVerified: boolean, remarks: string) {
+    await this.contract.submitTransaction(
+      'LandContract:verifyDocuments',
+      transferId,
+      String(areDocumentsVerified),
+      remarks,
+    );
+    return { success: true, transferId, areDocumentsVerified, remarks };
+  }
+
+  async approveTransfer(transferId: string, newTitleNumber: string, newRecordHash: string) {
+    await this.contract.submitTransaction(
+      'LandContract:approveTransfer',
+      transferId,
+      newTitleNumber,
+      newRecordHash,
+    );
+    return { success: true, transferId, newTitleNumber, status: 'SUPERSEDED_AND_TRANSFERRED' };
+  }
 }

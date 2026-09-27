@@ -1,2 +1,6 @@
+cat << 'EOF' > ~/hakiardhi/blockchain/chaincode/.dockerignore
+node_modules
+dist
 .git
-hakiardhi.tar.gz
+npm-debug.log
+EOF

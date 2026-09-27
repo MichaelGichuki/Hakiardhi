@@ -5,14 +5,15 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "fabric-chaincode-node server --chaincode-address=0.0.0.0:9999 --chaincode-id=$CHAINCODE_ID"
+    "start": "node dist/index.js"
   },
   "dependencies": {
-    "fabric-contract-api": "^2.5.3",
-    "fabric-shim": "^2.5.3"
+    "fabric-contract-api": "^2.5.8",
+    "fabric-shim": "^2.5.8"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0"
+    "@types/node": "^20.19.43",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

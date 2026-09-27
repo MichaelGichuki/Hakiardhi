@@ -2,6 +2,7 @@
 node_modules/
 dist/
 npm-debug.log*
+bin/
 
 # Hyperledger Fabric binaries, crypto credentials, and temp stores
 blockchain/bin/
