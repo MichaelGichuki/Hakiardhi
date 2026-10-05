@@ -37,7 +37,7 @@ export class FabricService
   private readonly chaincodeName = 'hakiardhi';
 
   private readonly fabricBasePath =
-    '/home/hakiardhi/hakiardhi/fabric-samples/test-network/organizations/peerOrganizations';
+    '/home/ruel/Hakiardhi/blockchain/organizations/peerOrganizations';
 
 
   // ========================================================
@@ -174,22 +174,21 @@ export class FabricService
   private async connectLandOfficer(): Promise<void> {
 
     const orgPath =
-      `${this.fabricBasePath}/org1.example.com`;
-
+      `${this.fabricBasePath}/landofficer.hakiardhi.local`;
     const connection =
-      await this.createFabricConnection(
-        'Org1MSP',
+  await this.createFabricConnection(
+    'LandOfficerMSP',
 
-        'localhost:17051',
+    'localhost:7051',
 
-        'peer0.org1.example.com',
+    'peer0.landofficer.hakiardhi.local',
 
-        `${orgPath}/peers/peer0.org1.example.com/tls/ca.crt`,
+    `${orgPath}/peers/peer0.landofficer.hakiardhi.local/tls/ca.crt`,
 
-        `${orgPath}/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem`,
+    `${orgPath}/users/User1@landofficer.hakiardhi.local/msp/signcerts/User1@landofficer.hakiardhi.local-cert.pem`,
 
-        `${orgPath}/users/User1@org1.example.com/msp/keystore/priv_sk`,
-      );
+    `${orgPath}/users/User1@landofficer.hakiardhi.local/msp/keystore/priv_sk`,
+  );
 
     this.landOfficerClient =
       connection.client;
@@ -201,7 +200,7 @@ export class FabricService
       connection.contract;
 
     console.log(
-      'LAND_OFFICER connected: User1@org1.example.com',
+      'LAND_OFFICER connected: User1@landofficer.hakiardhi.local/',
     );
   }
 
@@ -214,21 +213,21 @@ export class FabricService
   private async connectVerificationOfficer(): Promise<void> {
 
     const orgPath =
-      `${this.fabricBasePath}/org2.example.com`;
+      `${this.fabricBasePath}/verificationofficer.hakiardhi.local`;
 
     const connection =
       await this.createFabricConnection(
-        'Org2MSP',
+        'VerificationOfficerMSP',
 
-        'localhost:19051',
+        'localhost:8051',
 
-        'peer0.org2.example.com',
+        'peer0.verificationofficer.hakiardhi.local',
 
-        `${orgPath}/peers/peer0.org2.example.com/tls/ca.crt`,
+        `${orgPath}/peers/peer0.verificationofficer.hakiardhi.local/tls/ca.crt`,
 
-        `${orgPath}/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem`,
+        `${orgPath}/users/User1@verificationofficer.hakiardhi.local/msp/signcerts/User1@verificationofficer.hakiardhi.local-cert.pem`,
 
-        `${orgPath}/users/User1@org2.example.com/msp/keystore/priv_sk`,
+        `${orgPath}/users/User1@verificationofficer.hakiardhi.local/msp/keystore/priv_sk`,
       );
 
     this.verificationClient =
@@ -241,7 +240,7 @@ export class FabricService
       connection.contract;
 
     console.log(
-      'VERIFICATION_OFFICER connected: User1@org2.example.com',
+      'VERIFICATION_OFFICER connected: User1@verificationofficer.hakiardhi.local',
     );
   }
 
@@ -254,21 +253,21 @@ export class FabricService
   private async connectRegistrar(): Promise<void> {
 
     const orgPath =
-      `${this.fabricBasePath}/org2.example.com`;
+      `${this.fabricBasePath}/registrar.hakiardhi.local`;
 
     const connection =
       await this.createFabricConnection(
-        'Org2MSP',
+        'RegistrarMSP',
 
-        'localhost:19051',
+        'localhost:9051',
 
-        'peer0.org2.example.com',
+        'peer0.registrar.hakiardhi.local',
 
-        `${orgPath}/peers/peer0.org2.example.com/tls/ca.crt`,
+        `${orgPath}/peers/peer0.registrar.hakiardhi.local/tls/ca.crt`,
 
-        `${orgPath}/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem`,
+        `${orgPath}/users/Admin@registrar.hakiardhi.local/msp/signcerts/Admin@registrar.hakiardhi.local-cert.pem`,
 
-        `${orgPath}/users/Admin@org2.example.com/msp/keystore/priv_sk`,
+        `${orgPath}/users/Admin@registrar.hakiardhi.local/msp/keystore/priv_sk`,
       );
 
     this.registrarClient =
@@ -281,7 +280,7 @@ export class FabricService
       connection.contract;
 
     console.log(
-      'REGISTRAR connected: Admin@org2.example.com',
+      'REGISTRAR connected: Admin@registrar.hakiardhi.local',
     );
   }
 

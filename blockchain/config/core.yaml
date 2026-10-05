@@ -1,0 +1,111 @@
+peer:
+  id: peer0
+  networkId: hakiardhi
+  listenAddress: 0.0.0.0:7051
+  address: 127.0.0.1:7051
+  addressAutoDetect: false
+
+  localMspId: SampleOrg
+  mspConfigPath: msp
+
+  tls:
+    enabled: false
+    clientAuthRequired: false
+    cert:
+      file: tls/server.crt
+    key:
+      file: tls/server.key
+    rootcert:
+      file: tls/ca.crt
+    clientRootCAs:
+      files: []
+  # ============================================================
+  # Cryptography
+  # ============================================================
+
+  bccsp:
+    default: SW
+
+    sw:
+      hash: SHA2
+      security: 256
+
+      filekeystore:
+        keystore:
+
+  gossip:
+    bootstrap: ""
+    useLeaderElection: false
+    orgLeader: true
+    membershipTrackerInterval: 5s
+    endpoint: ""
+    externalEndpoint: ""
+
+  events:
+    address: 0.0.0.0:7053
+
+  profile:
+    enabled: false
+    listenAddress: 0.0.0.0:6060
+
+  fileSystemPath: /var/hyperledger/production
+
+
+vm:
+  endpoint: unix:///var/run/docker.sock
+
+  docker:
+    tls:
+      enabled: false
+
+    attachStdout: false
+
+    hostConfig:
+      NetworkMode: hakiardhi
+
+
+chaincode:
+  id:
+    path: ""
+    name: ""
+
+  builder: $(DOCKER_NS)/fabric-ccenv:$(TWO_DIGIT_VERSION)
+
+  pull: false
+
+  golang:
+    runtime: $(DOCKER_NS)/fabric-baseos:$(TWO_DIGIT_VERSION)
+
+  java:
+    runtime: $(DOCKER_NS)/fabric-javaenv:$(TWO_DIGIT_VERSION)
+
+  node:
+    runtime: $(DOCKER_NS)/fabric-nodeenv:$(TWO_DIGIT_VERSION)
+
+
+ledger:
+  blockchain:
+
+  state:
+    stateDatabase: goleveldb
+
+  history:
+    enableHistoryDatabase: true
+
+
+operations:
+  listenAddress: 127.0.0.1:9443
+
+  tls:
+    enabled: false
+    cert:
+      file: ""
+    key:
+      file: ""
+    clientAuthRequired: false
+    clientRootCAs:
+      files: []
+
+
+metrics:
+  provider: disabled

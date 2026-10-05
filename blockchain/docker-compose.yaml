@@ -1,0 +1,254 @@
+services:
+
+  # ============================================================
+  # ORDERER
+  # ============================================================
+  orderer.hakiardhi.local:
+    container_name: orderer.hakiardhi.local
+    image: hyperledger/fabric-orderer:3.1
+
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7050
+
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+
+      # Fabric v3 uses the channel participation API
+      - ORDERER_CHANNELPARTICIPATION_ENABLED=true
+
+      - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7053
+      - ORDERER_ADMIN_TLS_ENABLED=true
+      - ORDERER_ADMIN_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_ADMIN_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+
+      # Chaincode / Docker
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hakiardhi
+
+    working_dir: /root
+
+    command: orderer
+
+    volumes:
+      - ./organizations/ordererOrganizations/hakiardhi.local/orderers/orderer.hakiardhi.local/msp:/var/hyperledger/orderer/msp
+      - ./organizations/ordererOrganizations/hakiardhi.local/orderers/orderer.hakiardhi.local/tls:/var/hyperledger/orderer/tls
+      - orderer.hakiardhi.local:/var/hyperledger/production/orderer
+
+    ports:
+      - "7050:7050"
+      - "7053:7053"
+
+    networks:
+      - hakiardhi
+
+
+  # ============================================================
+  # LAND OFFICER
+  # ============================================================
+  peer0.landofficer.hakiardhi.local:
+    container_name: peer0.landofficer.hakiardhi.local
+    image: hyperledger/fabric-peer:3.1
+
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+
+      - CORE_PEER_ID=peer0.landofficer.hakiardhi.local
+
+      - CORE_PEER_ADDRESS=peer0.landofficer.hakiardhi.local:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+
+      - CORE_PEER_LOCALMSPID=LandOfficerMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.landofficer.hakiardhi.local:7051
+
+      # Chaincode / Docker
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hakiardhi
+
+    command: peer node start
+
+    volumes:
+      - ./organizations/peerOrganizations/landofficer.hakiardhi.local/peers/peer0.landofficer.hakiardhi.local/msp:/etc/hyperledger/fabric/msp
+      - ./organizations/peerOrganizations/landofficer.hakiardhi.local/peers/peer0.landofficer.hakiardhi.local/tls:/etc/hyperledger/fabric/tls
+      - peer0.landofficer.hakiardhi.local:/var/hyperledger/production
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    ports:
+      - "7051:7051"
+
+    networks:
+      - hakiardhi
+
+
+  # ============================================================
+  # VERIFICATION OFFICER
+  # ============================================================
+  peer0.verificationofficer.hakiardhi.local:
+    container_name: peer0.verificationofficer.hakiardhi.local
+    image: hyperledger/fabric-peer:3.1
+
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+
+      - CORE_PEER_ID=peer0.verificationofficer.hakiardhi.local
+
+      - CORE_PEER_ADDRESS=peer0.verificationofficer.hakiardhi.local:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+
+      - CORE_PEER_LOCALMSPID=VerificationOfficerMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.verificationofficer.hakiardhi.local:7051
+
+      # Chaincode / Docker
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hakiardhi
+
+    command: peer node start
+
+    volumes:
+      - ./organizations/peerOrganizations/verificationofficer.hakiardhi.local/peers/peer0.verificationofficer.hakiardhi.local/msp:/etc/hyperledger/fabric/msp
+      - ./organizations/peerOrganizations/verificationofficer.hakiardhi.local/peers/peer0.verificationofficer.hakiardhi.local/tls:/etc/hyperledger/fabric/tls
+      - peer0.verificationofficer.hakiardhi.local:/var/hyperledger/production
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    ports:
+      - "8051:7051"
+
+    networks:
+      - hakiardhi
+
+
+  # ============================================================
+  # REGISTRAR
+  # ============================================================
+  peer0.registrar.hakiardhi.local:
+    container_name: peer0.registrar.hakiardhi.local
+    image: hyperledger/fabric-peer:3.1
+
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+
+      - CORE_PEER_ID=peer0.registrar.hakiardhi.local
+
+      - CORE_PEER_ADDRESS=peer0.registrar.hakiardhi.local:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+
+      - CORE_PEER_LOCALMSPID=RegistrarMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.registrar.hakiardhi.local:7051
+
+      # Chaincode / Docker
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hakiardhi
+
+    command: peer node start
+
+    volumes:
+      - ./organizations/peerOrganizations/registrar.hakiardhi.local/peers/peer0.registrar.hakiardhi.local/msp:/etc/hyperledger/fabric/msp
+      - ./organizations/peerOrganizations/registrar.hakiardhi.local/peers/peer0.registrar.hakiardhi.local/tls:/etc/hyperledger/fabric/tls
+      - peer0.registrar.hakiardhi.local:/var/hyperledger/production
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    ports:
+      - "9051:7051"
+
+    networks:
+      - hakiardhi
+
+
+  # ============================================================
+  # LAND OWNER
+  # ============================================================
+  peer0.landowner.hakiardhi.local:
+    container_name: peer0.landowner.hakiardhi.local
+    image: hyperledger/fabric-peer:3.1
+
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+
+      - CORE_PEER_ID=peer0.landowner.hakiardhi.local
+
+      - CORE_PEER_ADDRESS=peer0.landowner.hakiardhi.local:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+
+      - CORE_PEER_LOCALMSPID=LandOwnerMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.landowner.hakiardhi.local:7051
+
+      # Chaincode / Docker
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hakiardhi
+
+    command: peer node start
+
+    volumes:
+      - ./organizations/peerOrganizations/landowner.hakiardhi.local/peers/peer0.landowner.hakiardhi.local/msp:/etc/hyperledger/fabric/msp
+      - ./organizations/peerOrganizations/landowner.hakiardhi.local/peers/peer0.landowner.hakiardhi.local/tls:/etc/hyperledger/fabric/tls
+      - peer0.landowner.hakiardhi.local:/var/hyperledger/production
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    ports:
+      - "10051:7051"
+
+    networks:
+      - hakiardhi
+
+
+# ==============================================================
+# VOLUMES
+# ==============================================================
+
+volumes:
+
+  orderer.hakiardhi.local:
+
+  peer0.landofficer.hakiardhi.local:
+
+  peer0.verificationofficer.hakiardhi.local:
+
+  peer0.registrar.hakiardhi.local:
+
+  peer0.landowner.hakiardhi.local:
+
+
+# ==============================================================
+# NETWORK
+# ==============================================================
+
+networks:
+
+  hakiardhi:
+    name: hakiardhi

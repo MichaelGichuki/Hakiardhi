@@ -1,0 +1,87 @@
+# crypto-config.yaml
+#
+# Haki Ardhi Hyperledger Fabric Network
+#
+# Organizations:
+#   1. LandOfficer
+#   2. VerificationOfficer
+#   3. Registrar
+#   4. LandOwner
+#
+# Plus an Orderer organization for running the ordering service.
+
+OrdererOrgs:
+  - Name: Orderer
+    Domain: hakiardhi.local
+    EnableNodeOUs: true
+
+    Specs:
+      - Hostname: orderer
+        SANS:
+          - localhost
+
+
+PeerOrgs:
+
+  # -------------------------------------------------------
+  # Land Officer Organization
+  # -------------------------------------------------------
+  - Name: LandOfficer
+    Domain: landofficer.hakiardhi.local
+    EnableNodeOUs: true
+
+    Template:
+      Count: 1
+      SANS:
+        - localhost
+
+    Users:
+      Count: 1
+
+
+  # -------------------------------------------------------
+  # Verification Officer Organization
+  # -------------------------------------------------------
+  - Name: VerificationOfficer
+    Domain: verificationofficer.hakiardhi.local
+    EnableNodeOUs: true
+
+    Template:
+      Count: 1
+      SANS:
+        - localhost
+
+    Users:
+      Count: 1
+
+
+  # -------------------------------------------------------
+  # Registrar Organization
+  # -------------------------------------------------------
+  - Name: Registrar
+    Domain: registrar.hakiardhi.local
+    EnableNodeOUs: true
+
+    Template:
+      Count: 1
+      SANS:
+        - localhost
+
+    Users:
+      Count: 1
+
+
+  # -------------------------------------------------------
+  # Land Owner Organization
+  # -------------------------------------------------------
+  - Name: LandOwner
+    Domain: landowner.hakiardhi.local
+    EnableNodeOUs: true
+
+    Template:
+      Count: 1
+      SANS:
+        - localhost
+
+    Users:
+      Count: 1
