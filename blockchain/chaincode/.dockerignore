@@ -1,6 +1,0 @@
-cat << 'EOF' > ~/hakiardhi/blockchain/chaincode/.dockerignore
-node_modules
-dist
-.git
-npm-debug.log
-EOF

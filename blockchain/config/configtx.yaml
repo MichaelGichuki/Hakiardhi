@@ -1,0 +1,315 @@
+---
+################################################################################
+#
+# Haki Ardhi - Hyperledger Fabric configtx.yaml
+#
+################################################################################
+
+Organizations:
+
+  # ============================================================================
+  # Orderer Organization
+  # ============================================================================
+  - &OrdererOrg
+    Name: OrdererMSP
+    ID: OrdererMSP
+
+    MSPDir: ./organizations/ordererOrganizations/hakiardhi.local/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+
+    OrdererEndpoints:
+      - orderer.hakiardhi.local:7050
+
+
+  # ============================================================================
+  # Land Officer Organization
+  # ============================================================================
+  - &LandOfficer
+    Name: LandOfficerMSP
+    ID: LandOfficerMSP
+
+    MSPDir: ./organizations/peerOrganizations/landofficer.hakiardhi.local/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('LandOfficerMSP.admin', 'LandOfficerMSP.peer', 'LandOfficerMSP.client')"
+
+      Writers:
+        Type: Signature
+        Rule: "OR('LandOfficerMSP.admin', 'LandOfficerMSP.client')"
+
+      Admins:
+        Type: Signature
+        Rule: "OR('LandOfficerMSP.admin')"
+
+      Endorsement:
+        Type: Signature
+        Rule: "OR('LandOfficerMSP.peer')"
+
+    AnchorPeers:
+      - Host: peer0.landofficer.hakiardhi.local
+        Port: 7051
+
+
+  # ============================================================================
+  # Verification Officer Organization
+  # ============================================================================
+  - &VerificationOfficer
+    Name: VerificationOfficerMSP
+    ID: VerificationOfficerMSP
+
+    MSPDir: ./organizations/peerOrganizations/verificationofficer.hakiardhi.local/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('VerificationOfficerMSP.admin', 'VerificationOfficerMSP.peer', 'VerificationOfficerMSP.client')"
+
+      Writers:
+        Type: Signature
+        Rule: "OR('VerificationOfficerMSP.admin', 'VerificationOfficerMSP.client')"
+
+      Admins:
+        Type: Signature
+        Rule: "OR('VerificationOfficerMSP.admin')"
+
+      Endorsement:
+        Type: Signature
+        Rule: "OR('VerificationOfficerMSP.peer')"
+
+    AnchorPeers:
+      - Host: peer0.verificationofficer.hakiardhi.local
+        Port: 8051
+
+
+  # ============================================================================
+  # Registrar Organization
+  # ============================================================================
+  - &Registrar
+    Name: RegistrarMSP
+    ID: RegistrarMSP
+
+    MSPDir: ./organizations/peerOrganizations/registrar.hakiardhi.local/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('RegistrarMSP.admin', 'RegistrarMSP.peer', 'RegistrarMSP.client')"
+
+      Writers:
+        Type: Signature
+        Rule: "OR('RegistrarMSP.admin', 'RegistrarMSP.client')"
+
+      Admins:
+        Type: Signature
+        Rule: "OR('RegistrarMSP.admin')"
+
+      Endorsement:
+        Type: Signature
+        Rule: "OR('RegistrarMSP.peer')"
+
+    AnchorPeers:
+      - Host: peer0.registrar.hakiardhi.local
+        Port: 9051
+
+
+  # ============================================================================
+  # Land Owner Organization
+  # ============================================================================
+  - &LandOwner
+    Name: LandOwnerMSP
+    ID: LandOwnerMSP
+
+    MSPDir: ./organizations/peerOrganizations/landowner.hakiardhi.local/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('LandOwnerMSP.admin', 'LandOwnerMSP.peer', 'LandOwnerMSP.client')"
+
+      Writers:
+        Type: Signature
+        Rule: "OR('LandOwnerMSP.admin', 'LandOwnerMSP.client')"
+
+      Admins:
+        Type: Signature
+        Rule: "OR('LandOwnerMSP.admin')"
+
+      Endorsement:
+        Type: Signature
+        Rule: "OR('LandOwnerMSP.peer')"
+
+    AnchorPeers:
+      - Host: peer0.landowner.hakiardhi.local
+        Port: 10051
+
+
+################################################################################
+#
+# Capabilities
+#
+################################################################################
+
+Capabilities:
+
+  Channel: &ChannelCapabilities
+    V2_0: true
+
+  Orderer: &OrdererCapabilities
+    V2_0: true
+
+  Application: &ApplicationCapabilities
+    V2_5: true
+
+
+################################################################################
+#
+# Application
+#
+################################################################################
+
+Application: &ApplicationDefaults
+
+  Organizations:
+
+  Policies:
+
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+
+################################################################################
+#
+# Orderer
+#
+################################################################################
+
+Orderer: &OrdererDefaults
+
+  OrdererType: etcdraft
+
+  Addresses:
+    - orderer.hakiardhi.local:7050
+
+  EtcdRaft:
+    Consenters:
+      - Host: orderer.hakiardhi.local
+        Port: 7050
+        ClientTLSCert: ./organizations/ordererOrganizations/hakiardhi.local/orderers/orderer.hakiardhi.local/tls/server.crt
+        ServerTLSCert: ./organizations/ordererOrganizations/hakiardhi.local/orderers/orderer.hakiardhi.local/tls/server.crt
+
+  BatchTimeout: 2s
+
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+
+  Organizations:
+
+  Policies:
+
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+  Capabilities:
+    <<: *OrdererCapabilities
+
+
+################################################################################
+#
+# Channel
+#
+################################################################################
+
+Channel: &ChannelDefaults
+
+  Policies:
+
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ChannelCapabilities
+
+
+################################################################################
+#
+# Profiles
+#
+################################################################################
+
+Profiles:
+
+  HakiArdhiChannel:
+    <<: *ChannelDefaults
+
+    Orderer:
+      <<: *OrdererDefaults
+
+      Organizations:
+        - *OrdererOrg
+
+    Application:
+      <<: *ApplicationDefaults
+
+      Organizations:
+        - *LandOfficer
+        - *VerificationOfficer
+        - *Registrar
+        - *LandOwner
