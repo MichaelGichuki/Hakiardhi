@@ -1,0 +1,61 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String       @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  name      String?
+  role      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions  Session[]
+}
+
+model LandParcels {
+    id String @id @default(uuid()) @db.Uuid
+    lat Float
+    log Float
+    Size Float
+    isActive Boolean
+    createdAt DateTime
+    updateAt DateTime 
+    landowner LandOwner[]
+}
+
+
+model LandOwner {
+    id String @id @default(uuid()) @db.Uuid
+    landId String @db.Uuid
+    land LandParcels @relation(fields: [landId], references: [id])
+    createdAt DateTime
+    updateAt DateTime
+}
+
+model Session {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           String    @db.Uuid
+  refreshTokenHash String
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  lastUsedAt       DateTime  @default(now())
+
+  userAgent        String?
+  ipAddress        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+//npx prisma migrate dev --name {name of migreation}

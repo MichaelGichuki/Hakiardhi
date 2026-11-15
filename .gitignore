@@ -3,7 +3,6 @@ node_modules/
 dist/
 npm-debug.log*
 
-
 # Hyperledger Fabric binaries, crypto credentials, and temp stores
 blockchain/fabric-samples/
 *.tar.gz
@@ -77,3 +76,6 @@ pids
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+bin/
+builders/
+install-fabric.sh
