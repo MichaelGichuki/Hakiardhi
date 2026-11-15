@@ -42,7 +42,7 @@ export class AuthService {
       throw new UnauthorizedException();
      }
 
-     return this.createSession(user.id, metadata);
+     return {token: ""}
   }
 
   async hashPassword(password: string): Promise<string> {
