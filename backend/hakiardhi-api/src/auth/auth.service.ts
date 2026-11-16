@@ -1,15 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { Signin, SignUp } from './auth.types.js';
+import { Signin, SigninResponse, SignUp } from './auth.types.js';
 import bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import { randomBytes } from 'crypto';
+import { ConfigService } from '@nestjs/config';
 
 const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000;
 @Injectable()
 export class AuthService {
-  constructor(private readonly prisma: PrismaService, private jwt: JwtService) {}
+  constructor(private readonly prisma: PrismaService, private jwt: JwtService, private config: ConfigService) {}
 
   async findAll() {
     return await this.prisma.user.findFirst();
@@ -28,7 +29,7 @@ export class AuthService {
     return "Created";
   }
 
-  async signin(data: Signin, metadata: { ip?: string; userAgent?: string }){
+  async signin(data: Signin, metadata: { ip?: string; userAgent?: string }) : Promise<SigninResponse>{
 
      const user = await this.prisma.user.findFirst({
       where: {email: data.email}
@@ -42,7 +43,17 @@ export class AuthService {
       throw new UnauthorizedException();
      }
 
-     return {token: ""}
+     const res = await this.createSession(user.id, metadata)
+
+     return {
+      accessToken: res.accessToken,
+      refreshToken: res.refreshToken,
+      user: { 
+        email: user.email,
+        id: user.id,
+        name: user.name ?? ""
+      }
+     }
   }
 
   async hashPassword(password: string): Promise<string> {
@@ -97,6 +108,7 @@ export class AuthService {
       },
       {
         expiresIn: '15m',
+        secret: this.config.getOrThrow<string>('JWT_ACCESS_SECRET')
       },
     );
   }

@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { PageHeading } from "../Components/PageHeading";
 import { Card } from "../Components/Card";
 import { ArrowRight, Landmark, LockKeyhole } from "lucide-react";
+import { authApi } from "../service/auth";
+import { useNavigate } from "react-router";
 
 export function LoginPage({
   message,
@@ -10,15 +11,38 @@ export function LoginPage({
   message: string;
   setMessage: (v: string) => void;
 }) {
-  const [role, setRole] = useState("Government Staff");
+
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<Boolean>(false)
+  // const [role, setRole] = useState("Government Staff");
+  const [role, setRole] = useState("");
   const [identity, setIdentity] = useState("");
   const [pin, setPin] = useState("");
+
+  const handleLogin = async () => {
+    if(isLoading) return;
+
+    if (identity == "" || pin == "") {
+      setMessage("Please enter both ID and password/PIN.");
+      return;
+    }
+
+    try {
+      setIsLoading(true)
+      await authApi.signin({
+        email: identity,
+        password: pin,
+      });
+      navigate('/dashboard')
+    } catch (err) {
+      setMessage(`Demo authentication only for ${role}. Credentials have not been verified.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
-      <PageHeading
-        title="Secure Access to HakiArdhi"
-        subtitle="Role-based authentication for the National Land Registry."
-      />
       <Card className="login-card section-gap">
         <div className="login-emblem">
           <Landmark size={26} />
@@ -50,16 +74,7 @@ export function LoginPage({
           onChange={(e) => setPin(e.target.value)}
           placeholder="Enter password or PIN"
         />
-        <button
-          className="btn primary full-width"
-          onClick={() =>
-            setMessage(
-              identity && pin
-                ? `Demo authentication only for ${role}. Credentials have not been verified.`
-                : "Please enter both ID and password/PIN.",
-            )
-          }
-        >
+        <button className="btn primary full-width" onClick={handleLogin}>
           Authenticate securely <ArrowRight size={15} />
         </button>
         {message && <div className="notice">{message}</div>}

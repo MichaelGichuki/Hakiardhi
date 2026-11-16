@@ -45,12 +45,8 @@ export class AuthController {
       ip: req.ip,
       userAgent: req.headers['user-agent'],
     });
-    // this.setRefreshCookie(res, result.refreshToken);
-    this.setRefreshCookie(res, "result.refreshToken");
-
-    return {
-      accessToken: result.token,
-    };
+    
+    return result
   }
 
   @Post('refresh')
