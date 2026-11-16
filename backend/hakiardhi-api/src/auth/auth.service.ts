@@ -1,6 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { Signin, SigninResponse, SignUp } from './auth.types.js';
+import { Signin, SigninResponse, SignUp, User } from './auth.types.js';
 import bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
@@ -12,8 +12,37 @@ const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000;
 export class AuthService {
   constructor(private readonly prisma: PrismaService, private jwt: JwtService, private config: ConfigService) {}
 
-  async findAll() {
-    return await this.prisma.user.findFirst();
+  async currentProfile(refreshToken: string) : Promise<User>{
+    const [sessionId, secret, ...extra] = refreshToken.split('.');
+
+    if (!sessionId || !secret || extra.length > 0) {
+      throw new BadRequestException("Invalid request")
+    }
+
+    const session = await this.prisma.session.findUnique({
+      where: { id: sessionId },
+      select: {
+        user: {
+          select : {
+            id: true,
+            name: true,
+            role: true,
+            email: true
+          }
+        }
+      }
+    });
+
+    if (session == null){
+      throw new UnauthorizedException("Unathorised")
+    }
+
+    return {
+      email: session?.user.email,
+      name: session?.user.name ?? "",
+      id: session?.user.id,
+      role: session?.user.role
+    }
   }
 
   async signup(data: SignUp){
@@ -51,7 +80,8 @@ export class AuthService {
       user: { 
         email: user.email,
         id: user.id,
-        name: user.name ?? ""
+        name: user.name ?? "",
+        role: user.role
       }
      }
   }

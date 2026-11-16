@@ -13,7 +13,6 @@ import { RouterProvider } from "react-router/dom";
 import PageStructure from "./Components/PageStructure";
 import { Dashboard } from "./Pages/Dashboard";
 
-
 const originalRecord = {
   owner: "Mary Wanjiku Kamau",
   size: "0.045 Ha",
@@ -35,7 +34,6 @@ function App() {
       dbRecord[k as keyof typeof originalRecord] !==
       originalRecord[k as keyof typeof originalRecord],
   );
-
 
   const auditRows = [
     [
@@ -121,7 +119,7 @@ function App() {
       path: "/dashboard",
       element: (
         <PageStructure>
-          <Dashboard   />
+          <Dashboard />
         </PageStructure>
       ),
     },
@@ -182,7 +180,7 @@ function App() {
   return (
     <div className="app-shell">
       <main className="main-area">
-          <RouterProvider router={router} />,
+        <RouterProvider router={router} />,
         <footer className="app-footer">
           HAKIARDHI · NATIONAL LAND REGISTRY PROTOTYPE · SYNTHETIC DEMONSTRATION
           DATA
