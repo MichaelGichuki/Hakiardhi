@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   LandParcels: 'LandParcels',
   LandOwner: 'LandOwner',
+  OwnershipRecords: 'OwnershipRecords',
   Session: 'Session'
 } as const
 
@@ -88,9 +89,12 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const LandParcelsScalarFieldEnum = {
   id: 'id',
+  parcelNumber: 'parcelNumber',
   lat: 'lat',
   log: 'log',
   Size: 'Size',
+  county: 'county',
+  tenure: 'tenure',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
@@ -101,12 +105,24 @@ export type LandParcelsScalarFieldEnum = (typeof LandParcelsScalarFieldEnum)[key
 
 export const LandOwnerScalarFieldEnum = {
   id: 'id',
-  landId: 'landId',
+  name: 'name',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
 
 export type LandOwnerScalarFieldEnum = (typeof LandOwnerScalarFieldEnum)[keyof typeof LandOwnerScalarFieldEnum]
+
+
+export const OwnershipRecordsScalarFieldEnum = {
+  id: 'id',
+  landParcelId: 'landParcelId',
+  landOwnerId: 'landOwnerId',
+  legerRefernce: 'legerRefernce',
+  createdAt: 'createdAt',
+  updateAt: 'updateAt'
+} as const
+
+export type OwnershipRecordsScalarFieldEnum = (typeof OwnershipRecordsScalarFieldEnum)[keyof typeof OwnershipRecordsScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

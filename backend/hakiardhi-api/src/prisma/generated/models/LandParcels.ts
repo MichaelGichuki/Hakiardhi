@@ -40,9 +40,12 @@ export type LandParcelsSumAggregateOutputType = {
 
 export type LandParcelsMinAggregateOutputType = {
   id: string | null
+  parcelNumber: string | null
   lat: number | null
   log: number | null
   Size: number | null
+  county: string | null
+  tenure: string | null
   isActive: boolean | null
   createdAt: Date | null
   updateAt: Date | null
@@ -50,9 +53,12 @@ export type LandParcelsMinAggregateOutputType = {
 
 export type LandParcelsMaxAggregateOutputType = {
   id: string | null
+  parcelNumber: string | null
   lat: number | null
   log: number | null
   Size: number | null
+  county: string | null
+  tenure: string | null
   isActive: boolean | null
   createdAt: Date | null
   updateAt: Date | null
@@ -60,9 +66,12 @@ export type LandParcelsMaxAggregateOutputType = {
 
 export type LandParcelsCountAggregateOutputType = {
   id: number
+  parcelNumber: number
   lat: number
   log: number
   Size: number
+  county: number
+  tenure: number
   isActive: number
   createdAt: number
   updateAt: number
@@ -84,9 +93,12 @@ export type LandParcelsSumAggregateInputType = {
 
 export type LandParcelsMinAggregateInputType = {
   id?: true
+  parcelNumber?: true
   lat?: true
   log?: true
   Size?: true
+  county?: true
+  tenure?: true
   isActive?: true
   createdAt?: true
   updateAt?: true
@@ -94,9 +106,12 @@ export type LandParcelsMinAggregateInputType = {
 
 export type LandParcelsMaxAggregateInputType = {
   id?: true
+  parcelNumber?: true
   lat?: true
   log?: true
   Size?: true
+  county?: true
+  tenure?: true
   isActive?: true
   createdAt?: true
   updateAt?: true
@@ -104,9 +119,12 @@ export type LandParcelsMaxAggregateInputType = {
 
 export type LandParcelsCountAggregateInputType = {
   id?: true
+  parcelNumber?: true
   lat?: true
   log?: true
   Size?: true
+  county?: true
+  tenure?: true
   isActive?: true
   createdAt?: true
   updateAt?: true
@@ -201,9 +219,12 @@ export type LandParcelsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type LandParcelsGroupByOutputType = {
   id: string
+  parcelNumber: string
   lat: number
   log: number
   Size: number
+  county: string
+  tenure: string
   isActive: boolean
   createdAt: Date
   updateAt: Date
@@ -234,45 +255,57 @@ export type LandParcelsWhereInput = {
   OR?: Prisma.LandParcelsWhereInput[]
   NOT?: Prisma.LandParcelsWhereInput | Prisma.LandParcelsWhereInput[]
   id?: Prisma.UuidFilter<"LandParcels"> | string
+  parcelNumber?: Prisma.StringFilter<"LandParcels"> | string
   lat?: Prisma.FloatFilter<"LandParcels"> | number
   log?: Prisma.FloatFilter<"LandParcels"> | number
   Size?: Prisma.FloatFilter<"LandParcels"> | number
+  county?: Prisma.StringFilter<"LandParcels"> | string
+  tenure?: Prisma.StringFilter<"LandParcels"> | string
   isActive?: Prisma.BoolFilter<"LandParcels"> | boolean
   createdAt?: Prisma.DateTimeFilter<"LandParcels"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"LandParcels"> | Date | string
-  landowner?: Prisma.LandOwnerListRelationFilter
+  ownershipRecords?: Prisma.XOR<Prisma.OwnershipRecordsNullableScalarRelationFilter, Prisma.OwnershipRecordsWhereInput> | null
 }
 
 export type LandParcelsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  parcelNumber?: Prisma.SortOrder
   lat?: Prisma.SortOrder
   log?: Prisma.SortOrder
   Size?: Prisma.SortOrder
+  county?: Prisma.SortOrder
+  tenure?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
-  landowner?: Prisma.LandOwnerOrderByRelationAggregateInput
+  ownershipRecords?: Prisma.OwnershipRecordsOrderByWithRelationInput
 }
 
 export type LandParcelsWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  parcelNumber?: string
   AND?: Prisma.LandParcelsWhereInput | Prisma.LandParcelsWhereInput[]
   OR?: Prisma.LandParcelsWhereInput[]
   NOT?: Prisma.LandParcelsWhereInput | Prisma.LandParcelsWhereInput[]
   lat?: Prisma.FloatFilter<"LandParcels"> | number
   log?: Prisma.FloatFilter<"LandParcels"> | number
   Size?: Prisma.FloatFilter<"LandParcels"> | number
+  county?: Prisma.StringFilter<"LandParcels"> | string
+  tenure?: Prisma.StringFilter<"LandParcels"> | string
   isActive?: Prisma.BoolFilter<"LandParcels"> | boolean
   createdAt?: Prisma.DateTimeFilter<"LandParcels"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"LandParcels"> | Date | string
-  landowner?: Prisma.LandOwnerListRelationFilter
-}, "id">
+  ownershipRecords?: Prisma.XOR<Prisma.OwnershipRecordsNullableScalarRelationFilter, Prisma.OwnershipRecordsWhereInput> | null
+}, "id" | "parcelNumber">
 
 export type LandParcelsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  parcelNumber?: Prisma.SortOrder
   lat?: Prisma.SortOrder
   log?: Prisma.SortOrder
   Size?: Prisma.SortOrder
+  county?: Prisma.SortOrder
+  tenure?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
@@ -288,9 +321,12 @@ export type LandParcelsScalarWhereWithAggregatesInput = {
   OR?: Prisma.LandParcelsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.LandParcelsScalarWhereWithAggregatesInput | Prisma.LandParcelsScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"LandParcels"> | string
+  parcelNumber?: Prisma.StringWithAggregatesFilter<"LandParcels"> | string
   lat?: Prisma.FloatWithAggregatesFilter<"LandParcels"> | number
   log?: Prisma.FloatWithAggregatesFilter<"LandParcels"> | number
   Size?: Prisma.FloatWithAggregatesFilter<"LandParcels"> | number
+  county?: Prisma.StringWithAggregatesFilter<"LandParcels"> | string
+  tenure?: Prisma.StringWithAggregatesFilter<"LandParcels"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"LandParcels"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LandParcels"> | Date | string
   updateAt?: Prisma.DateTimeWithAggregatesFilter<"LandParcels"> | Date | string
@@ -298,53 +334,68 @@ export type LandParcelsScalarWhereWithAggregatesInput = {
 
 export type LandParcelsCreateInput = {
   id?: string
+  parcelNumber: string
   lat: number
   log: number
   Size: number
+  county: string
+  tenure: string
   isActive: boolean
   createdAt: Date | string
   updateAt: Date | string
-  landowner?: Prisma.LandOwnerCreateNestedManyWithoutLandInput
+  ownershipRecords?: Prisma.OwnershipRecordsCreateNestedOneWithoutLandParcelInput
 }
 
 export type LandParcelsUncheckedCreateInput = {
   id?: string
+  parcelNumber: string
   lat: number
   log: number
   Size: number
+  county: string
+  tenure: string
   isActive: boolean
   createdAt: Date | string
   updateAt: Date | string
-  landowner?: Prisma.LandOwnerUncheckedCreateNestedManyWithoutLandInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedCreateNestedOneWithoutLandParcelInput
 }
 
 export type LandParcelsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  parcelNumber?: Prisma.StringFieldUpdateOperationsInput | string
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   log?: Prisma.FloatFieldUpdateOperationsInput | number
   Size?: Prisma.FloatFieldUpdateOperationsInput | number
+  county?: Prisma.StringFieldUpdateOperationsInput | string
+  tenure?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landowner?: Prisma.LandOwnerUpdateManyWithoutLandNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUpdateOneWithoutLandParcelNestedInput
 }
 
 export type LandParcelsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  parcelNumber?: Prisma.StringFieldUpdateOperationsInput | string
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   log?: Prisma.FloatFieldUpdateOperationsInput | number
   Size?: Prisma.FloatFieldUpdateOperationsInput | number
+  county?: Prisma.StringFieldUpdateOperationsInput | string
+  tenure?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landowner?: Prisma.LandOwnerUncheckedUpdateManyWithoutLandNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedUpdateOneWithoutLandParcelNestedInput
 }
 
 export type LandParcelsCreateManyInput = {
   id?: string
+  parcelNumber: string
   lat: number
   log: number
   Size: number
+  county: string
+  tenure: string
   isActive: boolean
   createdAt: Date | string
   updateAt: Date | string
@@ -352,9 +403,12 @@ export type LandParcelsCreateManyInput = {
 
 export type LandParcelsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  parcelNumber?: Prisma.StringFieldUpdateOperationsInput | string
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   log?: Prisma.FloatFieldUpdateOperationsInput | number
   Size?: Prisma.FloatFieldUpdateOperationsInput | number
+  county?: Prisma.StringFieldUpdateOperationsInput | string
+  tenure?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -362,9 +416,12 @@ export type LandParcelsUpdateManyMutationInput = {
 
 export type LandParcelsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  parcelNumber?: Prisma.StringFieldUpdateOperationsInput | string
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   log?: Prisma.FloatFieldUpdateOperationsInput | number
   Size?: Prisma.FloatFieldUpdateOperationsInput | number
+  county?: Prisma.StringFieldUpdateOperationsInput | string
+  tenure?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -372,9 +429,12 @@ export type LandParcelsUncheckedUpdateManyInput = {
 
 export type LandParcelsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  parcelNumber?: Prisma.SortOrder
   lat?: Prisma.SortOrder
   log?: Prisma.SortOrder
   Size?: Prisma.SortOrder
+  county?: Prisma.SortOrder
+  tenure?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
@@ -388,9 +448,12 @@ export type LandParcelsAvgOrderByAggregateInput = {
 
 export type LandParcelsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  parcelNumber?: Prisma.SortOrder
   lat?: Prisma.SortOrder
   log?: Prisma.SortOrder
   Size?: Prisma.SortOrder
+  county?: Prisma.SortOrder
+  tenure?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
@@ -398,9 +461,12 @@ export type LandParcelsMaxOrderByAggregateInput = {
 
 export type LandParcelsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  parcelNumber?: Prisma.SortOrder
   lat?: Prisma.SortOrder
   log?: Prisma.SortOrder
   Size?: Prisma.SortOrder
+  county?: Prisma.SortOrder
+  tenure?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
@@ -429,124 +495,112 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
-export type LandParcelsCreateNestedOneWithoutLandownerInput = {
-  create?: Prisma.XOR<Prisma.LandParcelsCreateWithoutLandownerInput, Prisma.LandParcelsUncheckedCreateWithoutLandownerInput>
-  connectOrCreate?: Prisma.LandParcelsCreateOrConnectWithoutLandownerInput
+export type LandParcelsCreateNestedOneWithoutOwnershipRecordsInput = {
+  create?: Prisma.XOR<Prisma.LandParcelsCreateWithoutOwnershipRecordsInput, Prisma.LandParcelsUncheckedCreateWithoutOwnershipRecordsInput>
+  connectOrCreate?: Prisma.LandParcelsCreateOrConnectWithoutOwnershipRecordsInput
   connect?: Prisma.LandParcelsWhereUniqueInput
 }
 
-export type LandParcelsUpdateOneRequiredWithoutLandownerNestedInput = {
-  create?: Prisma.XOR<Prisma.LandParcelsCreateWithoutLandownerInput, Prisma.LandParcelsUncheckedCreateWithoutLandownerInput>
-  connectOrCreate?: Prisma.LandParcelsCreateOrConnectWithoutLandownerInput
-  upsert?: Prisma.LandParcelsUpsertWithoutLandownerInput
+export type LandParcelsUpdateOneRequiredWithoutOwnershipRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.LandParcelsCreateWithoutOwnershipRecordsInput, Prisma.LandParcelsUncheckedCreateWithoutOwnershipRecordsInput>
+  connectOrCreate?: Prisma.LandParcelsCreateOrConnectWithoutOwnershipRecordsInput
+  upsert?: Prisma.LandParcelsUpsertWithoutOwnershipRecordsInput
   connect?: Prisma.LandParcelsWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.LandParcelsUpdateToOneWithWhereWithoutLandownerInput, Prisma.LandParcelsUpdateWithoutLandownerInput>, Prisma.LandParcelsUncheckedUpdateWithoutLandownerInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LandParcelsUpdateToOneWithWhereWithoutOwnershipRecordsInput, Prisma.LandParcelsUpdateWithoutOwnershipRecordsInput>, Prisma.LandParcelsUncheckedUpdateWithoutOwnershipRecordsInput>
 }
 
-export type LandParcelsCreateWithoutLandownerInput = {
+export type LandParcelsCreateWithoutOwnershipRecordsInput = {
   id?: string
+  parcelNumber: string
   lat: number
   log: number
   Size: number
+  county: string
+  tenure: string
   isActive: boolean
   createdAt: Date | string
   updateAt: Date | string
 }
 
-export type LandParcelsUncheckedCreateWithoutLandownerInput = {
+export type LandParcelsUncheckedCreateWithoutOwnershipRecordsInput = {
   id?: string
+  parcelNumber: string
   lat: number
   log: number
   Size: number
+  county: string
+  tenure: string
   isActive: boolean
   createdAt: Date | string
   updateAt: Date | string
 }
 
-export type LandParcelsCreateOrConnectWithoutLandownerInput = {
+export type LandParcelsCreateOrConnectWithoutOwnershipRecordsInput = {
   where: Prisma.LandParcelsWhereUniqueInput
-  create: Prisma.XOR<Prisma.LandParcelsCreateWithoutLandownerInput, Prisma.LandParcelsUncheckedCreateWithoutLandownerInput>
+  create: Prisma.XOR<Prisma.LandParcelsCreateWithoutOwnershipRecordsInput, Prisma.LandParcelsUncheckedCreateWithoutOwnershipRecordsInput>
 }
 
-export type LandParcelsUpsertWithoutLandownerInput = {
-  update: Prisma.XOR<Prisma.LandParcelsUpdateWithoutLandownerInput, Prisma.LandParcelsUncheckedUpdateWithoutLandownerInput>
-  create: Prisma.XOR<Prisma.LandParcelsCreateWithoutLandownerInput, Prisma.LandParcelsUncheckedCreateWithoutLandownerInput>
+export type LandParcelsUpsertWithoutOwnershipRecordsInput = {
+  update: Prisma.XOR<Prisma.LandParcelsUpdateWithoutOwnershipRecordsInput, Prisma.LandParcelsUncheckedUpdateWithoutOwnershipRecordsInput>
+  create: Prisma.XOR<Prisma.LandParcelsCreateWithoutOwnershipRecordsInput, Prisma.LandParcelsUncheckedCreateWithoutOwnershipRecordsInput>
   where?: Prisma.LandParcelsWhereInput
 }
 
-export type LandParcelsUpdateToOneWithWhereWithoutLandownerInput = {
+export type LandParcelsUpdateToOneWithWhereWithoutOwnershipRecordsInput = {
   where?: Prisma.LandParcelsWhereInput
-  data: Prisma.XOR<Prisma.LandParcelsUpdateWithoutLandownerInput, Prisma.LandParcelsUncheckedUpdateWithoutLandownerInput>
+  data: Prisma.XOR<Prisma.LandParcelsUpdateWithoutOwnershipRecordsInput, Prisma.LandParcelsUncheckedUpdateWithoutOwnershipRecordsInput>
 }
 
-export type LandParcelsUpdateWithoutLandownerInput = {
+export type LandParcelsUpdateWithoutOwnershipRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  parcelNumber?: Prisma.StringFieldUpdateOperationsInput | string
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   log?: Prisma.FloatFieldUpdateOperationsInput | number
   Size?: Prisma.FloatFieldUpdateOperationsInput | number
+  county?: Prisma.StringFieldUpdateOperationsInput | string
+  tenure?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type LandParcelsUncheckedUpdateWithoutLandownerInput = {
+export type LandParcelsUncheckedUpdateWithoutOwnershipRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  parcelNumber?: Prisma.StringFieldUpdateOperationsInput | string
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   log?: Prisma.FloatFieldUpdateOperationsInput | number
   Size?: Prisma.FloatFieldUpdateOperationsInput | number
+  county?: Prisma.StringFieldUpdateOperationsInput | string
+  tenure?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-
-/**
- * Count Type LandParcelsCountOutputType
- */
-
-export type LandParcelsCountOutputType = {
-  landowner: number
-}
-
-export type LandParcelsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  landowner?: boolean | LandParcelsCountOutputTypeCountLandownerArgs
-}
-
-/**
- * LandParcelsCountOutputType without action
- */
-export type LandParcelsCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the LandParcelsCountOutputType
-   */
-  select?: Prisma.LandParcelsCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * LandParcelsCountOutputType without action
- */
-export type LandParcelsCountOutputTypeCountLandownerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.LandOwnerWhereInput
-}
 
 
 export type LandParcelsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  parcelNumber?: boolean
   lat?: boolean
   log?: boolean
   Size?: boolean
+  county?: boolean
+  tenure?: boolean
   isActive?: boolean
   createdAt?: boolean
   updateAt?: boolean
-  landowner?: boolean | Prisma.LandParcels$landownerArgs<ExtArgs>
-  _count?: boolean | Prisma.LandParcelsCountOutputTypeDefaultArgs<ExtArgs>
+  ownershipRecords?: boolean | Prisma.LandParcels$ownershipRecordsArgs<ExtArgs>
 }, ExtArgs["result"]["landParcels"]>
 
 export type LandParcelsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  parcelNumber?: boolean
   lat?: boolean
   log?: boolean
   Size?: boolean
+  county?: boolean
+  tenure?: boolean
   isActive?: boolean
   createdAt?: boolean
   updateAt?: boolean
@@ -554,9 +608,12 @@ export type LandParcelsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
 
 export type LandParcelsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  parcelNumber?: boolean
   lat?: boolean
   log?: boolean
   Size?: boolean
+  county?: boolean
+  tenure?: boolean
   isActive?: boolean
   createdAt?: boolean
   updateAt?: boolean
@@ -564,18 +621,20 @@ export type LandParcelsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 
 export type LandParcelsSelectScalar = {
   id?: boolean
+  parcelNumber?: boolean
   lat?: boolean
   log?: boolean
   Size?: boolean
+  county?: boolean
+  tenure?: boolean
   isActive?: boolean
   createdAt?: boolean
   updateAt?: boolean
 }
 
-export type LandParcelsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "lat" | "log" | "Size" | "isActive" | "createdAt" | "updateAt", ExtArgs["result"]["landParcels"]>
+export type LandParcelsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "parcelNumber" | "lat" | "log" | "Size" | "county" | "tenure" | "isActive" | "createdAt" | "updateAt", ExtArgs["result"]["landParcels"]>
 export type LandParcelsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  landowner?: boolean | Prisma.LandParcels$landownerArgs<ExtArgs>
-  _count?: boolean | Prisma.LandParcelsCountOutputTypeDefaultArgs<ExtArgs>
+  ownershipRecords?: boolean | Prisma.LandParcels$ownershipRecordsArgs<ExtArgs>
 }
 export type LandParcelsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type LandParcelsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -583,13 +642,16 @@ export type LandParcelsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.
 export type $LandParcelsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "LandParcels"
   objects: {
-    landowner: Prisma.$LandOwnerPayload<ExtArgs>[]
+    ownershipRecords: Prisma.$OwnershipRecordsPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    parcelNumber: string
     lat: number
     log: number
     Size: number
+    county: string
+    tenure: string
     isActive: boolean
     createdAt: Date
     updateAt: Date
@@ -987,7 +1049,7 @@ readonly fields: LandParcelsFieldRefs;
  */
 export interface Prisma__LandParcelsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  landowner<T extends Prisma.LandParcels$landownerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandParcels$landownerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandOwnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ownershipRecords<T extends Prisma.LandParcels$ownershipRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandParcels$ownershipRecordsArgs<ExtArgs>>): Prisma.Prisma__OwnershipRecordsClient<runtime.Types.Result.GetResult<Prisma.$OwnershipRecordsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1018,9 +1080,12 @@ export interface Prisma__LandParcelsClient<T, Null = never, ExtArgs extends runt
  */
 export interface LandParcelsFieldRefs {
   readonly id: Prisma.FieldRef<"LandParcels", 'String'>
+  readonly parcelNumber: Prisma.FieldRef<"LandParcels", 'String'>
   readonly lat: Prisma.FieldRef<"LandParcels", 'Float'>
   readonly log: Prisma.FieldRef<"LandParcels", 'Float'>
   readonly Size: Prisma.FieldRef<"LandParcels", 'Float'>
+  readonly county: Prisma.FieldRef<"LandParcels", 'String'>
+  readonly tenure: Prisma.FieldRef<"LandParcels", 'String'>
   readonly isActive: Prisma.FieldRef<"LandParcels", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"LandParcels", 'DateTime'>
   readonly updateAt: Prisma.FieldRef<"LandParcels", 'DateTime'>
@@ -1417,27 +1482,22 @@ export type LandParcelsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
- * LandParcels.landowner
+ * LandParcels.ownershipRecords
  */
-export type LandParcels$landownerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type LandParcels$ownershipRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the LandOwner
+   * Select specific fields to fetch from the OwnershipRecords
    */
-  select?: Prisma.LandOwnerSelect<ExtArgs> | null
+  select?: Prisma.OwnershipRecordsSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the LandOwner
+   * Omit specific fields from the OwnershipRecords
    */
-  omit?: Prisma.LandOwnerOmit<ExtArgs> | null
+  omit?: Prisma.OwnershipRecordsOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.LandOwnerInclude<ExtArgs> | null
-  where?: Prisma.LandOwnerWhereInput
-  orderBy?: Prisma.LandOwnerOrderByWithRelationInput | Prisma.LandOwnerOrderByWithRelationInput[]
-  cursor?: Prisma.LandOwnerWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.LandOwnerScalarFieldEnum | Prisma.LandOwnerScalarFieldEnum[]
+  include?: Prisma.OwnershipRecordsInclude<ExtArgs> | null
+  where?: Prisma.OwnershipRecordsWhereInput
 }
 
 /**

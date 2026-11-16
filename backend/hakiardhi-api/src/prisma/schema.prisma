@@ -22,23 +22,39 @@ model User {
 
 model LandParcels {
     id String @id @default(uuid()) @db.Uuid
+    parcelNumber String @unique
     lat Float
     log Float
     Size Float
+    county String
+    tenure String
     isActive Boolean
     createdAt DateTime
     updateAt DateTime 
-    landowner LandOwner[]
+    ownershipRecords OwnershipRecords?
 }
 
 
 model LandOwner {
     id String @id @default(uuid()) @db.Uuid
-    landId String @db.Uuid
-    land LandParcels @relation(fields: [landId], references: [id])
+    name String
     createdAt DateTime
     updateAt DateTime
+    ownershipRecords OwnershipRecords[]
 }
+
+model OwnershipRecords {
+  id String @id @default(uuid()) @db.Uuid
+  landParcelId String @unique @db.Uuid
+  landParcel LandParcels @relation(references: [id], fields: [landParcelId])
+  landOwnerId String @db.Uuid
+  landOwner LandOwner @relation(fields: [landOwnerId], references: [id])
+  legerRefernce String
+  createdAt DateTime
+  updateAt DateTime
+}
+
+
 
 model Session {
   id               String    @id @default(uuid()) @db.Uuid

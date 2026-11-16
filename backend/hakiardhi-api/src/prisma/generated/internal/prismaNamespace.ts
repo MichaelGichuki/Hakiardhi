@@ -400,6 +400,7 @@ export const ModelName = {
   User: 'User',
   LandParcels: 'LandParcels',
   LandOwner: 'LandOwner',
+  OwnershipRecords: 'OwnershipRecords',
   Session: 'Session'
 } as const
 
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "landParcels" | "landOwner" | "session"
+    modelProps: "user" | "landParcels" | "landOwner" | "ownershipRecords" | "session"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -642,6 +643,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OwnershipRecords: {
+      payload: Prisma.$OwnershipRecordsPayload<ExtArgs>
+      fields: Prisma.OwnershipRecordsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OwnershipRecordsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OwnershipRecordsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload>
+        }
+        findFirst: {
+          args: Prisma.OwnershipRecordsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OwnershipRecordsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload>
+        }
+        findMany: {
+          args: Prisma.OwnershipRecordsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload>[]
+        }
+        create: {
+          args: Prisma.OwnershipRecordsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload>
+        }
+        createMany: {
+          args: Prisma.OwnershipRecordsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OwnershipRecordsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload>[]
+        }
+        delete: {
+          args: Prisma.OwnershipRecordsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload>
+        }
+        update: {
+          args: Prisma.OwnershipRecordsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload>
+        }
+        deleteMany: {
+          args: Prisma.OwnershipRecordsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OwnershipRecordsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OwnershipRecordsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload>[]
+        }
+        upsert: {
+          args: Prisma.OwnershipRecordsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipRecordsPayload>
+        }
+        aggregate: {
+          args: Prisma.OwnershipRecordsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOwnershipRecords>
+        }
+        groupBy: {
+          args: Prisma.OwnershipRecordsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnershipRecordsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OwnershipRecordsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnershipRecordsCountAggregateOutputType> | number
+        }
+      }
+    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -770,9 +845,12 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const LandParcelsScalarFieldEnum = {
   id: 'id',
+  parcelNumber: 'parcelNumber',
   lat: 'lat',
   log: 'log',
   Size: 'Size',
+  county: 'county',
+  tenure: 'tenure',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
@@ -783,12 +861,24 @@ export type LandParcelsScalarFieldEnum = (typeof LandParcelsScalarFieldEnum)[key
 
 export const LandOwnerScalarFieldEnum = {
   id: 'id',
-  landId: 'landId',
+  name: 'name',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
 
 export type LandOwnerScalarFieldEnum = (typeof LandOwnerScalarFieldEnum)[keyof typeof LandOwnerScalarFieldEnum]
+
+
+export const OwnershipRecordsScalarFieldEnum = {
+  id: 'id',
+  landParcelId: 'landParcelId',
+  landOwnerId: 'landOwnerId',
+  legerRefernce: 'legerRefernce',
+  createdAt: 'createdAt',
+  updateAt: 'updateAt'
+} as const
+
+export type OwnershipRecordsScalarFieldEnum = (typeof OwnershipRecordsScalarFieldEnum)[keyof typeof OwnershipRecordsScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -1052,6 +1142,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   landParcels?: Prisma.LandParcelsOmit
   landOwner?: Prisma.LandOwnerOmit
+  ownershipRecords?: Prisma.OwnershipRecordsOmit
   session?: Prisma.SessionOmit
 }
 
