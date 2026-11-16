@@ -14,8 +14,7 @@ export function LoginPage({
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<Boolean>(false)
-  // const [role, setRole] = useState("Government Staff");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("Landowner");
   const [identity, setIdentity] = useState("");
   const [pin, setPin] = useState("");
 
@@ -55,9 +54,9 @@ export function LoginPage({
           value={role}
           onChange={(e) => setRole(e.target.value)}
         >
-          <option>Government Staff</option>
-          <option>Registered Landowner / Citizen</option>
-          <option>Public Title Verification</option>
+          <option value={"Admin"}>Admin</option>
+          <option value={"Registrar"}>Registrar</option>
+          <option value={"Landowner"}>Landowner / Citizen</option>
         </select>
         <label className="field-label">National ID / Staff Number</label>
         <input
