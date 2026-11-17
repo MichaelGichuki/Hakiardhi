@@ -70,6 +70,21 @@ export class AuthController {
     };
   }
 
+  @Post('profile')
+  @HttpCode(HttpStatus.OK)
+  async GetProfile(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const refreshToken = req.cookies?.[COOKIE_NAME];
+
+    if (!refreshToken) {
+      throw new UnauthorizedException('Refresh token missing');
+    }
+    
+    return this.auth.currentProfile(refreshToken);
+  }
+
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import type { LoginRequest, User } from "../../types/auth.types";
 import { authApi } from "../../service/auth";
 
@@ -63,11 +63,21 @@ export const logout = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-
   reducers: {
     clearError: (state) => {
       state.error = null;
     },
+    loginComplete: (state, action: PayloadAction<User>) => {
+      state.initialized = true;
+      state.status = "succeeded",
+      state.isAuthenticated = true
+      state.user = {
+        email: action.payload.email,
+        id: action.payload.id,
+        name: action.payload.name,
+        role: action.payload.role
+      }
+    }
   },
 
   extraReducers: (builder) => {
@@ -125,6 +135,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError } = authSlice.actions;
+export const { clearError, loginComplete } = authSlice.actions;
 
 export default authSlice.reducer;

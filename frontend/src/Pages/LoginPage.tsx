@@ -3,6 +3,8 @@ import { Card } from "../Components/Card";
 import { ArrowRight, Landmark, LockKeyhole } from "lucide-react";
 import { authApi } from "../service/auth";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { loginComplete } from "../app/slice/authslice";
 
 export function LoginPage({
   message,
@@ -13,6 +15,7 @@ export function LoginPage({
 }) {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<Boolean>(false)
   const [role, setRole] = useState("Landowner");
   const [identity, setIdentity] = useState("");
@@ -28,10 +31,12 @@ export function LoginPage({
 
     try {
       setIsLoading(true)
-      await authApi.signin({
+      const res = await authApi.signin({
         email: identity,
         password: pin,
       });
+      dispatch(loginComplete(res.data.user))
+
       navigate('/dashboard')
     } catch (err) {
       setMessage(`Demo authentication only for ${role}. Credentials have not been verified.`);
