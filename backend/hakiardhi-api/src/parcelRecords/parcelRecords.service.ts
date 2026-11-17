@@ -44,7 +44,7 @@ export class ParcelRecordsService {
             parcelId: a?.id,
             parcelNumber: a?.parcelNumber,
             registrationDate: a?.createdAt,
-            Sha: true,
+            Sha: 'true',
             size: a?.Size,
             tenure: a?.tenure,
             titleVersion: true

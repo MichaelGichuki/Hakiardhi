@@ -3,6 +3,11 @@ import { Card } from "../Components/Card";
 import { PageHeading } from "../Components/PageHeading";
 import { Badge } from "../Components/Badge";
 import { VerifyRow } from "../Components/VerifyRow";
+import { useEffect, useState } from "react";
+import { parcelRecords } from "../service/parcels";
+import type { ParcelDetailsDto, parcelDto } from "../types/parcels.type";
+import { useDebounce } from "../app/hooks";
+import { formatDate } from "../app/utils";
 
 export function ParcelPage({
   query,
@@ -16,11 +21,26 @@ export function ParcelPage({
   setSearched: (v: boolean) => void;
 }) {
 
-   
+   const [list, setList] = useState<parcelDto[]>()
+   const [selected, setSelected] = useState<ParcelDetailsDto | undefined>()
 
-  const handlerSearch = async () => {
+  const handlerSearch = async (search: string) => {
+    try{
+      const res = await parcelRecords.searchParcels(search);
+      setList(res.data);
+    } catch{
 
+    }
   }
+
+  const debouncedSearch = useDebounce(query, 100);
+
+  useEffect(() => {
+    if (!debouncedSearch.trim()) return;
+
+    handlerSearch(debouncedSearch)
+    // Make API request here
+  }, [debouncedSearch]);
 
   return (
     <>
@@ -45,31 +65,31 @@ export function ParcelPage({
           Example: KJD/LOI/4581 · Synthetic demonstration data
         </small>
       </Card>
-      {searched && query.trim().toUpperCase() === "KJD/LOI/4581" ? (
+       {Boolean(selected) && (
         <div className="two-col section-gap">
           <Card>
             <div className="eyebrow">REGISTERED PARCEL</div>
-            <h2 className="record-title">KJD/LOI/4581</h2>
+            <h2 className="record-title">{selected?.parcelNumber}</h2>
             <div className="record-field">
               <span>Registered proprietor</span>
-              <b>Mary Wanjiku Kamau</b>
+              <b>{selected?.ownerName}</b>
             </div>
             <div className="record-grid">
               <div>
                 <span>Land size</span>
-                <b>0.045 Ha</b>
+                <b>{selected?.size} Ha</b>
               </div>
               <div>
                 <span>County</span>
-                <b>Kajiado</b>
+                <b>{selected?.county}</b>
               </div>
               <div>
                 <span>Registration date</span>
-                <b>14 Mar 2018</b>
+                <b>{selected?.registrationDate ? formatDate(selected?.registrationDate) : ""}</b>
               </div>
               <div>
                 <span>Tenure</span>
-                <b>Freehold</b>
+                <b>{selected?.tenure}</b>
               </div>
             </div>
             <div className="tag-row">
@@ -95,18 +115,29 @@ export function ParcelPage({
             <h3>Ledger reference</h3>
             <div className="hash">
               SHA-256:
-              7c2e9f8a1b6d4c3e5f0a7b9d2e1c8f6a4b3d9e0f2a5c7b1d8e6f4a9c3b2d1e0f
+              {selected?.Sha}
             </div>
           </Card>
         </div>
-      ) : (
-        searched && (
+      )}
+      {(
+        list?.length == 0 && (
           <Card className="section-gap">
             <b>No matching synthetic record found</b>
-            <p className="muted">Try KJD/LOI/4581.</p>
+            <p className="muted">Try:  KJD/LOI/4581.</p>
           </Card>
         )
       )}
+      {
+        list?.map((value: parcelDto) => (
+          <Card className="section-gap">
+            <b>{value.parcelId}</b>
+            {/* <p className="muted">Try KJD/LOI/4581.</p> */}
+            <span className="muted">{value.ownerName}</span>
+            <span className="muted">{value.county}</span>
+          </Card>
+        ))
+      }
     </>
   );
 }
