@@ -16,6 +16,7 @@ import {
 import * as grpc from '@grpc/grpc-js';
 import { promises as fs } from 'fs';
 import { createPrivateKey } from 'crypto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class FabricService
@@ -36,9 +37,11 @@ export class FabricService
   private readonly channelName = 'mychannel';
   private readonly chaincodeName = 'hakiardhi';
 
-  private readonly fabricBasePath =
-    '/home/ruel/Hakiardhi/blockchain/organizations/peerOrganizations';
+  private readonly fabricBasePath : string;
 
+  constructor(private config: ConfigService){
+    this.fabricBasePath = this.config.getOrThrow<string>('FABRIC_BASE_PATH')
+  }
 
   // ========================================================
   // NESTJS LIFECYCLE
