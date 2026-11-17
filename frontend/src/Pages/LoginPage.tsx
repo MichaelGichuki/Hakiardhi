@@ -54,7 +54,7 @@ export function LoginPage({
         <h2>Welcome to HakiArdhi</h2>
         <p className="muted">Sign in using your authorized account</p>
         <label className="field-label">Access category</label>
-        <select
+        {/* <select
           className="text-input"
           value={role}
           onChange={(e) => setRole(e.target.value)}
@@ -62,7 +62,7 @@ export function LoginPage({
           <option value={"Admin"}>Admin</option>
           <option value={"Registrar"}>Registrar</option>
           <option value={"Landowner"}>Landowner / Citizen</option>
-        </select>
+        </select> */}
         <label className="field-label">National ID / Staff Number</label>
         <input
           className="text-input"
@@ -78,8 +78,14 @@ export function LoginPage({
           onChange={(e) => setPin(e.target.value)}
           placeholder="Enter password or PIN"
         />
-        <button className="btn primary full-width" onClick={handleLogin}>
-          Authenticate securely <ArrowRight size={15} />
+        <button disabled={Boolean(isLoading)} className="btn primary full-width" onClick={handleLogin}>
+          {!isLoading ? (
+            <>
+              Authenticate securely <ArrowRight size={15} />
+            </>
+          ) : (
+            "Loading ..."
+          )}
         </button>
         {message && <div className="notice">{message}</div>}
         <div className="login-security">

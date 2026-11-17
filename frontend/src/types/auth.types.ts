@@ -13,5 +13,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: string
+  role: Role
 }
+
+export type Role = "Admin" | "LandOwner" | "Registar"

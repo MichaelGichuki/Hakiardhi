@@ -15,6 +15,13 @@ export function ParcelPage({
   searched: boolean;
   setSearched: (v: boolean) => void;
 }) {
+
+   
+
+  const handlerSearch = async () => {
+
+  }
+
   return (
     <>
       <PageHeading

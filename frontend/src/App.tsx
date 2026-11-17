@@ -181,10 +181,10 @@ function App() {
     <div className="app-shell">
       <main className="main-area">
         <RouterProvider router={router} />,
-        <footer className="app-footer">
+        {/* <footer className="app-footer">
           HAKIARDHI · NATIONAL LAND REGISTRY PROTOTYPE · SYNTHETIC DEMONSTRATION
           DATA
-        </footer>
+        </footer> */}
       </main>
     </div>
   );

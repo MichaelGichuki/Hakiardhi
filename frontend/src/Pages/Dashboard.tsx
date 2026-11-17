@@ -6,13 +6,28 @@ import { Stat } from "../Components/Stat";
 import { ActivityRow } from "../Components/ActivityRow";
 import type { Page } from "../types";
 import { useNavigate } from "react-router";
+import { commandService } from "../service/commonService";
+import { useEffect, useState } from "react";
+import type { CommandCenter } from "../types/commandService.types";
 
 export function Dashboard() {
   const navigate = useNavigate();
+  const [dash, setdashDetails] = useState<CommandCenter>();
   const go = (next: Page) => {
     // setPage(next);
     navigate(`/${next}`);
   };
+
+  const handlerDetails = async () => {
+    try {
+      const res = await commandService.dashdetails();
+      setdashDetails(res.data);
+    } catch {}
+  };
+
+  useEffect(() => {
+    handlerDetails();
+  }, []);
 
   return (
     <>
@@ -28,24 +43,24 @@ export function Dashboard() {
       <div className="stats-grid">
         <Stat
           label="Pending transfers"
-          value="24"
+          value={dash?.dashDetails.pendingtransfers.toString() ?? ""}
           note="↑ 4 awaiting review"
           tone="warn"
         />
         <Stat
           label="Verified parcels"
-          value="8,451"
+          value={dash?.dashDetails.verifiedParecels.toString() ?? ""}
           note="● Ledger verified"
           tone="good"
         />
         <Stat
           label="Awaiting owner consent"
-          value="07"
+          value={dash?.dashDetails.awaitingOwnerConcent.toString() ?? ""}
           note="Across 3 registries"
         />
         <Stat
           label="Completed today"
-          value="12"
+          value={dash?.dashDetails.completedToday.toString() ?? ""}
           note="↑ 3 from yesterday"
           tone="good"
         />
@@ -67,6 +82,17 @@ export function Dashboard() {
                 </tr>
               </thead>
               <tbody>
+                {dash?.processQueue.map((value) => (
+                  <tr>
+                    <td>{value.refernce}</td>
+                    <td>{value.parcel}</td>
+                    <td>{value.stage}</td>
+                    <td>
+                      {/* amber, blue, green */}
+                      <Badge tone="amber">{value.priority}</Badge>
+                    </td>
+                  </tr>
+                ))}
                 <tr>
                   <td>TR-2026-0841</td>
                   <td>KJD/LOI/4581</td>
@@ -75,7 +101,7 @@ export function Dashboard() {
                     <Badge tone="amber">High</Badge>
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td>TR-2026-0839</td>
                   <td>NAI/BLK/0912</td>
                   <td>Document review</td>
@@ -98,7 +124,7 @@ export function Dashboard() {
                   <td>
                     <Badge tone="blue">Normal</Badge>
                   </td>
-                </tr>
+                </tr> */}
               </tbody>
             </table>
           </div>
