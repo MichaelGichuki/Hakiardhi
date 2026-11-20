@@ -56,6 +56,7 @@ export const ModelName = {
   LandOwner: 'LandOwner',
   OwnershipRecords: 'OwnershipRecords',
   TransactionHistory: 'TransactionHistory',
+  InspectionLog: 'InspectionLog',
   Session: 'Session'
 } as const
 
@@ -143,6 +144,18 @@ export const TransactionHistoryScalarFieldEnum = {
 } as const
 
 export type TransactionHistoryScalarFieldEnum = (typeof TransactionHistoryScalarFieldEnum)[keyof typeof TransactionHistoryScalarFieldEnum]
+
+
+export const InspectionLogScalarFieldEnum = {
+  id: 'id',
+  checkedAt: 'checkedAt',
+  landParcelId: 'landParcelId',
+  changedFeilds: 'changedFeilds',
+  digest: 'digest',
+  verdict: 'verdict'
+} as const
+
+export type InspectionLogScalarFieldEnum = (typeof InspectionLogScalarFieldEnum)[keyof typeof InspectionLogScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

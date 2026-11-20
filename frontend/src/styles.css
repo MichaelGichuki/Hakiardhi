@@ -1253,3 +1253,98 @@ td {
     flex-wrap: wrap;
   }
 }
+
+/* Tamper Detection Rework Styles (builds on styles.css) */
+.tamper-rework-page {
+  display: block;
+}
+
+.tamper-inline-icon {
+  vertical-align: -2px;
+  margin-right: 4px;
+  color: #15534b;
+}
+
+.tamper-search-card {
+  border-color: #d6e2e6;
+}
+
+.tamper-quick-chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.tamper-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid #dce3e7;
+  background: #f8fafb;
+  color: #2f4b50;
+  font-size: 11px;
+  font-weight: 700;
+  transition: 0.15s;
+}
+
+.tamper-chip:hover {
+  border-color: #4d8980;
+  background: #eef6f4;
+}
+
+.tamper-chip.selected {
+  background: #15534b;
+  border-color: #15534b;
+  color: #ffffff;
+}
+
+.tamper-chip.dirty:not(.selected) {
+  background: #fff1f0;
+  border-color: #f3d0cc;
+  color: #b33e38;
+}
+
+.tamper-pane {
+  background: #fbfcfd;
+  border: 1px solid #edf0f2;
+  border-radius: 9px;
+  padding: 14px;
+  min-width: 0;
+}
+
+.tamper-anchor-pane {
+  background: #f8fbf9;
+}
+
+.tamper-field-flag {
+  color: #b33e38;
+  font-weight: 800;
+}
+
+.text-input.tamper-input-alert {
+  border-color: #d83e3e;
+  background: #fff6f5;
+  box-shadow: 0 0 0 2px #ffd8d4;
+}
+
+.tamper-anchor-diff {
+  background: #fff8e7;
+  border-radius: 6px;
+  padding: 10px 8px;
+}
+
+.tamper-digest-box {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #edf0f2;
+}
+
+@media (max-width: 680px) {
+  .tamper-pane {
+    padding: 12px;
+  }
+}

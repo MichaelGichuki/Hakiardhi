@@ -402,6 +402,7 @@ export const ModelName = {
   LandOwner: 'LandOwner',
   OwnershipRecords: 'OwnershipRecords',
   TransactionHistory: 'TransactionHistory',
+  InspectionLog: 'InspectionLog',
   Session: 'Session'
 } as const
 
@@ -418,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "landParcels" | "landOwner" | "ownershipRecords" | "transactionHistory" | "session"
+    modelProps: "user" | "landParcels" | "landOwner" | "ownershipRecords" | "transactionHistory" | "inspectionLog" | "session"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -792,6 +793,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    InspectionLog: {
+      payload: Prisma.$InspectionLogPayload<ExtArgs>
+      fields: Prisma.InspectionLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InspectionLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InspectionLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload>
+        }
+        findFirst: {
+          args: Prisma.InspectionLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InspectionLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload>
+        }
+        findMany: {
+          args: Prisma.InspectionLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload>[]
+        }
+        create: {
+          args: Prisma.InspectionLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload>
+        }
+        createMany: {
+          args: Prisma.InspectionLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InspectionLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload>[]
+        }
+        delete: {
+          args: Prisma.InspectionLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload>
+        }
+        update: {
+          args: Prisma.InspectionLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.InspectionLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InspectionLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InspectionLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.InspectionLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionLogPayload>
+        }
+        aggregate: {
+          args: Prisma.InspectionLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInspectionLog>
+        }
+        groupBy: {
+          args: Prisma.InspectionLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InspectionLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InspectionLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InspectionLogCountAggregateOutputType> | number
+        }
+      }
+    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -973,6 +1048,18 @@ export const TransactionHistoryScalarFieldEnum = {
 } as const
 
 export type TransactionHistoryScalarFieldEnum = (typeof TransactionHistoryScalarFieldEnum)[keyof typeof TransactionHistoryScalarFieldEnum]
+
+
+export const InspectionLogScalarFieldEnum = {
+  id: 'id',
+  checkedAt: 'checkedAt',
+  landParcelId: 'landParcelId',
+  changedFeilds: 'changedFeilds',
+  digest: 'digest',
+  verdict: 'verdict'
+} as const
+
+export type InspectionLogScalarFieldEnum = (typeof InspectionLogScalarFieldEnum)[keyof typeof InspectionLogScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -1238,6 +1325,7 @@ export type GlobalOmitConfig = {
   landOwner?: Prisma.LandOwnerOmit
   ownershipRecords?: Prisma.OwnershipRecordsOmit
   transactionHistory?: Prisma.TransactionHistoryOmit
+  inspectionLog?: Prisma.InspectionLogOmit
   session?: Prisma.SessionOmit
 }
 
