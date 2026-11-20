@@ -2,14 +2,20 @@ export type ParcelDetailsDto = {
     parcelId: string;
     parcelNumber: string;
     county: string;
-    tenure: string;
+    tenure: 'Freehold' | 'Leasehold';
     registrationDate: Date;
     size: number;
     ownerName: string;
     bdRecord: Boolean;
     Sha: string;
     blockchainTransaction: Boolean;
-    titleVersion: Boolean;
+    titleVersion: string;
+    ownerId: string;
+    ownerPhone: string;
+    registrationArea: string;
+    status: string;
+    sha256: string;
+    ledgerConfirmed: boolean;
 }
 
 export type parcelDto = {

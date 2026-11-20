@@ -16,4 +16,4 @@ export interface User {
   role: Role
 }
 
-export type Role = "Admin" | "LandOwner" | "Registar"
+export type Role = "Admin" | "LandOwner" | "Registar" | "VerificationOfficer"

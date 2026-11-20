@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Cookies,
   Get,
   HttpCode,
   HttpStatus,
@@ -45,6 +46,15 @@ export class AuthController {
       ip: req.ip,
       userAgent: req.headers['user-agent'],
     });
+
+    res.cookie(COOKIE_NAME, result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'local',
+      sameSite: 'none', // Use 'lax' if frontend and API are same-site
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+    result.refreshToken = "";
     
     return result
   }
@@ -70,13 +80,17 @@ export class AuthController {
     };
   }
 
-  @Post('profile')
+  @Get('profile')
   @HttpCode(HttpStatus.OK)
   async GetProfile(
     @Req() req: Request,
+    @Cookies(COOKIE_NAME) refreshToken: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const refreshToken = req.cookies?.[COOKIE_NAME];
+    // console.log("cookie:", resetCookie);
+    // const refreshToken = req.cookies?.[COOKIE_NAME];
+    // console.log("Refesh Token:", refreshToken);
+    
 
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token missing');

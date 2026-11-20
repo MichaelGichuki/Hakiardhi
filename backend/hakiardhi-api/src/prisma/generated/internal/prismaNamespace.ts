@@ -401,6 +401,7 @@ export const ModelName = {
   LandParcels: 'LandParcels',
   LandOwner: 'LandOwner',
   OwnershipRecords: 'OwnershipRecords',
+  TransactionHistory: 'TransactionHistory',
   Session: 'Session'
 } as const
 
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "landParcels" | "landOwner" | "ownershipRecords" | "session"
+    modelProps: "user" | "landParcels" | "landOwner" | "ownershipRecords" | "transactionHistory" | "session"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -717,6 +718,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TransactionHistory: {
+      payload: Prisma.$TransactionHistoryPayload<ExtArgs>
+      fields: Prisma.TransactionHistoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TransactionHistoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TransactionHistoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+        }
+        findFirst: {
+          args: Prisma.TransactionHistoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TransactionHistoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+        }
+        findMany: {
+          args: Prisma.TransactionHistoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>[]
+        }
+        create: {
+          args: Prisma.TransactionHistoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+        }
+        createMany: {
+          args: Prisma.TransactionHistoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TransactionHistoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>[]
+        }
+        delete: {
+          args: Prisma.TransactionHistoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+        }
+        update: {
+          args: Prisma.TransactionHistoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.TransactionHistoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TransactionHistoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TransactionHistoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.TransactionHistoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+        }
+        aggregate: {
+          args: Prisma.TransactionHistoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTransactionHistory>
+        }
+        groupBy: {
+          args: Prisma.TransactionHistoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransactionHistoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TransactionHistoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransactionHistoryCountAggregateOutputType> | number
+        }
+      }
+    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -851,6 +926,7 @@ export const LandParcelsScalarFieldEnum = {
   Size: 'Size',
   county: 'county',
   tenure: 'tenure',
+  parcelOriginId: 'parcelOriginId',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
@@ -862,6 +938,8 @@ export type LandParcelsScalarFieldEnum = (typeof LandParcelsScalarFieldEnum)[key
 export const LandOwnerScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  registration: 'registration',
+  phoneNumber: 'phoneNumber',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
@@ -874,11 +952,27 @@ export const OwnershipRecordsScalarFieldEnum = {
   landParcelId: 'landParcelId',
   landOwnerId: 'landOwnerId',
   legerRefernce: 'legerRefernce',
+  registeredAt: 'registeredAt',
+  sha256: 'sha256',
+  blockchainRecord: 'blockchainRecord',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
 
 export type OwnershipRecordsScalarFieldEnum = (typeof OwnershipRecordsScalarFieldEnum)[keyof typeof OwnershipRecordsScalarFieldEnum]
+
+
+export const TransactionHistoryScalarFieldEnum = {
+  id: 'id',
+  refrerence: 'refrerence',
+  actor: 'actor',
+  action: 'action',
+  status: 'status',
+  createdAt: 'createdAt',
+  updateAt: 'updateAt'
+} as const
+
+export type TransactionHistoryScalarFieldEnum = (typeof TransactionHistoryScalarFieldEnum)[keyof typeof TransactionHistoryScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -1143,6 +1237,7 @@ export type GlobalOmitConfig = {
   landParcels?: Prisma.LandParcelsOmit
   landOwner?: Prisma.LandOwnerOmit
   ownershipRecords?: Prisma.OwnershipRecordsOmit
+  transactionHistory?: Prisma.TransactionHistoryOmit
   session?: Prisma.SessionOmit
 }
 

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import type { LoginRequest, User } from "../../types/auth.types";
 import { authApi } from "../../service/auth";
+import type { AxiosResponse } from "axios";
 
 
 interface AuthState {
@@ -41,7 +42,8 @@ export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
   async (_, { rejectWithValue }) => {
     try {
-      return await authApi.getProfile();
+      const res = await authApi.getProfile();
+      return res.data;
     } catch {
       return rejectWithValue("Unauthenticated");
     }
@@ -106,7 +108,7 @@ const authSlice = createSlice({
       .addCase(checkAuth.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(checkAuth.fulfilled, (state: any, action) => {
+      .addCase(checkAuth.fulfilled, (state: any, action: PayloadAction<User>) => {
         state.user = action.payload;
         state.isAuthenticated = true;
         state.status = "succeeded";

@@ -55,6 +55,7 @@ export const ModelName = {
   LandParcels: 'LandParcels',
   LandOwner: 'LandOwner',
   OwnershipRecords: 'OwnershipRecords',
+  TransactionHistory: 'TransactionHistory',
   Session: 'Session'
 } as const
 
@@ -95,6 +96,7 @@ export const LandParcelsScalarFieldEnum = {
   Size: 'Size',
   county: 'county',
   tenure: 'tenure',
+  parcelOriginId: 'parcelOriginId',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
@@ -106,6 +108,8 @@ export type LandParcelsScalarFieldEnum = (typeof LandParcelsScalarFieldEnum)[key
 export const LandOwnerScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  registration: 'registration',
+  phoneNumber: 'phoneNumber',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
@@ -118,11 +122,27 @@ export const OwnershipRecordsScalarFieldEnum = {
   landParcelId: 'landParcelId',
   landOwnerId: 'landOwnerId',
   legerRefernce: 'legerRefernce',
+  registeredAt: 'registeredAt',
+  sha256: 'sha256',
+  blockchainRecord: 'blockchainRecord',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
 
 export type OwnershipRecordsScalarFieldEnum = (typeof OwnershipRecordsScalarFieldEnum)[keyof typeof OwnershipRecordsScalarFieldEnum]
+
+
+export const TransactionHistoryScalarFieldEnum = {
+  id: 'id',
+  refrerence: 'refrerence',
+  actor: 'actor',
+  action: 'action',
+  status: 'status',
+  createdAt: 'createdAt',
+  updateAt: 'updateAt'
+} as const
+
+export type TransactionHistoryScalarFieldEnum = (typeof TransactionHistoryScalarFieldEnum)[keyof typeof TransactionHistoryScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

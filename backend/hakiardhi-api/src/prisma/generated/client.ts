@@ -62,6 +62,11 @@ export type LandOwner = Prisma.LandOwnerModel
  */
 export type OwnershipRecords = Prisma.OwnershipRecordsModel
 /**
+ * Model TransactionHistory
+ * 
+ */
+export type TransactionHistory = Prisma.TransactionHistoryModel
+/**
  * Model Session
  * 
  */

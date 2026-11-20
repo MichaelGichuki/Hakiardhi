@@ -83,8 +83,6 @@ api.interceptors.response.use(
 
     } catch (refreshError) {
       localStorage.removeItem("accessToken");
-
-      console.log(window.location.pathname);
       
       if(window.location.pathname !== "/"){
         window.location.href = "/";

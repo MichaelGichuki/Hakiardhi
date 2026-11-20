@@ -14,5 +14,6 @@ export type Page =
   | "tamper"
   | "certificate"
   | "audit"
-  | "login";
+  | "login"
+  | "transfer";
 export type TransferStage = 0 | 1 | 2 | 3 | 4;

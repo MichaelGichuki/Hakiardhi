@@ -6,6 +6,7 @@ import {
   FileText,
   LayoutDashboard,
   Menu,
+  ScrollText,
   Search,
   ShieldCheck,
   Smartphone,
@@ -13,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { Badge } from "./Badge";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import type { Role, User } from "../types/auth.types";
 import { useSelector } from "react-redux";
 
@@ -43,7 +44,8 @@ export default function PageStructure({
           icon: LayoutDashboard,
         },
         { id: "parcels" as Page, label: "Parcel Records", icon: Search },
-        { id: "workflow" as Page, label: "Transfer Workflow", icon: Activity },
+        // { id: "workflow" as Page, label: "Transfer Workflow", icon: Activity },
+        { id: "transfer" as Page, label: "Parcel transfer", icon: ScrollText },
         {
           id: "tamper" as Page,
           label: "Tamper Detection",
@@ -77,7 +79,8 @@ export default function PageStructure({
           label: "Tamper Detection",
           icon: ShieldCheck,
         },
-        { id: "workflow" as Page, label: "Transfer Workflow", icon: Activity },
+        // { id: "workflow" as Page, label: "Transfer Workflow", icon: Activity },
+        { id: "transfer" as Page, label: "Parcel transfer", icon: ScrollText },
         {
           id: "certificate" as Page,
           label: "Digital Title",
@@ -110,7 +113,10 @@ export default function PageStructure({
     certificate: "Digital Title",
     audit: "Immutable Audit Trail",
     login: "Secure Authentication",
+    transfer: "Tranfer Land parcel"
   };
+
+   const path = useLocation();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [page, setPage] = useState<Page>("dashboard");
@@ -195,12 +201,12 @@ export default function PageStructure({
               <Menu size={20} />
             </button>
             <div className="crumb">
-              Republic of Kenya <span>/</span> {pageTitles[page]}
+              Republic of Kenya <span>/</span> {pageTitles[path.pathname.replace("/", "") as Page] ?? ""}
             </div>
             <div className="topbar-right">
               <Badge tone="green">● Network online</Badge>
               <span className="officer-name">{user?.name}</span>
-              <div className="avatar">{user?.name[0]}</div>
+              <div className="avatar">{user?.name[0] ?? ""}</div>
             </div>
           </header>
           <div className="content">{children}</div>

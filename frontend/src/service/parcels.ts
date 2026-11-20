@@ -1,5 +1,5 @@
 import api from "../api/axios";
-import type { parcelDto } from "../types/parcels.type";
+import type { ParcelDetailsDto, parcelDto } from "../types/parcels.type";
 
 export const parcelRecords = {
     searchParcels: (search: string) => api.get<parcelDto[]>("/parcelRecords", {
@@ -8,5 +8,5 @@ export const parcelRecords = {
         }
     }),
 
-    getParcels: (id: string) => api.get<parcelDto[]>(`/parcelRecords/${id}`),
+    getParcels: (id: string) => api.get<ParcelDetailsDto>(`/parcelRecords/${encodeURIComponent(id)}`),
 } 

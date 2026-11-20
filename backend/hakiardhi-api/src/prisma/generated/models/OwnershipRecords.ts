@@ -29,6 +29,9 @@ export type OwnershipRecordsMinAggregateOutputType = {
   landParcelId: string | null
   landOwnerId: string | null
   legerRefernce: string | null
+  registeredAt: string | null
+  sha256: string | null
+  blockchainRecord: string | null
   createdAt: Date | null
   updateAt: Date | null
 }
@@ -38,6 +41,9 @@ export type OwnershipRecordsMaxAggregateOutputType = {
   landParcelId: string | null
   landOwnerId: string | null
   legerRefernce: string | null
+  registeredAt: string | null
+  sha256: string | null
+  blockchainRecord: string | null
   createdAt: Date | null
   updateAt: Date | null
 }
@@ -47,6 +53,9 @@ export type OwnershipRecordsCountAggregateOutputType = {
   landParcelId: number
   landOwnerId: number
   legerRefernce: number
+  registeredAt: number
+  sha256: number
+  blockchainRecord: number
   createdAt: number
   updateAt: number
   _all: number
@@ -58,6 +67,9 @@ export type OwnershipRecordsMinAggregateInputType = {
   landParcelId?: true
   landOwnerId?: true
   legerRefernce?: true
+  registeredAt?: true
+  sha256?: true
+  blockchainRecord?: true
   createdAt?: true
   updateAt?: true
 }
@@ -67,6 +79,9 @@ export type OwnershipRecordsMaxAggregateInputType = {
   landParcelId?: true
   landOwnerId?: true
   legerRefernce?: true
+  registeredAt?: true
+  sha256?: true
+  blockchainRecord?: true
   createdAt?: true
   updateAt?: true
 }
@@ -76,6 +91,9 @@ export type OwnershipRecordsCountAggregateInputType = {
   landParcelId?: true
   landOwnerId?: true
   legerRefernce?: true
+  registeredAt?: true
+  sha256?: true
+  blockchainRecord?: true
   createdAt?: true
   updateAt?: true
   _all?: true
@@ -158,6 +176,9 @@ export type OwnershipRecordsGroupByOutputType = {
   landParcelId: string
   landOwnerId: string
   legerRefernce: string
+  registeredAt: string
+  sha256: string
+  blockchainRecord: string
   createdAt: Date
   updateAt: Date
   _count: OwnershipRecordsCountAggregateOutputType | null
@@ -188,6 +209,9 @@ export type OwnershipRecordsWhereInput = {
   landParcelId?: Prisma.UuidFilter<"OwnershipRecords"> | string
   landOwnerId?: Prisma.UuidFilter<"OwnershipRecords"> | string
   legerRefernce?: Prisma.StringFilter<"OwnershipRecords"> | string
+  registeredAt?: Prisma.StringFilter<"OwnershipRecords"> | string
+  sha256?: Prisma.StringFilter<"OwnershipRecords"> | string
+  blockchainRecord?: Prisma.StringFilter<"OwnershipRecords"> | string
   createdAt?: Prisma.DateTimeFilter<"OwnershipRecords"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"OwnershipRecords"> | Date | string
   landParcel?: Prisma.XOR<Prisma.LandParcelsScalarRelationFilter, Prisma.LandParcelsWhereInput>
@@ -199,6 +223,9 @@ export type OwnershipRecordsOrderByWithRelationInput = {
   landParcelId?: Prisma.SortOrder
   landOwnerId?: Prisma.SortOrder
   legerRefernce?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
+  sha256?: Prisma.SortOrder
+  blockchainRecord?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
   landParcel?: Prisma.LandParcelsOrderByWithRelationInput
@@ -213,6 +240,9 @@ export type OwnershipRecordsWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.OwnershipRecordsWhereInput | Prisma.OwnershipRecordsWhereInput[]
   landOwnerId?: Prisma.UuidFilter<"OwnershipRecords"> | string
   legerRefernce?: Prisma.StringFilter<"OwnershipRecords"> | string
+  registeredAt?: Prisma.StringFilter<"OwnershipRecords"> | string
+  sha256?: Prisma.StringFilter<"OwnershipRecords"> | string
+  blockchainRecord?: Prisma.StringFilter<"OwnershipRecords"> | string
   createdAt?: Prisma.DateTimeFilter<"OwnershipRecords"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"OwnershipRecords"> | Date | string
   landParcel?: Prisma.XOR<Prisma.LandParcelsScalarRelationFilter, Prisma.LandParcelsWhereInput>
@@ -224,6 +254,9 @@ export type OwnershipRecordsOrderByWithAggregationInput = {
   landParcelId?: Prisma.SortOrder
   landOwnerId?: Prisma.SortOrder
   legerRefernce?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
+  sha256?: Prisma.SortOrder
+  blockchainRecord?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
   _count?: Prisma.OwnershipRecordsCountOrderByAggregateInput
@@ -239,6 +272,9 @@ export type OwnershipRecordsScalarWhereWithAggregatesInput = {
   landParcelId?: Prisma.UuidWithAggregatesFilter<"OwnershipRecords"> | string
   landOwnerId?: Prisma.UuidWithAggregatesFilter<"OwnershipRecords"> | string
   legerRefernce?: Prisma.StringWithAggregatesFilter<"OwnershipRecords"> | string
+  registeredAt?: Prisma.StringWithAggregatesFilter<"OwnershipRecords"> | string
+  sha256?: Prisma.StringWithAggregatesFilter<"OwnershipRecords"> | string
+  blockchainRecord?: Prisma.StringWithAggregatesFilter<"OwnershipRecords"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OwnershipRecords"> | Date | string
   updateAt?: Prisma.DateTimeWithAggregatesFilter<"OwnershipRecords"> | Date | string
 }
@@ -246,6 +282,9 @@ export type OwnershipRecordsScalarWhereWithAggregatesInput = {
 export type OwnershipRecordsCreateInput = {
   id?: string
   legerRefernce: string
+  registeredAt: string
+  sha256: string
+  blockchainRecord: string
   createdAt: Date | string
   updateAt: Date | string
   landParcel: Prisma.LandParcelsCreateNestedOneWithoutOwnershipRecordsInput
@@ -257,6 +296,9 @@ export type OwnershipRecordsUncheckedCreateInput = {
   landParcelId: string
   landOwnerId: string
   legerRefernce: string
+  registeredAt: string
+  sha256: string
+  blockchainRecord: string
   createdAt: Date | string
   updateAt: Date | string
 }
@@ -264,6 +306,9 @@ export type OwnershipRecordsUncheckedCreateInput = {
 export type OwnershipRecordsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   legerRefernce?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.StringFieldUpdateOperationsInput | string
+  sha256?: Prisma.StringFieldUpdateOperationsInput | string
+  blockchainRecord?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   landParcel?: Prisma.LandParcelsUpdateOneRequiredWithoutOwnershipRecordsNestedInput
@@ -275,6 +320,9 @@ export type OwnershipRecordsUncheckedUpdateInput = {
   landParcelId?: Prisma.StringFieldUpdateOperationsInput | string
   landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
   legerRefernce?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.StringFieldUpdateOperationsInput | string
+  sha256?: Prisma.StringFieldUpdateOperationsInput | string
+  blockchainRecord?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -284,6 +332,9 @@ export type OwnershipRecordsCreateManyInput = {
   landParcelId: string
   landOwnerId: string
   legerRefernce: string
+  registeredAt: string
+  sha256: string
+  blockchainRecord: string
   createdAt: Date | string
   updateAt: Date | string
 }
@@ -291,6 +342,9 @@ export type OwnershipRecordsCreateManyInput = {
 export type OwnershipRecordsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   legerRefernce?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.StringFieldUpdateOperationsInput | string
+  sha256?: Prisma.StringFieldUpdateOperationsInput | string
+  blockchainRecord?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -300,6 +354,9 @@ export type OwnershipRecordsUncheckedUpdateManyInput = {
   landParcelId?: Prisma.StringFieldUpdateOperationsInput | string
   landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
   legerRefernce?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.StringFieldUpdateOperationsInput | string
+  sha256?: Prisma.StringFieldUpdateOperationsInput | string
+  blockchainRecord?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -324,6 +381,9 @@ export type OwnershipRecordsCountOrderByAggregateInput = {
   landParcelId?: Prisma.SortOrder
   landOwnerId?: Prisma.SortOrder
   legerRefernce?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
+  sha256?: Prisma.SortOrder
+  blockchainRecord?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
@@ -333,6 +393,9 @@ export type OwnershipRecordsMaxOrderByAggregateInput = {
   landParcelId?: Prisma.SortOrder
   landOwnerId?: Prisma.SortOrder
   legerRefernce?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
+  sha256?: Prisma.SortOrder
+  blockchainRecord?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
@@ -342,6 +405,9 @@ export type OwnershipRecordsMinOrderByAggregateInput = {
   landParcelId?: Prisma.SortOrder
   landOwnerId?: Prisma.SortOrder
   legerRefernce?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
+  sha256?: Prisma.SortOrder
+  blockchainRecord?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
@@ -423,6 +489,9 @@ export type OwnershipRecordsUncheckedUpdateManyWithoutLandOwnerNestedInput = {
 export type OwnershipRecordsCreateWithoutLandParcelInput = {
   id?: string
   legerRefernce: string
+  registeredAt: string
+  sha256: string
+  blockchainRecord: string
   createdAt: Date | string
   updateAt: Date | string
   landOwner: Prisma.LandOwnerCreateNestedOneWithoutOwnershipRecordsInput
@@ -432,6 +501,9 @@ export type OwnershipRecordsUncheckedCreateWithoutLandParcelInput = {
   id?: string
   landOwnerId: string
   legerRefernce: string
+  registeredAt: string
+  sha256: string
+  blockchainRecord: string
   createdAt: Date | string
   updateAt: Date | string
 }
@@ -455,6 +527,9 @@ export type OwnershipRecordsUpdateToOneWithWhereWithoutLandParcelInput = {
 export type OwnershipRecordsUpdateWithoutLandParcelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   legerRefernce?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.StringFieldUpdateOperationsInput | string
+  sha256?: Prisma.StringFieldUpdateOperationsInput | string
+  blockchainRecord?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   landOwner?: Prisma.LandOwnerUpdateOneRequiredWithoutOwnershipRecordsNestedInput
@@ -464,6 +539,9 @@ export type OwnershipRecordsUncheckedUpdateWithoutLandParcelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
   legerRefernce?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.StringFieldUpdateOperationsInput | string
+  sha256?: Prisma.StringFieldUpdateOperationsInput | string
+  blockchainRecord?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -471,6 +549,9 @@ export type OwnershipRecordsUncheckedUpdateWithoutLandParcelInput = {
 export type OwnershipRecordsCreateWithoutLandOwnerInput = {
   id?: string
   legerRefernce: string
+  registeredAt: string
+  sha256: string
+  blockchainRecord: string
   createdAt: Date | string
   updateAt: Date | string
   landParcel: Prisma.LandParcelsCreateNestedOneWithoutOwnershipRecordsInput
@@ -480,6 +561,9 @@ export type OwnershipRecordsUncheckedCreateWithoutLandOwnerInput = {
   id?: string
   landParcelId: string
   legerRefernce: string
+  registeredAt: string
+  sha256: string
+  blockchainRecord: string
   createdAt: Date | string
   updateAt: Date | string
 }
@@ -518,6 +602,9 @@ export type OwnershipRecordsScalarWhereInput = {
   landParcelId?: Prisma.UuidFilter<"OwnershipRecords"> | string
   landOwnerId?: Prisma.UuidFilter<"OwnershipRecords"> | string
   legerRefernce?: Prisma.StringFilter<"OwnershipRecords"> | string
+  registeredAt?: Prisma.StringFilter<"OwnershipRecords"> | string
+  sha256?: Prisma.StringFilter<"OwnershipRecords"> | string
+  blockchainRecord?: Prisma.StringFilter<"OwnershipRecords"> | string
   createdAt?: Prisma.DateTimeFilter<"OwnershipRecords"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"OwnershipRecords"> | Date | string
 }
@@ -526,6 +613,9 @@ export type OwnershipRecordsCreateManyLandOwnerInput = {
   id?: string
   landParcelId: string
   legerRefernce: string
+  registeredAt: string
+  sha256: string
+  blockchainRecord: string
   createdAt: Date | string
   updateAt: Date | string
 }
@@ -533,6 +623,9 @@ export type OwnershipRecordsCreateManyLandOwnerInput = {
 export type OwnershipRecordsUpdateWithoutLandOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   legerRefernce?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.StringFieldUpdateOperationsInput | string
+  sha256?: Prisma.StringFieldUpdateOperationsInput | string
+  blockchainRecord?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   landParcel?: Prisma.LandParcelsUpdateOneRequiredWithoutOwnershipRecordsNestedInput
@@ -542,6 +635,9 @@ export type OwnershipRecordsUncheckedUpdateWithoutLandOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landParcelId?: Prisma.StringFieldUpdateOperationsInput | string
   legerRefernce?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.StringFieldUpdateOperationsInput | string
+  sha256?: Prisma.StringFieldUpdateOperationsInput | string
+  blockchainRecord?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -550,6 +646,9 @@ export type OwnershipRecordsUncheckedUpdateManyWithoutLandOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landParcelId?: Prisma.StringFieldUpdateOperationsInput | string
   legerRefernce?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.StringFieldUpdateOperationsInput | string
+  sha256?: Prisma.StringFieldUpdateOperationsInput | string
+  blockchainRecord?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -561,6 +660,9 @@ export type OwnershipRecordsSelect<ExtArgs extends runtime.Types.Extensions.Inte
   landParcelId?: boolean
   landOwnerId?: boolean
   legerRefernce?: boolean
+  registeredAt?: boolean
+  sha256?: boolean
+  blockchainRecord?: boolean
   createdAt?: boolean
   updateAt?: boolean
   landParcel?: boolean | Prisma.LandParcelsDefaultArgs<ExtArgs>
@@ -572,6 +674,9 @@ export type OwnershipRecordsSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   landParcelId?: boolean
   landOwnerId?: boolean
   legerRefernce?: boolean
+  registeredAt?: boolean
+  sha256?: boolean
+  blockchainRecord?: boolean
   createdAt?: boolean
   updateAt?: boolean
   landParcel?: boolean | Prisma.LandParcelsDefaultArgs<ExtArgs>
@@ -583,6 +688,9 @@ export type OwnershipRecordsSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   landParcelId?: boolean
   landOwnerId?: boolean
   legerRefernce?: boolean
+  registeredAt?: boolean
+  sha256?: boolean
+  blockchainRecord?: boolean
   createdAt?: boolean
   updateAt?: boolean
   landParcel?: boolean | Prisma.LandParcelsDefaultArgs<ExtArgs>
@@ -594,11 +702,14 @@ export type OwnershipRecordsSelectScalar = {
   landParcelId?: boolean
   landOwnerId?: boolean
   legerRefernce?: boolean
+  registeredAt?: boolean
+  sha256?: boolean
+  blockchainRecord?: boolean
   createdAt?: boolean
   updateAt?: boolean
 }
 
-export type OwnershipRecordsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "landParcelId" | "landOwnerId" | "legerRefernce" | "createdAt" | "updateAt", ExtArgs["result"]["ownershipRecords"]>
+export type OwnershipRecordsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "landParcelId" | "landOwnerId" | "legerRefernce" | "registeredAt" | "sha256" | "blockchainRecord" | "createdAt" | "updateAt", ExtArgs["result"]["ownershipRecords"]>
 export type OwnershipRecordsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   landParcel?: boolean | Prisma.LandParcelsDefaultArgs<ExtArgs>
   landOwner?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
@@ -623,6 +734,9 @@ export type $OwnershipRecordsPayload<ExtArgs extends runtime.Types.Extensions.In
     landParcelId: string
     landOwnerId: string
     legerRefernce: string
+    registeredAt: string
+    sha256: string
+    blockchainRecord: string
     createdAt: Date
     updateAt: Date
   }, ExtArgs["result"]["ownershipRecords"]>
@@ -1054,6 +1168,9 @@ export interface OwnershipRecordsFieldRefs {
   readonly landParcelId: Prisma.FieldRef<"OwnershipRecords", 'String'>
   readonly landOwnerId: Prisma.FieldRef<"OwnershipRecords", 'String'>
   readonly legerRefernce: Prisma.FieldRef<"OwnershipRecords", 'String'>
+  readonly registeredAt: Prisma.FieldRef<"OwnershipRecords", 'String'>
+  readonly sha256: Prisma.FieldRef<"OwnershipRecords", 'String'>
+  readonly blockchainRecord: Prisma.FieldRef<"OwnershipRecords", 'String'>
   readonly createdAt: Prisma.FieldRef<"OwnershipRecords", 'DateTime'>
   readonly updateAt: Prisma.FieldRef<"OwnershipRecords", 'DateTime'>
 }

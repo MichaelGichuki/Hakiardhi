@@ -12,6 +12,7 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import PageStructure from "./Components/PageStructure";
 import { Dashboard } from "./Pages/Dashboard";
+import ParcelTransfer from "./Pages/ParcelTransfer";
 
 const originalRecord = {
   owner: "Mary Wanjiku Kamau",
@@ -172,6 +173,14 @@ function App() {
             setQuery={setAuditQuery}
             rows={filteredAudit}
           />
+        </PageStructure>
+      ),
+    },
+    {
+      path: "/transfer",
+      element: (
+        <PageStructure>
+          <ParcelTransfer />
         </PageStructure>
       ),
     },

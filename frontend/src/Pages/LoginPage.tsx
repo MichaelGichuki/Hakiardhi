@@ -36,8 +36,21 @@ export function LoginPage({
         password: pin,
       });
       dispatch(loginComplete(res.data.user))
+      switch(res.data.user.role){
+        case "Admin":
+          navigate('/dashboard')
+          break;
+          case "LandOwner":
+            navigate('/landowner')
+          break;            
+        case "Registar":
+          navigate('/audit');
+          break;
+        case "VerificationOfficer":
+          navigate('/audit');
+        break;
+      }
 
-      navigate('/dashboard')
     } catch (err) {
       setMessage(`Demo authentication only for ${role}. Credentials have not been verified.`);
     } finally {
@@ -54,15 +67,6 @@ export function LoginPage({
         <h2>Welcome to HakiArdhi</h2>
         <p className="muted">Sign in using your authorized account</p>
         <label className="field-label">Access category</label>
-        {/* <select
-          className="text-input"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        >
-          <option value={"Admin"}>Admin</option>
-          <option value={"Registrar"}>Registrar</option>
-          <option value={"Landowner"}>Landowner / Citizen</option>
-        </select> */}
         <label className="field-label">National ID / Staff Number</label>
         <input
           className="text-input"

@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Info, Search } from "lucide-react";
 import { Card } from "../Components/Card";
 import { PageHeading } from "../Components/PageHeading";
 import { Badge } from "../Components/Badge";
@@ -12,7 +12,6 @@ import { formatDate } from "../app/utils";
 export function ParcelPage({
   query,
   setQuery,
-  searched,
   setSearched,
 }: {
   query: string;
@@ -21,10 +20,22 @@ export function ParcelPage({
   setSearched: (v: boolean) => void;
 }) {
 
-   const [list, setList] = useState<parcelDto[]>()
+  const [list, setList] = useState<parcelDto[]>()
+  const debouncedSearch = useDebounce(query, 100);
    const [selected, setSelected] = useState<ParcelDetailsDto | undefined>()
 
+   const getParcel = async (id: string) => {
+    try{
+      const res = await parcelRecords.getParcels(id);
+      setSelected(res.data);
+    } catch{
+
+    }
+   }
+
+
   const handlerSearch = async (search: string) => {
+    setSelected(undefined);
     try{
       const res = await parcelRecords.searchParcels(search);
       setList(res.data);
@@ -33,13 +44,10 @@ export function ParcelPage({
     }
   }
 
-  const debouncedSearch = useDebounce(query, 100);
 
   useEffect(() => {
     if (!debouncedSearch.trim()) return;
-
     handlerSearch(debouncedSearch)
-    // Make API request here
   }, [debouncedSearch]);
 
   return (
@@ -129,12 +137,21 @@ export function ParcelPage({
         )
       )}
       {
+        !Boolean(selected) &&
         list?.map((value: parcelDto) => (
           <Card className="section-gap">
-            <b>{value.parcelId}</b>
+            <p>
+              <b>{value.parcelNumber}</b>
+            </p>
             {/* <p className="muted">Try KJD/LOI/4581.</p> */}
             <span className="muted">{value.ownerName}</span>
-            <span className="muted">{value.county}</span>
+            <span className="muted">County:</span>
+            <span className="muted">{"\t"+ value.county}</span>
+            <button style={{float: "right", border: "none", backgroundColor: "transparent"}}
+              onClick={() => getParcel(value.parcelNumber)}
+            >
+              <Info size={18} />
+            </button>
           </Card>
         ))
       }

@@ -27,6 +27,8 @@ export type AggregateLandOwner = {
 export type LandOwnerMinAggregateOutputType = {
   id: string | null
   name: string | null
+  registration: string | null
+  phoneNumber: string | null
   createdAt: Date | null
   updateAt: Date | null
 }
@@ -34,6 +36,8 @@ export type LandOwnerMinAggregateOutputType = {
 export type LandOwnerMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  registration: string | null
+  phoneNumber: string | null
   createdAt: Date | null
   updateAt: Date | null
 }
@@ -41,6 +45,8 @@ export type LandOwnerMaxAggregateOutputType = {
 export type LandOwnerCountAggregateOutputType = {
   id: number
   name: number
+  registration: number
+  phoneNumber: number
   createdAt: number
   updateAt: number
   _all: number
@@ -50,6 +56,8 @@ export type LandOwnerCountAggregateOutputType = {
 export type LandOwnerMinAggregateInputType = {
   id?: true
   name?: true
+  registration?: true
+  phoneNumber?: true
   createdAt?: true
   updateAt?: true
 }
@@ -57,6 +65,8 @@ export type LandOwnerMinAggregateInputType = {
 export type LandOwnerMaxAggregateInputType = {
   id?: true
   name?: true
+  registration?: true
+  phoneNumber?: true
   createdAt?: true
   updateAt?: true
 }
@@ -64,6 +74,8 @@ export type LandOwnerMaxAggregateInputType = {
 export type LandOwnerCountAggregateInputType = {
   id?: true
   name?: true
+  registration?: true
+  phoneNumber?: true
   createdAt?: true
   updateAt?: true
   _all?: true
@@ -144,6 +156,8 @@ export type LandOwnerGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type LandOwnerGroupByOutputType = {
   id: string
   name: string
+  registration: string
+  phoneNumber: string
   createdAt: Date
   updateAt: Date
   _count: LandOwnerCountAggregateOutputType | null
@@ -172,6 +186,8 @@ export type LandOwnerWhereInput = {
   NOT?: Prisma.LandOwnerWhereInput | Prisma.LandOwnerWhereInput[]
   id?: Prisma.UuidFilter<"LandOwner"> | string
   name?: Prisma.StringFilter<"LandOwner"> | string
+  registration?: Prisma.StringFilter<"LandOwner"> | string
+  phoneNumber?: Prisma.StringFilter<"LandOwner"> | string
   createdAt?: Prisma.DateTimeFilter<"LandOwner"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"LandOwner"> | Date | string
   ownershipRecords?: Prisma.OwnershipRecordsListRelationFilter
@@ -180,6 +196,8 @@ export type LandOwnerWhereInput = {
 export type LandOwnerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  registration?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
   ownershipRecords?: Prisma.OwnershipRecordsOrderByRelationAggregateInput
@@ -187,18 +205,22 @@ export type LandOwnerOrderByWithRelationInput = {
 
 export type LandOwnerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  registration?: string
   AND?: Prisma.LandOwnerWhereInput | Prisma.LandOwnerWhereInput[]
   OR?: Prisma.LandOwnerWhereInput[]
   NOT?: Prisma.LandOwnerWhereInput | Prisma.LandOwnerWhereInput[]
   name?: Prisma.StringFilter<"LandOwner"> | string
+  phoneNumber?: Prisma.StringFilter<"LandOwner"> | string
   createdAt?: Prisma.DateTimeFilter<"LandOwner"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"LandOwner"> | Date | string
   ownershipRecords?: Prisma.OwnershipRecordsListRelationFilter
-}, "id">
+}, "id" | "registration">
 
 export type LandOwnerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  registration?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
   _count?: Prisma.LandOwnerCountOrderByAggregateInput
@@ -212,6 +234,8 @@ export type LandOwnerScalarWhereWithAggregatesInput = {
   NOT?: Prisma.LandOwnerScalarWhereWithAggregatesInput | Prisma.LandOwnerScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"LandOwner"> | string
   name?: Prisma.StringWithAggregatesFilter<"LandOwner"> | string
+  registration?: Prisma.StringWithAggregatesFilter<"LandOwner"> | string
+  phoneNumber?: Prisma.StringWithAggregatesFilter<"LandOwner"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LandOwner"> | Date | string
   updateAt?: Prisma.DateTimeWithAggregatesFilter<"LandOwner"> | Date | string
 }
@@ -219,6 +243,8 @@ export type LandOwnerScalarWhereWithAggregatesInput = {
 export type LandOwnerCreateInput = {
   id?: string
   name: string
+  registration: string
+  phoneNumber: string
   createdAt: Date | string
   updateAt: Date | string
   ownershipRecords?: Prisma.OwnershipRecordsCreateNestedManyWithoutLandOwnerInput
@@ -227,6 +253,8 @@ export type LandOwnerCreateInput = {
 export type LandOwnerUncheckedCreateInput = {
   id?: string
   name: string
+  registration: string
+  phoneNumber: string
   createdAt: Date | string
   updateAt: Date | string
   ownershipRecords?: Prisma.OwnershipRecordsUncheckedCreateNestedManyWithoutLandOwnerInput
@@ -235,6 +263,8 @@ export type LandOwnerUncheckedCreateInput = {
 export type LandOwnerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  registration?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownershipRecords?: Prisma.OwnershipRecordsUpdateManyWithoutLandOwnerNestedInput
@@ -243,6 +273,8 @@ export type LandOwnerUpdateInput = {
 export type LandOwnerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  registration?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownershipRecords?: Prisma.OwnershipRecordsUncheckedUpdateManyWithoutLandOwnerNestedInput
@@ -251,6 +283,8 @@ export type LandOwnerUncheckedUpdateInput = {
 export type LandOwnerCreateManyInput = {
   id?: string
   name: string
+  registration: string
+  phoneNumber: string
   createdAt: Date | string
   updateAt: Date | string
 }
@@ -258,6 +292,8 @@ export type LandOwnerCreateManyInput = {
 export type LandOwnerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  registration?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -265,6 +301,8 @@ export type LandOwnerUpdateManyMutationInput = {
 export type LandOwnerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  registration?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -272,6 +310,8 @@ export type LandOwnerUncheckedUpdateManyInput = {
 export type LandOwnerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  registration?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
@@ -279,6 +319,8 @@ export type LandOwnerCountOrderByAggregateInput = {
 export type LandOwnerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  registration?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
@@ -286,6 +328,8 @@ export type LandOwnerMaxOrderByAggregateInput = {
 export type LandOwnerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  registration?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
@@ -312,6 +356,8 @@ export type LandOwnerUpdateOneRequiredWithoutOwnershipRecordsNestedInput = {
 export type LandOwnerCreateWithoutOwnershipRecordsInput = {
   id?: string
   name: string
+  registration: string
+  phoneNumber: string
   createdAt: Date | string
   updateAt: Date | string
 }
@@ -319,6 +365,8 @@ export type LandOwnerCreateWithoutOwnershipRecordsInput = {
 export type LandOwnerUncheckedCreateWithoutOwnershipRecordsInput = {
   id?: string
   name: string
+  registration: string
+  phoneNumber: string
   createdAt: Date | string
   updateAt: Date | string
 }
@@ -342,6 +390,8 @@ export type LandOwnerUpdateToOneWithWhereWithoutOwnershipRecordsInput = {
 export type LandOwnerUpdateWithoutOwnershipRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  registration?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -349,6 +399,8 @@ export type LandOwnerUpdateWithoutOwnershipRecordsInput = {
 export type LandOwnerUncheckedUpdateWithoutOwnershipRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  registration?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -387,6 +439,8 @@ export type LandOwnerCountOutputTypeCountOwnershipRecordsArgs<ExtArgs extends ru
 export type LandOwnerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  registration?: boolean
+  phoneNumber?: boolean
   createdAt?: boolean
   updateAt?: boolean
   ownershipRecords?: boolean | Prisma.LandOwner$ownershipRecordsArgs<ExtArgs>
@@ -396,6 +450,8 @@ export type LandOwnerSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type LandOwnerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  registration?: boolean
+  phoneNumber?: boolean
   createdAt?: boolean
   updateAt?: boolean
 }, ExtArgs["result"]["landOwner"]>
@@ -403,6 +459,8 @@ export type LandOwnerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type LandOwnerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  registration?: boolean
+  phoneNumber?: boolean
   createdAt?: boolean
   updateAt?: boolean
 }, ExtArgs["result"]["landOwner"]>
@@ -410,11 +468,13 @@ export type LandOwnerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type LandOwnerSelectScalar = {
   id?: boolean
   name?: boolean
+  registration?: boolean
+  phoneNumber?: boolean
   createdAt?: boolean
   updateAt?: boolean
 }
 
-export type LandOwnerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "createdAt" | "updateAt", ExtArgs["result"]["landOwner"]>
+export type LandOwnerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "registration" | "phoneNumber" | "createdAt" | "updateAt", ExtArgs["result"]["landOwner"]>
 export type LandOwnerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ownershipRecords?: boolean | Prisma.LandOwner$ownershipRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.LandOwnerCountOutputTypeDefaultArgs<ExtArgs>
@@ -430,6 +490,8 @@ export type $LandOwnerPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    registration: string
+    phoneNumber: string
     createdAt: Date
     updateAt: Date
   }, ExtArgs["result"]["landOwner"]>
@@ -858,6 +920,8 @@ export interface Prisma__LandOwnerClient<T, Null = never, ExtArgs extends runtim
 export interface LandOwnerFieldRefs {
   readonly id: Prisma.FieldRef<"LandOwner", 'String'>
   readonly name: Prisma.FieldRef<"LandOwner", 'String'>
+  readonly registration: Prisma.FieldRef<"LandOwner", 'String'>
+  readonly phoneNumber: Prisma.FieldRef<"LandOwner", 'String'>
   readonly createdAt: Prisma.FieldRef<"LandOwner", 'DateTime'>
   readonly updateAt: Prisma.FieldRef<"LandOwner", 'DateTime'>
 }

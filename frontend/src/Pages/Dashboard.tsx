@@ -35,7 +35,7 @@ export function Dashboard() {
         title="Staff Command Center"
         subtitle="Land administration overview · Nairobi Registry"
         action={
-          <button className="btn primary" onClick={() => go("workflow")}>
+          <button className="btn primary" onClick={() => go("transfer")}>
             ＋ Initiate transfer
           </button>
         }

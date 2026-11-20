@@ -28,16 +28,21 @@ model LandParcels {
     Size Float
     county String
     tenure String
+    parcelOriginId String? @db.Uuid
+    parcelOrigin LandParcels? @relation("ParcelLineage", references: [id], fields: [parcelOriginId])
     isActive Boolean
     createdAt DateTime
-    updateAt DateTime 
+    updateAt DateTime
     ownershipRecords OwnershipRecords?
+    landParcels LandParcels[] @relation("ParcelLineage")
 }
 
 
 model LandOwner {
     id String @id @default(uuid()) @db.Uuid
     name String
+    registration String @unique
+    phoneNumber String
     createdAt DateTime
     updateAt DateTime
     ownershipRecords OwnershipRecords[]
@@ -50,10 +55,22 @@ model OwnershipRecords {
   landOwnerId String @db.Uuid
   landOwner LandOwner @relation(fields: [landOwnerId], references: [id])
   legerRefernce String
+  registeredAt String
+  sha256 String
+  blockchainRecord String
   createdAt DateTime
   updateAt DateTime
 }
 
+model TransactionHistory {
+  id String @id @default(uuid()) @db.Uuid
+  refrerence String @unique
+  actor String
+  action String
+  status String
+  createdAt DateTime
+  updateAt DateTime
+}
 
 
 model Session {
@@ -74,4 +91,5 @@ model Session {
   @@index([expiresAt])
 }
 
+// npx prisma generate
 //npx prisma migrate dev --name {name of migreation}

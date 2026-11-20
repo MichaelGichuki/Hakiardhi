@@ -9,9 +9,13 @@ export class ParcelRecordsService {
 
     async GetParcelRecord(id: string){
 
+        console.log(id)
         let a = await this.prisma.landParcels
             .findFirst({
-                where: { parcelNumber: "id"},
+                where: { parcelNumber: {
+                    equals: id,
+                    mode: "insensitive"
+                }},
                 select: {
                     id: true,
                     parcelNumber: true,
@@ -25,7 +29,8 @@ export class ParcelRecordsService {
                                 select: {
                                     name: true
                                 }
-                            }
+                            },
+                            landOwnerId: true
                         }
                     }
                 }
@@ -46,15 +51,25 @@ export class ParcelRecordsService {
             registrationDate: a?.createdAt,
             Sha: 'true',
             size: a?.Size,
-            tenure: a?.tenure,
-            titleVersion: true
+            tenure: 'Freehold',//a?.tenure?? 
+            titleVersion: '',
+            ledgerConfirmed: true,
+            ownerId: a.ownershipRecords?.landOwnerId ?? "",
+            ownerPhone: '',
+            registrationArea: '',
+            sha256: '',
+            status: ''
         };
+        return p;
     }
 
 
     async SearchPercel(params: string): Promise<parcelDto[]>{
         const records = await this.prisma.landParcels
-            .findMany({where: {parcelNumber: params}, select : {
+            .findMany({where: {parcelNumber: {
+                contains: params,
+                mode: "insensitive"
+            }}, select : {
                 parcelNumber: true,
                 id: true,
                 county: true,
@@ -72,7 +87,7 @@ export class ParcelRecordsService {
 
         const l = records.map<parcelDto>((value: any) => {
             return {
-                parcelId: value.parcelNumber,
+                parcelId: value.id,
                 county: value.county,
                 ownerName: value.ownershipRecords?.landOwner.name,
                 parcelNumber: value.parcelNumber
