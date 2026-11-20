@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { ParcelDetailsDto, parcelDto } from "./parcelrecords.types.js";
+import { FabricService } from "../fabric/fabric.service.js";
 
 @Injectable()
 export class ParcelRecordsService {
 
-    constructor (private readonly prisma: PrismaService){}
+    constructor (private readonly prisma: PrismaService, private readonly fabric: FabricService){}
 
     async GetParcelRecord(id: string){
 
@@ -97,5 +98,6 @@ export class ParcelRecordsService {
         return l
     }
 
+    
 
 }
