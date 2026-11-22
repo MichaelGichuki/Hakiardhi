@@ -133,32 +133,48 @@ join_orderer() {
 # ------------------------------------------------------------------------------
 # Step 6: Join All 4 Peers to Channel
 # ------------------------------------------------------------------------------
-join_peer() {
-  local ORG_NAME="$1"
-  local MSP_ID="$2"
-  local DOMAIN="$3"
-
-  info "Joining peer0.${DOMAIN} (${MSP_ID}) to ${CHANNEL_NAME}..."
-
-  local BASE_ORG_DIR="/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/${DOMAIN}"
-
-  docker exec \
-    -e FABRIC_CFG_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer \
-    -e CORE_PEER_LOCALMSPID="${MSP_ID}" \
-    -e CORE_PEER_ADDRESS="peer0.${DOMAIN}:7051" \
-    -e CORE_PEER_TLS_ROOTCERT_FILE="${BASE_ORG_DIR}/peers/peer0.${DOMAIN}/tls/ca.crt" \
-    -e CORE_PEER_MSPCONFIGPATH="${BASE_ORG_DIR}/users/Admin@${DOMAIN}/msp" \
-    cli peer channel join \
-      -b "/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts/${CHANNEL_NAME}.block"
-}
 
 join_all_peers() {
-  join_peer "LandOfficer"         "LandOfficerMSP"         "landofficer.hakiardhi.local"
-  join_peer "VerificationOfficer" "VerificationOfficerMSP" "verificationofficer.hakiardhi.local"
-  join_peer "Registrar"           "RegistrarMSP"           "registrar.hakiardhi.local"
-  join_peer "LandOwner"           "LandOwnerMSP"           "landowner.hakiardhi.local"
+  local base="/opt/gopath/src/github.com/hyperledger/fabric/peer"
+  local block_file="${base}/channel-artifacts/${CHANNEL_NAME}.block"
 
-  info "All 4 peers have joined ${CHANNEL_NAME}!"
+  # Format: "<org_dir>|<msp_id>|<peer_host>|<peer_port>"
+  local peers=(
+    "landofficer.hakiardhi.local|LandOfficerMSP|peer0.landofficer.hakiardhi.local|7051"
+    "verificationofficer.hakiardhi.local|VerificationOfficerMSP|peer0.verificationofficer.hakiardhi.local|8051"
+    "registrar.hakiardhi.local|RegistrarMSP|peer0.registrar.hakiardhi.local|9051"
+    "landowner.hakiardhi.local|LandOwnerMSP|peer0.landowner.hakiardhi.local|10051"
+  )
+
+  for entry in "${peers[@]}"; do
+    IFS='|' read -r org_dir msp_id peer_host peer_port <<< "$entry"
+
+    # Skip if this peer has already joined the channel
+    local joined
+    joined=$(docker exec \
+      -e FABRIC_CFG_PATH="${base}" \
+      -e CORE_PEER_TLS_ENABLED=true \
+      -e CORE_PEER_LOCALMSPID="${msp_id}" \
+      -e CORE_PEER_TLS_ROOTCERT_FILE="${base}/organizations/peerOrganizations/${org_dir}/peers/${peer_host}/tls/ca.crt" \
+      -e CORE_PEER_MSPCONFIGPATH="${base}/organizations/peerOrganizations/${org_dir}/users/Admin@${org_dir}/msp" \
+      -e CORE_PEER_ADDRESS="${peer_host}:${peer_port}" \
+      cli peer channel list 2>/dev/null || true)
+
+    if echo "$joined" | grep -qw "${CHANNEL_NAME}"; then
+      echo "[INFO] ${peer_host} (${msp_id}) is already joined to ${CHANNEL_NAME}."
+      continue
+    fi
+
+    echo "[INFO] Joining ${peer_host} (${msp_id}) to ${CHANNEL_NAME}..."
+    docker exec \
+      -e FABRIC_CFG_PATH="${base}" \
+      -e CORE_PEER_TLS_ENABLED=true \
+      -e CORE_PEER_LOCALMSPID="${msp_id}" \
+      -e CORE_PEER_TLS_ROOTCERT_FILE="${base}/organizations/peerOrganizations/${org_dir}/peers/${peer_host}/tls/ca.crt" \
+      -e CORE_PEER_MSPCONFIGPATH="${base}/organizations/peerOrganizations/${org_dir}/users/Admin@${org_dir}/msp" \
+      -e CORE_PEER_ADDRESS="${peer_host}:${peer_port}" \
+      cli peer channel join -b "${block_file}"
+  done
 }
 
 # ------------------------------------------------------------------------------
