@@ -57,6 +57,7 @@ export const ModelName = {
   OwnershipRecords: 'OwnershipRecords',
   TransactionHistory: 'TransactionHistory',
   InspectionLog: 'InspectionLog',
+  RequestLogs: 'RequestLogs',
   Session: 'Session'
 } as const
 
@@ -136,9 +137,13 @@ export type OwnershipRecordsScalarFieldEnum = (typeof OwnershipRecordsScalarFiel
 export const TransactionHistoryScalarFieldEnum = {
   id: 'id',
   refrerence: 'refrerence',
-  actor: 'actor',
+  landOwnerId: 'landOwnerId',
+  buyerId: 'buyerId',
+  actorId: 'actorId',
   action: 'action',
   status: 'status',
+  transactionType: 'transactionType',
+  cost: 'cost',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
@@ -156,6 +161,17 @@ export const InspectionLogScalarFieldEnum = {
 } as const
 
 export type InspectionLogScalarFieldEnum = (typeof InspectionLogScalarFieldEnum)[keyof typeof InspectionLogScalarFieldEnum]
+
+
+export const RequestLogsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  transactionId: 'transactionId',
+  createdAt: 'createdAt',
+  updateat: 'updateat'
+} as const
+
+export type RequestLogsScalarFieldEnum = (typeof RequestLogsScalarFieldEnum)[keyof typeof RequestLogsScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

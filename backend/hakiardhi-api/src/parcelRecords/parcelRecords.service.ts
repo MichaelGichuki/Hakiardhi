@@ -1,16 +1,19 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service.js";
-import { ParcelDetailsDto, parcelDto } from "./parcelrecords.types.js";
+import { InitiatedTransferResult, ParcelDetailsDto, parcelDto } from "./parcelrecords.types.js";
 import { FabricService } from "../fabric/fabric.service.js";
+import { randomUUID } from "node:crypto";
+import { AuthService } from "../auth/auth.service.js";
 
 @Injectable()
 export class ParcelRecordsService {
 
-    constructor (private readonly prisma: PrismaService, private readonly fabric: FabricService){}
+    constructor (private readonly prisma: PrismaService, 
+        private readonly fabric: FabricService,
+        private readonly auth: AuthService
+    ){}
 
     async GetParcelRecord(id: string){
-
-        console.log(id)
         let a = await this.prisma.landParcels
             .findFirst({
                 where: { parcelNumber: {
@@ -98,6 +101,76 @@ export class ParcelRecordsService {
         return l
     }
 
-    
+    async Transfer(data: InitiatedTransferResult, sesseionId: string){
+        // chack if buyer landlord exist
+        let buyerlandOwnerId =( await this.prisma.landOwner
+            .findFirst({
+                where: {
+                    registration: data.buyerId
+                },
+                select:{
+                    id: true
+                }
+            }))?.id;
+        
+        if (buyerlandOwnerId == null){
+            // create landowner
+            const landowner = await this.prisma.landOwner.create({
+                data: {
+                    createdAt: Date.now().toString(),
+                    name: data.buyerName,
+                    phoneNumber: data.buyerPhone,
+                    registration: data.buyerId,
+                    id: randomUUID(),
+                    updateAt: Date.now().toString()
+                }
+            });
+            buyerlandOwnerId = landowner["id"];
+        }
+
+        const actorId = await this.auth.getUserId(sesseionId)
+        // add transaction history
+        const transId = await this.prisma.transactionHistory
+            .create({
+                data: {
+                    id: randomUUID(),
+                    action: "Transfer",
+                    actorId: actorId,
+                    cost: 0,
+                    createdAt: Date.now.toString(),
+                    refrerence: data.reference,
+                    status: 'Pending',
+                    transactionType: data.transferType,
+                    updateAt: Date.now().toString(),
+                    buyerId: buyerlandOwnerId,
+                    landOwnerId: data.parcel.ownerId
+                },
+                select: {
+                    id: true
+                }
+            });
+
+        // add landlord request to authenticate
+        await this.prisma.requestLogs
+            .createMany({
+                data: [
+                    {
+                        createdAt: Date.now().toString(),
+                        transactionId: transId.id,
+                        id: randomUUID(),
+                        updateat: Date.now().toString(),
+                        userId: data.parcel.ownerId
+                    }
+                ]
+            });
+
+
+    }
+
+
+    async test() {
+        const a = await this.fabric.getCallerIdentity()
+        console.log(a)
+    }
 
 }

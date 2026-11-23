@@ -251,4 +251,25 @@ export class AuthService {
     });
   }
 
+  async getUserId(sessionId: string): Promise<string> {
+    const session = await this.prisma.session.findFirst({
+      where: {
+        id: sessionId,
+        revokedAt: null,
+        expiresAt: {
+          gt: new Date(),
+        },
+      },
+      select: {
+        userId: true,
+      },
+    });
+
+    if (!session) {
+      throw new UnauthorizedException('Invalid session');
+    }
+
+    return session.userId;
+}
+
 }

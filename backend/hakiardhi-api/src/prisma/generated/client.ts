@@ -72,6 +72,11 @@ export type TransactionHistory = Prisma.TransactionHistoryModel
  */
 export type InspectionLog = Prisma.InspectionLogModel
 /**
+ * Model RequestLogs
+ * 
+ */
+export type RequestLogs = Prisma.RequestLogsModel
+/**
  * Model Session
  * 
  */

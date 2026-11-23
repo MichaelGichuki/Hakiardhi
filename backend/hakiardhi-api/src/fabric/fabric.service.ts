@@ -34,7 +34,7 @@ export class FabricService
   private verificationOfficerContract!: Contract;
   private registrarContract!: Contract;
 
-  private readonly channelName = 'mychannel';
+  private readonly channelName = 'haki-ardhi-channel';
   private readonly chaincodeName = 'hakiardhi';
 
   private readonly fabricBasePath : string;

@@ -8,14 +8,19 @@ export class ParcelRecordsController{
     constructor(private readonly parcelService: ParcelRecordsService){}
 
 
-    @Get(":id")
-    async getParcelRecord(@Param("id")id: string){
-        return this.parcelService.GetParcelRecord(id);
-    }
-
+    
     @Get('')
     async SearchParcels(@Query('search') search: string){
         return this.parcelService.SearchPercel(search);
     }
 
+    @Get("/test")
+    async test(){
+        return this.parcelService.test();
+    }
+    
+    @Get(":id")
+    async getParcelRecord(@Param("id")id: string){
+        return this.parcelService.GetParcelRecord(id);
+    }
 }

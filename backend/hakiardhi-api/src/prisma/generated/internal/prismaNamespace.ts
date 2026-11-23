@@ -403,6 +403,7 @@ export const ModelName = {
   OwnershipRecords: 'OwnershipRecords',
   TransactionHistory: 'TransactionHistory',
   InspectionLog: 'InspectionLog',
+  RequestLogs: 'RequestLogs',
   Session: 'Session'
 } as const
 
@@ -419,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "landParcels" | "landOwner" | "ownershipRecords" | "transactionHistory" | "inspectionLog" | "session"
+    modelProps: "user" | "landParcels" | "landOwner" | "ownershipRecords" | "transactionHistory" | "inspectionLog" | "requestLogs" | "session"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -867,6 +868,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RequestLogs: {
+      payload: Prisma.$RequestLogsPayload<ExtArgs>
+      fields: Prisma.RequestLogsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RequestLogsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RequestLogsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload>
+        }
+        findFirst: {
+          args: Prisma.RequestLogsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RequestLogsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload>
+        }
+        findMany: {
+          args: Prisma.RequestLogsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload>[]
+        }
+        create: {
+          args: Prisma.RequestLogsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload>
+        }
+        createMany: {
+          args: Prisma.RequestLogsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RequestLogsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload>[]
+        }
+        delete: {
+          args: Prisma.RequestLogsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload>
+        }
+        update: {
+          args: Prisma.RequestLogsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload>
+        }
+        deleteMany: {
+          args: Prisma.RequestLogsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RequestLogsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RequestLogsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload>[]
+        }
+        upsert: {
+          args: Prisma.RequestLogsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestLogsPayload>
+        }
+        aggregate: {
+          args: Prisma.RequestLogsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRequestLogs>
+        }
+        groupBy: {
+          args: Prisma.RequestLogsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RequestLogsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RequestLogsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RequestLogsCountAggregateOutputType> | number
+        }
+      }
+    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -1040,9 +1115,13 @@ export type OwnershipRecordsScalarFieldEnum = (typeof OwnershipRecordsScalarFiel
 export const TransactionHistoryScalarFieldEnum = {
   id: 'id',
   refrerence: 'refrerence',
-  actor: 'actor',
+  landOwnerId: 'landOwnerId',
+  buyerId: 'buyerId',
+  actorId: 'actorId',
   action: 'action',
   status: 'status',
+  transactionType: 'transactionType',
+  cost: 'cost',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
@@ -1060,6 +1139,17 @@ export const InspectionLogScalarFieldEnum = {
 } as const
 
 export type InspectionLogScalarFieldEnum = (typeof InspectionLogScalarFieldEnum)[keyof typeof InspectionLogScalarFieldEnum]
+
+
+export const RequestLogsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  transactionId: 'transactionId',
+  createdAt: 'createdAt',
+  updateat: 'updateat'
+} as const
+
+export type RequestLogsScalarFieldEnum = (typeof RequestLogsScalarFieldEnum)[keyof typeof RequestLogsScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -1326,6 +1416,7 @@ export type GlobalOmitConfig = {
   ownershipRecords?: Prisma.OwnershipRecordsOmit
   transactionHistory?: Prisma.TransactionHistoryOmit
   inspectionLog?: Prisma.InspectionLogOmit
+  requestLogs?: Prisma.RequestLogsOmit
   session?: Prisma.SessionOmit
 }
 

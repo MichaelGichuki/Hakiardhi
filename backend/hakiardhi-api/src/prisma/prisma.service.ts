@@ -12,7 +12,6 @@ export class PrismaService
 {
   constructor(private configService: ConfigService) {
     const dbConnection = configService.get<string>('DATABASE_URL');
-    console.log("connection string:", dbConnection)
     const adapter = new PrismaPg({
       connectionString: dbConnection,
       ssl: {

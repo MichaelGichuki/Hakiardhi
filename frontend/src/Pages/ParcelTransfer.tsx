@@ -17,9 +17,9 @@ import {
   Users,
 } from 'lucide-react'
 import { parcelRecords } from '../service/parcels'
-import type { ParcelDetailsDto } from '../types/parcels.type'
+import type { InitiatedTransferResult, ParcelDetailsDto, SupportingDocument, TransferType } from '../types/parcels.type'
 
-type TransferType = 'Sale / Transfer' | 'Subdivision' | 'Succession / Transmission' | 'Charge / Leasehold Assignment'
+
 type CountyName = 'Kajiado' | 'Nairobi' | 'Kiambu' | 'Machakos' | 'Nyeri'
 
 interface ParcelRecord {
@@ -37,31 +37,9 @@ interface ParcelRecord {
   ledgerConfirmed: boolean
 }
 
-interface SupportingDocument {
-  id: string
-  docType: string
-  fileName: string
-  fileSizeLabel: string
-  hashPreview: string
-  verified: boolean
-}
 
-interface InitiatedTransferResult {
-  reference: string
-  initiatedAt: string
-  officerName: string
-  registryOffice: string
-  parcel: ParcelDetailsDto
-  transferType: TransferType
-  buyerName: string
-  buyerId: string
-  buyerPhone: string
-  considerationKes: string
-  consentChannel: 'Landowner Portal' | 'USSD (*483*55#)' | 'Both (Portal + USSD)'
-  documents: SupportingDocument[]
-  payloadDigest: string
-  txId: string
-}
+
+
 
 export interface ParcelTransfer {
   initialParcelNumber?: string
@@ -174,10 +152,9 @@ export function InitiateTransferPage({
 }: ParcelTransfer) {
 
   const [parcelInput, setParcelInput] = useState(initialParcelNumber)
-  const [selectedParcel, setSelectedParcel] = useState<ParcelDetailsDto | null>(
-    // () => SYNTHETIC_PARCELS[initialParcelNumber.trim().toUpperCase()] ?? SYNTHETIC_PARCELS['KJD/LOI/4581']
-  )
+  const [selectedParcel, setSelectedParcel] = useState<ParcelDetailsDto | null>()
   const [parcelLookupError, setParcelLookupError] = useState('')
+  const [step, setStep] = useState<number>(1);
 
   const [transferType, setTransferType] = useState<TransferType>('Sale / Transfer')
   const [buyerName, setBuyerName] = useState('Peter Mwangi Njoroge')
@@ -203,10 +180,10 @@ export function InitiateTransferPage({
 
   const integrityVerified = useMemo(() => {
     if (!selectedParcel) return false
-    return Boolean(
-      selectedParcel.ledgerConfirmed &&
-      selectedParcel.sha256.length >= 64 &&
-      selectedParcel.status === 'Registered'
+    return Boolean(1
+      // selectedParcel.ledgerConfirmed &&
+      // selectedParcel.sha256.length >= 64 &&
+      // selectedParcel.status === 'Registered'
     )
   }, [selectedParcel])
 
@@ -219,7 +196,6 @@ export function InitiateTransferPage({
       setParcelLookupError('Enter a parcel or title number to verify against the registry.')
       return
     }
-    // const found = SYNTHETIC_PARCELS[normalized]
     try {
       const res = await parcelRecords.getParcels(normalized);
       if (res.status !== 200) {
@@ -315,8 +291,10 @@ export function InitiateTransferPage({
       txId: `0x${fullDigest.slice(0, 4)}...${fullDigest.slice(-4)}`,
     }
 
-    setSubmittedTransfer(result)
-    onTransferInitiated?.(result)
+    console.log(result);
+    
+    // setSubmittedTransfer(result)
+    // onTransferInitiated?.(result)
   }
 
   const handleStartNewTransfer = () => {
@@ -365,15 +343,15 @@ export function InitiateTransferPage({
               <small>Buyer ID &amp; supporting hashes</small>
             </div>
           </div>
-          <div className="initiate-stage-item">
-            <span className="step-number">3</span>
+          <div className="initiate-stage-item active">
+            <span className="step-number current">3</span>
             <div>
               <b>Owner Consent Dispatch</b>
               <small>Portal &amp; *483*55# USSD</small>
             </div>
           </div>
-          <div className="initiate-stage-item">
-            <span className="step-number">4</span>
+          <div className="initiate-stage-item active">
+            <span className="step-number current">4</span>
             <div>
               <b>Verification &amp; Registrar</b>
               <small>Locked until consent signed</small>

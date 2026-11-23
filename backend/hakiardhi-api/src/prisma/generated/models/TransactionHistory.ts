@@ -20,16 +20,30 @@ export type TransactionHistoryModel = runtime.Types.Result.DefaultSelection<Pris
 
 export type AggregateTransactionHistory = {
   _count: TransactionHistoryCountAggregateOutputType | null
+  _avg: TransactionHistoryAvgAggregateOutputType | null
+  _sum: TransactionHistorySumAggregateOutputType | null
   _min: TransactionHistoryMinAggregateOutputType | null
   _max: TransactionHistoryMaxAggregateOutputType | null
+}
+
+export type TransactionHistoryAvgAggregateOutputType = {
+  cost: number | null
+}
+
+export type TransactionHistorySumAggregateOutputType = {
+  cost: number | null
 }
 
 export type TransactionHistoryMinAggregateOutputType = {
   id: string | null
   refrerence: string | null
-  actor: string | null
+  landOwnerId: string | null
+  buyerId: string | null
+  actorId: string | null
   action: string | null
   status: string | null
+  transactionType: string | null
+  cost: number | null
   createdAt: Date | null
   updateAt: Date | null
 }
@@ -37,9 +51,13 @@ export type TransactionHistoryMinAggregateOutputType = {
 export type TransactionHistoryMaxAggregateOutputType = {
   id: string | null
   refrerence: string | null
-  actor: string | null
+  landOwnerId: string | null
+  buyerId: string | null
+  actorId: string | null
   action: string | null
   status: string | null
+  transactionType: string | null
+  cost: number | null
   createdAt: Date | null
   updateAt: Date | null
 }
@@ -47,21 +65,37 @@ export type TransactionHistoryMaxAggregateOutputType = {
 export type TransactionHistoryCountAggregateOutputType = {
   id: number
   refrerence: number
-  actor: number
+  landOwnerId: number
+  buyerId: number
+  actorId: number
   action: number
   status: number
+  transactionType: number
+  cost: number
   createdAt: number
   updateAt: number
   _all: number
 }
 
 
+export type TransactionHistoryAvgAggregateInputType = {
+  cost?: true
+}
+
+export type TransactionHistorySumAggregateInputType = {
+  cost?: true
+}
+
 export type TransactionHistoryMinAggregateInputType = {
   id?: true
   refrerence?: true
-  actor?: true
+  landOwnerId?: true
+  buyerId?: true
+  actorId?: true
   action?: true
   status?: true
+  transactionType?: true
+  cost?: true
   createdAt?: true
   updateAt?: true
 }
@@ -69,9 +103,13 @@ export type TransactionHistoryMinAggregateInputType = {
 export type TransactionHistoryMaxAggregateInputType = {
   id?: true
   refrerence?: true
-  actor?: true
+  landOwnerId?: true
+  buyerId?: true
+  actorId?: true
   action?: true
   status?: true
+  transactionType?: true
+  cost?: true
   createdAt?: true
   updateAt?: true
 }
@@ -79,9 +117,13 @@ export type TransactionHistoryMaxAggregateInputType = {
 export type TransactionHistoryCountAggregateInputType = {
   id?: true
   refrerence?: true
-  actor?: true
+  landOwnerId?: true
+  buyerId?: true
+  actorId?: true
   action?: true
   status?: true
+  transactionType?: true
+  cost?: true
   createdAt?: true
   updateAt?: true
   _all?: true
@@ -125,6 +167,18 @@ export type TransactionHistoryAggregateArgs<ExtArgs extends runtime.Types.Extens
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: TransactionHistoryAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: TransactionHistorySumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: TransactionHistoryMinAggregateInputType
@@ -155,6 +209,8 @@ export type TransactionHistoryGroupByArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   _count?: TransactionHistoryCountAggregateInputType | true
+  _avg?: TransactionHistoryAvgAggregateInputType
+  _sum?: TransactionHistorySumAggregateInputType
   _min?: TransactionHistoryMinAggregateInputType
   _max?: TransactionHistoryMaxAggregateInputType
 }
@@ -162,12 +218,18 @@ export type TransactionHistoryGroupByArgs<ExtArgs extends runtime.Types.Extensio
 export type TransactionHistoryGroupByOutputType = {
   id: string
   refrerence: string
-  actor: string
+  landOwnerId: string
+  buyerId: string
+  actorId: string
   action: string
   status: string
+  transactionType: string
+  cost: number
   createdAt: Date
   updateAt: Date
   _count: TransactionHistoryCountAggregateOutputType | null
+  _avg: TransactionHistoryAvgAggregateOutputType | null
+  _sum: TransactionHistorySumAggregateOutputType | null
   _min: TransactionHistoryMinAggregateOutputType | null
   _max: TransactionHistoryMaxAggregateOutputType | null
 }
@@ -193,21 +255,37 @@ export type TransactionHistoryWhereInput = {
   NOT?: Prisma.TransactionHistoryWhereInput | Prisma.TransactionHistoryWhereInput[]
   id?: Prisma.UuidFilter<"TransactionHistory"> | string
   refrerence?: Prisma.StringFilter<"TransactionHistory"> | string
-  actor?: Prisma.StringFilter<"TransactionHistory"> | string
+  landOwnerId?: Prisma.UuidFilter<"TransactionHistory"> | string
+  buyerId?: Prisma.UuidFilter<"TransactionHistory"> | string
+  actorId?: Prisma.UuidFilter<"TransactionHistory"> | string
   action?: Prisma.StringFilter<"TransactionHistory"> | string
   status?: Prisma.StringFilter<"TransactionHistory"> | string
+  transactionType?: Prisma.StringFilter<"TransactionHistory"> | string
+  cost?: Prisma.FloatFilter<"TransactionHistory"> | number
   createdAt?: Prisma.DateTimeFilter<"TransactionHistory"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"TransactionHistory"> | Date | string
+  landOwner?: Prisma.XOR<Prisma.LandOwnerScalarRelationFilter, Prisma.LandOwnerWhereInput>
+  buyer?: Prisma.XOR<Prisma.LandOwnerScalarRelationFilter, Prisma.LandOwnerWhereInput>
+  actor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  requestLogs?: Prisma.RequestLogsListRelationFilter
 }
 
 export type TransactionHistoryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   refrerence?: Prisma.SortOrder
-  actor?: Prisma.SortOrder
+  landOwnerId?: Prisma.SortOrder
+  buyerId?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  transactionType?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
+  landOwner?: Prisma.LandOwnerOrderByWithRelationInput
+  buyer?: Prisma.LandOwnerOrderByWithRelationInput
+  actor?: Prisma.UserOrderByWithRelationInput
+  requestLogs?: Prisma.RequestLogsOrderByRelationAggregateInput
 }
 
 export type TransactionHistoryWhereUniqueInput = Prisma.AtLeast<{
@@ -216,24 +294,38 @@ export type TransactionHistoryWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.TransactionHistoryWhereInput | Prisma.TransactionHistoryWhereInput[]
   OR?: Prisma.TransactionHistoryWhereInput[]
   NOT?: Prisma.TransactionHistoryWhereInput | Prisma.TransactionHistoryWhereInput[]
-  actor?: Prisma.StringFilter<"TransactionHistory"> | string
+  landOwnerId?: Prisma.UuidFilter<"TransactionHistory"> | string
+  buyerId?: Prisma.UuidFilter<"TransactionHistory"> | string
+  actorId?: Prisma.UuidFilter<"TransactionHistory"> | string
   action?: Prisma.StringFilter<"TransactionHistory"> | string
   status?: Prisma.StringFilter<"TransactionHistory"> | string
+  transactionType?: Prisma.StringFilter<"TransactionHistory"> | string
+  cost?: Prisma.FloatFilter<"TransactionHistory"> | number
   createdAt?: Prisma.DateTimeFilter<"TransactionHistory"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"TransactionHistory"> | Date | string
+  landOwner?: Prisma.XOR<Prisma.LandOwnerScalarRelationFilter, Prisma.LandOwnerWhereInput>
+  buyer?: Prisma.XOR<Prisma.LandOwnerScalarRelationFilter, Prisma.LandOwnerWhereInput>
+  actor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  requestLogs?: Prisma.RequestLogsListRelationFilter
 }, "id" | "refrerence">
 
 export type TransactionHistoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   refrerence?: Prisma.SortOrder
-  actor?: Prisma.SortOrder
+  landOwnerId?: Prisma.SortOrder
+  buyerId?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  transactionType?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
   _count?: Prisma.TransactionHistoryCountOrderByAggregateInput
+  _avg?: Prisma.TransactionHistoryAvgOrderByAggregateInput
   _max?: Prisma.TransactionHistoryMaxOrderByAggregateInput
   _min?: Prisma.TransactionHistoryMinOrderByAggregateInput
+  _sum?: Prisma.TransactionHistorySumOrderByAggregateInput
 }
 
 export type TransactionHistoryScalarWhereWithAggregatesInput = {
@@ -242,9 +334,13 @@ export type TransactionHistoryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TransactionHistoryScalarWhereWithAggregatesInput | Prisma.TransactionHistoryScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"TransactionHistory"> | string
   refrerence?: Prisma.StringWithAggregatesFilter<"TransactionHistory"> | string
-  actor?: Prisma.StringWithAggregatesFilter<"TransactionHistory"> | string
+  landOwnerId?: Prisma.UuidWithAggregatesFilter<"TransactionHistory"> | string
+  buyerId?: Prisma.UuidWithAggregatesFilter<"TransactionHistory"> | string
+  actorId?: Prisma.UuidWithAggregatesFilter<"TransactionHistory"> | string
   action?: Prisma.StringWithAggregatesFilter<"TransactionHistory"> | string
   status?: Prisma.StringWithAggregatesFilter<"TransactionHistory"> | string
+  transactionType?: Prisma.StringWithAggregatesFilter<"TransactionHistory"> | string
+  cost?: Prisma.FloatWithAggregatesFilter<"TransactionHistory"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TransactionHistory"> | Date | string
   updateAt?: Prisma.DateTimeWithAggregatesFilter<"TransactionHistory"> | Date | string
 }
@@ -252,49 +348,73 @@ export type TransactionHistoryScalarWhereWithAggregatesInput = {
 export type TransactionHistoryCreateInput = {
   id?: string
   refrerence: string
-  actor: string
   action: string
   status: string
+  transactionType: string
+  cost: number
   createdAt: Date | string
   updateAt: Date | string
+  landOwner: Prisma.LandOwnerCreateNestedOneWithoutLandownerTransactionHistoriesInput
+  buyer: Prisma.LandOwnerCreateNestedOneWithoutBuyerTransactionHistoriesInput
+  actor: Prisma.UserCreateNestedOneWithoutTransactionHistoriesInput
+  requestLogs?: Prisma.RequestLogsCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionHistoryUncheckedCreateInput = {
   id?: string
   refrerence: string
-  actor: string
+  landOwnerId: string
+  buyerId: string
+  actorId: string
   action: string
   status: string
+  transactionType: string
+  cost: number
   createdAt: Date | string
   updateAt: Date | string
+  requestLogs?: Prisma.RequestLogsUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionHistoryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   refrerence?: Prisma.StringFieldUpdateOperationsInput | string
-  actor?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  landOwner?: Prisma.LandOwnerUpdateOneRequiredWithoutLandownerTransactionHistoriesNestedInput
+  buyer?: Prisma.LandOwnerUpdateOneRequiredWithoutBuyerTransactionHistoriesNestedInput
+  actor?: Prisma.UserUpdateOneRequiredWithoutTransactionHistoriesNestedInput
+  requestLogs?: Prisma.RequestLogsUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionHistoryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   refrerence?: Prisma.StringFieldUpdateOperationsInput | string
-  actor?: Prisma.StringFieldUpdateOperationsInput | string
+  landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  actorId?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requestLogs?: Prisma.RequestLogsUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionHistoryCreateManyInput = {
   id?: string
   refrerence: string
-  actor: string
+  landOwnerId: string
+  buyerId: string
+  actorId: string
   action: string
   status: string
+  transactionType: string
+  cost: number
   createdAt: Date | string
   updateAt: Date | string
 }
@@ -302,9 +422,10 @@ export type TransactionHistoryCreateManyInput = {
 export type TransactionHistoryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   refrerence?: Prisma.StringFieldUpdateOperationsInput | string
-  actor?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -312,29 +433,55 @@ export type TransactionHistoryUpdateManyMutationInput = {
 export type TransactionHistoryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   refrerence?: Prisma.StringFieldUpdateOperationsInput | string
-  actor?: Prisma.StringFieldUpdateOperationsInput | string
+  landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  actorId?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TransactionHistoryListRelationFilter = {
+  every?: Prisma.TransactionHistoryWhereInput
+  some?: Prisma.TransactionHistoryWhereInput
+  none?: Prisma.TransactionHistoryWhereInput
+}
+
+export type TransactionHistoryOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type TransactionHistoryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   refrerence?: Prisma.SortOrder
-  actor?: Prisma.SortOrder
+  landOwnerId?: Prisma.SortOrder
+  buyerId?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  transactionType?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
+}
+
+export type TransactionHistoryAvgOrderByAggregateInput = {
+  cost?: Prisma.SortOrder
 }
 
 export type TransactionHistoryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   refrerence?: Prisma.SortOrder
-  actor?: Prisma.SortOrder
+  landOwnerId?: Prisma.SortOrder
+  buyerId?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  transactionType?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
@@ -342,66 +489,714 @@ export type TransactionHistoryMaxOrderByAggregateInput = {
 export type TransactionHistoryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   refrerence?: Prisma.SortOrder
-  actor?: Prisma.SortOrder
+  landOwnerId?: Prisma.SortOrder
+  buyerId?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  transactionType?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
 
+export type TransactionHistorySumOrderByAggregateInput = {
+  cost?: Prisma.SortOrder
+}
+
+export type TransactionHistoryScalarRelationFilter = {
+  is?: Prisma.TransactionHistoryWhereInput
+  isNot?: Prisma.TransactionHistoryWhereInput
+}
+
+export type TransactionHistoryCreateNestedManyWithoutActorInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutActorInput, Prisma.TransactionHistoryUncheckedCreateWithoutActorInput> | Prisma.TransactionHistoryCreateWithoutActorInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutActorInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutActorInput | Prisma.TransactionHistoryCreateOrConnectWithoutActorInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyActorInputEnvelope
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+}
+
+export type TransactionHistoryUncheckedCreateNestedManyWithoutActorInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutActorInput, Prisma.TransactionHistoryUncheckedCreateWithoutActorInput> | Prisma.TransactionHistoryCreateWithoutActorInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutActorInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutActorInput | Prisma.TransactionHistoryCreateOrConnectWithoutActorInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyActorInputEnvelope
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+}
+
+export type TransactionHistoryUpdateManyWithoutActorNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutActorInput, Prisma.TransactionHistoryUncheckedCreateWithoutActorInput> | Prisma.TransactionHistoryCreateWithoutActorInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutActorInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutActorInput | Prisma.TransactionHistoryCreateOrConnectWithoutActorInput[]
+  upsert?: Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutActorInput | Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutActorInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyActorInputEnvelope
+  set?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  disconnect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  delete?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  update?: Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutActorInput | Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutActorInput[]
+  updateMany?: Prisma.TransactionHistoryUpdateManyWithWhereWithoutActorInput | Prisma.TransactionHistoryUpdateManyWithWhereWithoutActorInput[]
+  deleteMany?: Prisma.TransactionHistoryScalarWhereInput | Prisma.TransactionHistoryScalarWhereInput[]
+}
+
+export type TransactionHistoryUncheckedUpdateManyWithoutActorNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutActorInput, Prisma.TransactionHistoryUncheckedCreateWithoutActorInput> | Prisma.TransactionHistoryCreateWithoutActorInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutActorInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutActorInput | Prisma.TransactionHistoryCreateOrConnectWithoutActorInput[]
+  upsert?: Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutActorInput | Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutActorInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyActorInputEnvelope
+  set?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  disconnect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  delete?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  update?: Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutActorInput | Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutActorInput[]
+  updateMany?: Prisma.TransactionHistoryUpdateManyWithWhereWithoutActorInput | Prisma.TransactionHistoryUpdateManyWithWhereWithoutActorInput[]
+  deleteMany?: Prisma.TransactionHistoryScalarWhereInput | Prisma.TransactionHistoryScalarWhereInput[]
+}
+
+export type TransactionHistoryCreateNestedManyWithoutLandOwnerInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutLandOwnerInput, Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput> | Prisma.TransactionHistoryCreateWithoutLandOwnerInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutLandOwnerInput | Prisma.TransactionHistoryCreateOrConnectWithoutLandOwnerInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyLandOwnerInputEnvelope
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+}
+
+export type TransactionHistoryCreateNestedManyWithoutBuyerInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutBuyerInput, Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput> | Prisma.TransactionHistoryCreateWithoutBuyerInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutBuyerInput | Prisma.TransactionHistoryCreateOrConnectWithoutBuyerInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyBuyerInputEnvelope
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+}
+
+export type TransactionHistoryUncheckedCreateNestedManyWithoutLandOwnerInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutLandOwnerInput, Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput> | Prisma.TransactionHistoryCreateWithoutLandOwnerInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutLandOwnerInput | Prisma.TransactionHistoryCreateOrConnectWithoutLandOwnerInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyLandOwnerInputEnvelope
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+}
+
+export type TransactionHistoryUncheckedCreateNestedManyWithoutBuyerInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutBuyerInput, Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput> | Prisma.TransactionHistoryCreateWithoutBuyerInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutBuyerInput | Prisma.TransactionHistoryCreateOrConnectWithoutBuyerInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyBuyerInputEnvelope
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+}
+
+export type TransactionHistoryUpdateManyWithoutLandOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutLandOwnerInput, Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput> | Prisma.TransactionHistoryCreateWithoutLandOwnerInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutLandOwnerInput | Prisma.TransactionHistoryCreateOrConnectWithoutLandOwnerInput[]
+  upsert?: Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutLandOwnerInput | Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutLandOwnerInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyLandOwnerInputEnvelope
+  set?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  disconnect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  delete?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  update?: Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutLandOwnerInput | Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutLandOwnerInput[]
+  updateMany?: Prisma.TransactionHistoryUpdateManyWithWhereWithoutLandOwnerInput | Prisma.TransactionHistoryUpdateManyWithWhereWithoutLandOwnerInput[]
+  deleteMany?: Prisma.TransactionHistoryScalarWhereInput | Prisma.TransactionHistoryScalarWhereInput[]
+}
+
+export type TransactionHistoryUpdateManyWithoutBuyerNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutBuyerInput, Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput> | Prisma.TransactionHistoryCreateWithoutBuyerInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutBuyerInput | Prisma.TransactionHistoryCreateOrConnectWithoutBuyerInput[]
+  upsert?: Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutBuyerInput | Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutBuyerInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyBuyerInputEnvelope
+  set?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  disconnect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  delete?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  update?: Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutBuyerInput | Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutBuyerInput[]
+  updateMany?: Prisma.TransactionHistoryUpdateManyWithWhereWithoutBuyerInput | Prisma.TransactionHistoryUpdateManyWithWhereWithoutBuyerInput[]
+  deleteMany?: Prisma.TransactionHistoryScalarWhereInput | Prisma.TransactionHistoryScalarWhereInput[]
+}
+
+export type TransactionHistoryUncheckedUpdateManyWithoutLandOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutLandOwnerInput, Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput> | Prisma.TransactionHistoryCreateWithoutLandOwnerInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutLandOwnerInput | Prisma.TransactionHistoryCreateOrConnectWithoutLandOwnerInput[]
+  upsert?: Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutLandOwnerInput | Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutLandOwnerInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyLandOwnerInputEnvelope
+  set?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  disconnect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  delete?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  update?: Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutLandOwnerInput | Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutLandOwnerInput[]
+  updateMany?: Prisma.TransactionHistoryUpdateManyWithWhereWithoutLandOwnerInput | Prisma.TransactionHistoryUpdateManyWithWhereWithoutLandOwnerInput[]
+  deleteMany?: Prisma.TransactionHistoryScalarWhereInput | Prisma.TransactionHistoryScalarWhereInput[]
+}
+
+export type TransactionHistoryUncheckedUpdateManyWithoutBuyerNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutBuyerInput, Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput> | Prisma.TransactionHistoryCreateWithoutBuyerInput[] | Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput[]
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutBuyerInput | Prisma.TransactionHistoryCreateOrConnectWithoutBuyerInput[]
+  upsert?: Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutBuyerInput | Prisma.TransactionHistoryUpsertWithWhereUniqueWithoutBuyerInput[]
+  createMany?: Prisma.TransactionHistoryCreateManyBuyerInputEnvelope
+  set?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  disconnect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  delete?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  connect?: Prisma.TransactionHistoryWhereUniqueInput | Prisma.TransactionHistoryWhereUniqueInput[]
+  update?: Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutBuyerInput | Prisma.TransactionHistoryUpdateWithWhereUniqueWithoutBuyerInput[]
+  updateMany?: Prisma.TransactionHistoryUpdateManyWithWhereWithoutBuyerInput | Prisma.TransactionHistoryUpdateManyWithWhereWithoutBuyerInput[]
+  deleteMany?: Prisma.TransactionHistoryScalarWhereInput | Prisma.TransactionHistoryScalarWhereInput[]
+}
+
+export type TransactionHistoryCreateNestedOneWithoutRequestLogsInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutRequestLogsInput, Prisma.TransactionHistoryUncheckedCreateWithoutRequestLogsInput>
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutRequestLogsInput
+  connect?: Prisma.TransactionHistoryWhereUniqueInput
+}
+
+export type TransactionHistoryUpdateOneRequiredWithoutRequestLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutRequestLogsInput, Prisma.TransactionHistoryUncheckedCreateWithoutRequestLogsInput>
+  connectOrCreate?: Prisma.TransactionHistoryCreateOrConnectWithoutRequestLogsInput
+  upsert?: Prisma.TransactionHistoryUpsertWithoutRequestLogsInput
+  connect?: Prisma.TransactionHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TransactionHistoryUpdateToOneWithWhereWithoutRequestLogsInput, Prisma.TransactionHistoryUpdateWithoutRequestLogsInput>, Prisma.TransactionHistoryUncheckedUpdateWithoutRequestLogsInput>
+}
+
+export type TransactionHistoryCreateWithoutActorInput = {
+  id?: string
+  refrerence: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+  landOwner: Prisma.LandOwnerCreateNestedOneWithoutLandownerTransactionHistoriesInput
+  buyer: Prisma.LandOwnerCreateNestedOneWithoutBuyerTransactionHistoriesInput
+  requestLogs?: Prisma.RequestLogsCreateNestedManyWithoutTransactionInput
+}
+
+export type TransactionHistoryUncheckedCreateWithoutActorInput = {
+  id?: string
+  refrerence: string
+  landOwnerId: string
+  buyerId: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+  requestLogs?: Prisma.RequestLogsUncheckedCreateNestedManyWithoutTransactionInput
+}
+
+export type TransactionHistoryCreateOrConnectWithoutActorInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutActorInput, Prisma.TransactionHistoryUncheckedCreateWithoutActorInput>
+}
+
+export type TransactionHistoryCreateManyActorInputEnvelope = {
+  data: Prisma.TransactionHistoryCreateManyActorInput | Prisma.TransactionHistoryCreateManyActorInput[]
+  skipDuplicates?: boolean
+}
+
+export type TransactionHistoryUpsertWithWhereUniqueWithoutActorInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.TransactionHistoryUpdateWithoutActorInput, Prisma.TransactionHistoryUncheckedUpdateWithoutActorInput>
+  create: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutActorInput, Prisma.TransactionHistoryUncheckedCreateWithoutActorInput>
+}
+
+export type TransactionHistoryUpdateWithWhereUniqueWithoutActorInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.TransactionHistoryUpdateWithoutActorInput, Prisma.TransactionHistoryUncheckedUpdateWithoutActorInput>
+}
+
+export type TransactionHistoryUpdateManyWithWhereWithoutActorInput = {
+  where: Prisma.TransactionHistoryScalarWhereInput
+  data: Prisma.XOR<Prisma.TransactionHistoryUpdateManyMutationInput, Prisma.TransactionHistoryUncheckedUpdateManyWithoutActorInput>
+}
+
+export type TransactionHistoryScalarWhereInput = {
+  AND?: Prisma.TransactionHistoryScalarWhereInput | Prisma.TransactionHistoryScalarWhereInput[]
+  OR?: Prisma.TransactionHistoryScalarWhereInput[]
+  NOT?: Prisma.TransactionHistoryScalarWhereInput | Prisma.TransactionHistoryScalarWhereInput[]
+  id?: Prisma.UuidFilter<"TransactionHistory"> | string
+  refrerence?: Prisma.StringFilter<"TransactionHistory"> | string
+  landOwnerId?: Prisma.UuidFilter<"TransactionHistory"> | string
+  buyerId?: Prisma.UuidFilter<"TransactionHistory"> | string
+  actorId?: Prisma.UuidFilter<"TransactionHistory"> | string
+  action?: Prisma.StringFilter<"TransactionHistory"> | string
+  status?: Prisma.StringFilter<"TransactionHistory"> | string
+  transactionType?: Prisma.StringFilter<"TransactionHistory"> | string
+  cost?: Prisma.FloatFilter<"TransactionHistory"> | number
+  createdAt?: Prisma.DateTimeFilter<"TransactionHistory"> | Date | string
+  updateAt?: Prisma.DateTimeFilter<"TransactionHistory"> | Date | string
+}
+
+export type TransactionHistoryCreateWithoutLandOwnerInput = {
+  id?: string
+  refrerence: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+  buyer: Prisma.LandOwnerCreateNestedOneWithoutBuyerTransactionHistoriesInput
+  actor: Prisma.UserCreateNestedOneWithoutTransactionHistoriesInput
+  requestLogs?: Prisma.RequestLogsCreateNestedManyWithoutTransactionInput
+}
+
+export type TransactionHistoryUncheckedCreateWithoutLandOwnerInput = {
+  id?: string
+  refrerence: string
+  buyerId: string
+  actorId: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+  requestLogs?: Prisma.RequestLogsUncheckedCreateNestedManyWithoutTransactionInput
+}
+
+export type TransactionHistoryCreateOrConnectWithoutLandOwnerInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutLandOwnerInput, Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput>
+}
+
+export type TransactionHistoryCreateManyLandOwnerInputEnvelope = {
+  data: Prisma.TransactionHistoryCreateManyLandOwnerInput | Prisma.TransactionHistoryCreateManyLandOwnerInput[]
+  skipDuplicates?: boolean
+}
+
+export type TransactionHistoryCreateWithoutBuyerInput = {
+  id?: string
+  refrerence: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+  landOwner: Prisma.LandOwnerCreateNestedOneWithoutLandownerTransactionHistoriesInput
+  actor: Prisma.UserCreateNestedOneWithoutTransactionHistoriesInput
+  requestLogs?: Prisma.RequestLogsCreateNestedManyWithoutTransactionInput
+}
+
+export type TransactionHistoryUncheckedCreateWithoutBuyerInput = {
+  id?: string
+  refrerence: string
+  landOwnerId: string
+  actorId: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+  requestLogs?: Prisma.RequestLogsUncheckedCreateNestedManyWithoutTransactionInput
+}
+
+export type TransactionHistoryCreateOrConnectWithoutBuyerInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutBuyerInput, Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput>
+}
+
+export type TransactionHistoryCreateManyBuyerInputEnvelope = {
+  data: Prisma.TransactionHistoryCreateManyBuyerInput | Prisma.TransactionHistoryCreateManyBuyerInput[]
+  skipDuplicates?: boolean
+}
+
+export type TransactionHistoryUpsertWithWhereUniqueWithoutLandOwnerInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.TransactionHistoryUpdateWithoutLandOwnerInput, Prisma.TransactionHistoryUncheckedUpdateWithoutLandOwnerInput>
+  create: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutLandOwnerInput, Prisma.TransactionHistoryUncheckedCreateWithoutLandOwnerInput>
+}
+
+export type TransactionHistoryUpdateWithWhereUniqueWithoutLandOwnerInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.TransactionHistoryUpdateWithoutLandOwnerInput, Prisma.TransactionHistoryUncheckedUpdateWithoutLandOwnerInput>
+}
+
+export type TransactionHistoryUpdateManyWithWhereWithoutLandOwnerInput = {
+  where: Prisma.TransactionHistoryScalarWhereInput
+  data: Prisma.XOR<Prisma.TransactionHistoryUpdateManyMutationInput, Prisma.TransactionHistoryUncheckedUpdateManyWithoutLandOwnerInput>
+}
+
+export type TransactionHistoryUpsertWithWhereUniqueWithoutBuyerInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.TransactionHistoryUpdateWithoutBuyerInput, Prisma.TransactionHistoryUncheckedUpdateWithoutBuyerInput>
+  create: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutBuyerInput, Prisma.TransactionHistoryUncheckedCreateWithoutBuyerInput>
+}
+
+export type TransactionHistoryUpdateWithWhereUniqueWithoutBuyerInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.TransactionHistoryUpdateWithoutBuyerInput, Prisma.TransactionHistoryUncheckedUpdateWithoutBuyerInput>
+}
+
+export type TransactionHistoryUpdateManyWithWhereWithoutBuyerInput = {
+  where: Prisma.TransactionHistoryScalarWhereInput
+  data: Prisma.XOR<Prisma.TransactionHistoryUpdateManyMutationInput, Prisma.TransactionHistoryUncheckedUpdateManyWithoutBuyerInput>
+}
+
+export type TransactionHistoryCreateWithoutRequestLogsInput = {
+  id?: string
+  refrerence: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+  landOwner: Prisma.LandOwnerCreateNestedOneWithoutLandownerTransactionHistoriesInput
+  buyer: Prisma.LandOwnerCreateNestedOneWithoutBuyerTransactionHistoriesInput
+  actor: Prisma.UserCreateNestedOneWithoutTransactionHistoriesInput
+}
+
+export type TransactionHistoryUncheckedCreateWithoutRequestLogsInput = {
+  id?: string
+  refrerence: string
+  landOwnerId: string
+  buyerId: string
+  actorId: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+}
+
+export type TransactionHistoryCreateOrConnectWithoutRequestLogsInput = {
+  where: Prisma.TransactionHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutRequestLogsInput, Prisma.TransactionHistoryUncheckedCreateWithoutRequestLogsInput>
+}
+
+export type TransactionHistoryUpsertWithoutRequestLogsInput = {
+  update: Prisma.XOR<Prisma.TransactionHistoryUpdateWithoutRequestLogsInput, Prisma.TransactionHistoryUncheckedUpdateWithoutRequestLogsInput>
+  create: Prisma.XOR<Prisma.TransactionHistoryCreateWithoutRequestLogsInput, Prisma.TransactionHistoryUncheckedCreateWithoutRequestLogsInput>
+  where?: Prisma.TransactionHistoryWhereInput
+}
+
+export type TransactionHistoryUpdateToOneWithWhereWithoutRequestLogsInput = {
+  where?: Prisma.TransactionHistoryWhereInput
+  data: Prisma.XOR<Prisma.TransactionHistoryUpdateWithoutRequestLogsInput, Prisma.TransactionHistoryUncheckedUpdateWithoutRequestLogsInput>
+}
+
+export type TransactionHistoryUpdateWithoutRequestLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  landOwner?: Prisma.LandOwnerUpdateOneRequiredWithoutLandownerTransactionHistoriesNestedInput
+  buyer?: Prisma.LandOwnerUpdateOneRequiredWithoutBuyerTransactionHistoriesNestedInput
+  actor?: Prisma.UserUpdateOneRequiredWithoutTransactionHistoriesNestedInput
+}
+
+export type TransactionHistoryUncheckedUpdateWithoutRequestLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  actorId?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TransactionHistoryCreateManyActorInput = {
+  id?: string
+  refrerence: string
+  landOwnerId: string
+  buyerId: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+}
+
+export type TransactionHistoryUpdateWithoutActorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  landOwner?: Prisma.LandOwnerUpdateOneRequiredWithoutLandownerTransactionHistoriesNestedInput
+  buyer?: Prisma.LandOwnerUpdateOneRequiredWithoutBuyerTransactionHistoriesNestedInput
+  requestLogs?: Prisma.RequestLogsUpdateManyWithoutTransactionNestedInput
+}
+
+export type TransactionHistoryUncheckedUpdateWithoutActorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requestLogs?: Prisma.RequestLogsUncheckedUpdateManyWithoutTransactionNestedInput
+}
+
+export type TransactionHistoryUncheckedUpdateManyWithoutActorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TransactionHistoryCreateManyLandOwnerInput = {
+  id?: string
+  refrerence: string
+  buyerId: string
+  actorId: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+}
+
+export type TransactionHistoryCreateManyBuyerInput = {
+  id?: string
+  refrerence: string
+  landOwnerId: string
+  actorId: string
+  action: string
+  status: string
+  transactionType: string
+  cost: number
+  createdAt: Date | string
+  updateAt: Date | string
+}
+
+export type TransactionHistoryUpdateWithoutLandOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  buyer?: Prisma.LandOwnerUpdateOneRequiredWithoutBuyerTransactionHistoriesNestedInput
+  actor?: Prisma.UserUpdateOneRequiredWithoutTransactionHistoriesNestedInput
+  requestLogs?: Prisma.RequestLogsUpdateManyWithoutTransactionNestedInput
+}
+
+export type TransactionHistoryUncheckedUpdateWithoutLandOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  actorId?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requestLogs?: Prisma.RequestLogsUncheckedUpdateManyWithoutTransactionNestedInput
+}
+
+export type TransactionHistoryUncheckedUpdateManyWithoutLandOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  actorId?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TransactionHistoryUpdateWithoutBuyerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  landOwner?: Prisma.LandOwnerUpdateOneRequiredWithoutLandownerTransactionHistoriesNestedInput
+  actor?: Prisma.UserUpdateOneRequiredWithoutTransactionHistoriesNestedInput
+  requestLogs?: Prisma.RequestLogsUpdateManyWithoutTransactionNestedInput
+}
+
+export type TransactionHistoryUncheckedUpdateWithoutBuyerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  actorId?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requestLogs?: Prisma.RequestLogsUncheckedUpdateManyWithoutTransactionNestedInput
+}
+
+export type TransactionHistoryUncheckedUpdateManyWithoutBuyerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  refrerence?: Prisma.StringFieldUpdateOperationsInput | string
+  landOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  actorId?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionType?: Prisma.StringFieldUpdateOperationsInput | string
+  cost?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type TransactionHistoryCountOutputType
+ */
+
+export type TransactionHistoryCountOutputType = {
+  requestLogs: number
+}
+
+export type TransactionHistoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  requestLogs?: boolean | TransactionHistoryCountOutputTypeCountRequestLogsArgs
+}
+
+/**
+ * TransactionHistoryCountOutputType without action
+ */
+export type TransactionHistoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TransactionHistoryCountOutputType
+   */
+  select?: Prisma.TransactionHistoryCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * TransactionHistoryCountOutputType without action
+ */
+export type TransactionHistoryCountOutputTypeCountRequestLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RequestLogsWhereInput
+}
 
 
 export type TransactionHistorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   refrerence?: boolean
-  actor?: boolean
+  landOwnerId?: boolean
+  buyerId?: boolean
+  actorId?: boolean
   action?: boolean
   status?: boolean
+  transactionType?: boolean
+  cost?: boolean
   createdAt?: boolean
   updateAt?: boolean
+  landOwner?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  buyer?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  actor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  requestLogs?: boolean | Prisma.TransactionHistory$requestLogsArgs<ExtArgs>
+  _count?: boolean | Prisma.TransactionHistoryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transactionHistory"]>
 
 export type TransactionHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   refrerence?: boolean
-  actor?: boolean
+  landOwnerId?: boolean
+  buyerId?: boolean
+  actorId?: boolean
   action?: boolean
   status?: boolean
+  transactionType?: boolean
+  cost?: boolean
   createdAt?: boolean
   updateAt?: boolean
+  landOwner?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  buyer?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  actor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transactionHistory"]>
 
 export type TransactionHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   refrerence?: boolean
-  actor?: boolean
+  landOwnerId?: boolean
+  buyerId?: boolean
+  actorId?: boolean
   action?: boolean
   status?: boolean
+  transactionType?: boolean
+  cost?: boolean
   createdAt?: boolean
   updateAt?: boolean
+  landOwner?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  buyer?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  actor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transactionHistory"]>
 
 export type TransactionHistorySelectScalar = {
   id?: boolean
   refrerence?: boolean
-  actor?: boolean
+  landOwnerId?: boolean
+  buyerId?: boolean
+  actorId?: boolean
   action?: boolean
   status?: boolean
+  transactionType?: boolean
+  cost?: boolean
   createdAt?: boolean
   updateAt?: boolean
 }
 
-export type TransactionHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "refrerence" | "actor" | "action" | "status" | "createdAt" | "updateAt", ExtArgs["result"]["transactionHistory"]>
+export type TransactionHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "refrerence" | "landOwnerId" | "buyerId" | "actorId" | "action" | "status" | "transactionType" | "cost" | "createdAt" | "updateAt", ExtArgs["result"]["transactionHistory"]>
+export type TransactionHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  landOwner?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  buyer?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  actor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  requestLogs?: boolean | Prisma.TransactionHistory$requestLogsArgs<ExtArgs>
+  _count?: boolean | Prisma.TransactionHistoryCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type TransactionHistoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  landOwner?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  buyer?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  actor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type TransactionHistoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  landOwner?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  buyer?: boolean | Prisma.LandOwnerDefaultArgs<ExtArgs>
+  actor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $TransactionHistoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TransactionHistory"
-  objects: {}
+  objects: {
+    landOwner: Prisma.$LandOwnerPayload<ExtArgs>
+    buyer: Prisma.$LandOwnerPayload<ExtArgs>
+    actor: Prisma.$UserPayload<ExtArgs>
+    requestLogs: Prisma.$RequestLogsPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     refrerence: string
-    actor: string
+    landOwnerId: string
+    buyerId: string
+    actorId: string
     action: string
     status: string
+    transactionType: string
+    cost: number
     createdAt: Date
     updateAt: Date
   }, ExtArgs["result"]["transactionHistory"]>
@@ -798,6 +1593,10 @@ readonly fields: TransactionHistoryFieldRefs;
  */
 export interface Prisma__TransactionHistoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  landOwner<T extends Prisma.LandOwnerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandOwnerDefaultArgs<ExtArgs>>): Prisma.Prisma__LandOwnerClient<runtime.Types.Result.GetResult<Prisma.$LandOwnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  buyer<T extends Prisma.LandOwnerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandOwnerDefaultArgs<ExtArgs>>): Prisma.Prisma__LandOwnerClient<runtime.Types.Result.GetResult<Prisma.$LandOwnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  actor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  requestLogs<T extends Prisma.TransactionHistory$requestLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TransactionHistory$requestLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RequestLogsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -829,9 +1628,13 @@ export interface Prisma__TransactionHistoryClient<T, Null = never, ExtArgs exten
 export interface TransactionHistoryFieldRefs {
   readonly id: Prisma.FieldRef<"TransactionHistory", 'String'>
   readonly refrerence: Prisma.FieldRef<"TransactionHistory", 'String'>
-  readonly actor: Prisma.FieldRef<"TransactionHistory", 'String'>
+  readonly landOwnerId: Prisma.FieldRef<"TransactionHistory", 'String'>
+  readonly buyerId: Prisma.FieldRef<"TransactionHistory", 'String'>
+  readonly actorId: Prisma.FieldRef<"TransactionHistory", 'String'>
   readonly action: Prisma.FieldRef<"TransactionHistory", 'String'>
   readonly status: Prisma.FieldRef<"TransactionHistory", 'String'>
+  readonly transactionType: Prisma.FieldRef<"TransactionHistory", 'String'>
+  readonly cost: Prisma.FieldRef<"TransactionHistory", 'Float'>
   readonly createdAt: Prisma.FieldRef<"TransactionHistory", 'DateTime'>
   readonly updateAt: Prisma.FieldRef<"TransactionHistory", 'DateTime'>
 }
@@ -851,6 +1654,10 @@ export type TransactionHistoryFindUniqueArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
+  /**
    * Filter, which TransactionHistory to fetch.
    */
   where: Prisma.TransactionHistoryWhereUniqueInput
@@ -869,6 +1676,10 @@ export type TransactionHistoryFindUniqueOrThrowArgs<ExtArgs extends runtime.Type
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
+  /**
    * Filter, which TransactionHistory to fetch.
    */
   where: Prisma.TransactionHistoryWhereUniqueInput
@@ -886,6 +1697,10 @@ export type TransactionHistoryFindFirstArgs<ExtArgs extends runtime.Types.Extens
    * Omit specific fields from the TransactionHistory
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
   /**
    * Filter, which TransactionHistory to fetch.
    */
@@ -935,6 +1750,10 @@ export type TransactionHistoryFindFirstOrThrowArgs<ExtArgs extends runtime.Types
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
+  /**
    * Filter, which TransactionHistory to fetch.
    */
   where?: Prisma.TransactionHistoryWhereInput
@@ -982,6 +1801,10 @@ export type TransactionHistoryFindManyArgs<ExtArgs extends runtime.Types.Extensi
    * Omit specific fields from the TransactionHistory
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
   /**
    * Filter, which TransactionHistories to fetch.
    */
@@ -1031,6 +1854,10 @@ export type TransactionHistoryCreateArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
+  /**
    * The data needed to create a TransactionHistory.
    */
   data: Prisma.XOR<Prisma.TransactionHistoryCreateInput, Prisma.TransactionHistoryUncheckedCreateInput>
@@ -1064,6 +1891,10 @@ export type TransactionHistoryCreateManyAndReturnArgs<ExtArgs extends runtime.Ty
    */
   data: Prisma.TransactionHistoryCreateManyInput | Prisma.TransactionHistoryCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1078,6 +1909,10 @@ export type TransactionHistoryUpdateArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the TransactionHistory
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
   /**
    * The data needed to update a TransactionHistory.
    */
@@ -1130,6 +1965,10 @@ export type TransactionHistoryUpdateManyAndReturnArgs<ExtArgs extends runtime.Ty
    * Limit how many TransactionHistories to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1144,6 +1983,10 @@ export type TransactionHistoryUpsertArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the TransactionHistory
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
   /**
    * The filter to search for the TransactionHistory to update in case it exists.
    */
@@ -1171,6 +2014,10 @@ export type TransactionHistoryDeleteArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
+  /**
    * Filter which TransactionHistory to delete.
    */
   where: Prisma.TransactionHistoryWhereUniqueInput
@@ -1191,6 +2038,30 @@ export type TransactionHistoryDeleteManyArgs<ExtArgs extends runtime.Types.Exten
 }
 
 /**
+ * TransactionHistory.requestLogs
+ */
+export type TransactionHistory$requestLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RequestLogs
+   */
+  select?: Prisma.RequestLogsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RequestLogs
+   */
+  omit?: Prisma.RequestLogsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RequestLogsInclude<ExtArgs> | null
+  where?: Prisma.RequestLogsWhereInput
+  orderBy?: Prisma.RequestLogsOrderByWithRelationInput | Prisma.RequestLogsOrderByWithRelationInput[]
+  cursor?: Prisma.RequestLogsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RequestLogsScalarFieldEnum | Prisma.RequestLogsScalarFieldEnum[]
+}
+
+/**
  * TransactionHistory without action
  */
 export type TransactionHistoryDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1202,4 +2073,8 @@ export type TransactionHistoryDefaultArgs<ExtArgs extends runtime.Types.Extensio
    * Omit specific fields from the TransactionHistory
    */
   omit?: Prisma.TransactionHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionHistoryInclude<ExtArgs> | null
 }

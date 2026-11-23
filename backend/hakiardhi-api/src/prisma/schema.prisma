@@ -20,6 +20,8 @@ model User {
   sessions  Session[]
 
   requestLogs RequestLogs[]
+
+  transactionHistories TransactionHistory[]
 }
 
 model LandParcels {
@@ -49,6 +51,8 @@ model LandOwner {
     createdAt DateTime
     updateAt DateTime
     ownershipRecords OwnershipRecords[]
+    landownerTransactionHistories TransactionHistory[] @relation("landowner")
+    buyerTransactionHistories TransactionHistory[] @relation("buyer")
 }
 
 model OwnershipRecords {
@@ -68,7 +72,12 @@ model OwnershipRecords {
 model TransactionHistory {
   id String @id @default(uuid()) @db.Uuid
   refrerence String @unique
-  actor String
+  landOwnerId String @db.Uuid
+  landOwner LandOwner @relation("landowner", fields: [landOwnerId], references: [id])
+  buyerId String @db.Uuid
+  buyer LandOwner @relation("buyer", fields: [buyerId], references: [id])
+  actorId String @db.Uuid
+  actor User @relation(fields: [actorId], references: [id])
   action String
   status String
   transactionType String
