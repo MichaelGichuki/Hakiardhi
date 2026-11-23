@@ -29,5 +29,5 @@ Use your network script to bring up the orderer, peers, CouchDB/state containers
 ```bash
 ./hakiardhi-network.sh up
 
-CC_VERSION=1.3 CC_SEQUENCE=5 CC_LANG=node CC_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode ./hakiardhi-chaincode.sh
+CC_VERSION=1.4 CC_SEQUENCE=7 CC_LANG=node CC_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode ./hakiardhi-chaincode.sh
 

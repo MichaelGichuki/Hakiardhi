@@ -16,7 +16,8 @@ export class ParcelRecordsController{
 
     @Get("/test")
     async test(){
-        return this.parcelService.test();
+        // return this.parcelService.Initialtitle('KJD/LOI/4581');
+        return this.parcelService.GetBlockchainTitleRecord('KJD/LOI/4581');
     }
     
     @Get(":id")

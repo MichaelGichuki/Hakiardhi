@@ -16,6 +16,8 @@ export type ParcelDetailsDto = {
     status: string;
     sha256: string;
     ledgerConfirmed: boolean;
+    createdAt: Date;
+    updateAt: Date;
 }
 
 export type parcelDto = {

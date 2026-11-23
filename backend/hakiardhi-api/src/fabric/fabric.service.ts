@@ -582,7 +582,7 @@ export class FabricService
 
 
   // ========================================================
-  // TRANSFER HISTORY
+  // REGISTER INITIAL TITLE
   // ========================================================
   async initiateTile(
     record: TitleRecordOnChain
@@ -599,7 +599,7 @@ export class FabricService
 
     await this.landOfficerContract
       .submitTransaction(
-        'InitiateTransfer',
+        'registerInitialTitle',
         parcelNumber,
         titleNumber,
         recordHash,
@@ -612,9 +612,28 @@ export class FabricService
 
     return {
       success: true,
-
-      message:
-        `Transfer ${parcelNumber} initiated successfully`,
+      message: `Title ${parcelNumber} initialized successfully`,
     };
+  }
+
+  // ========================================================
+  // GET PARCEL TITLE
+  // ========================================================
+
+  async getTitleDetails(
+    parcelNumber: string,
+  ): Promise<any> {
+
+    const result =
+      await this.landOfficerContract
+        .evaluateTransaction(
+          'getTitle',
+          parcelNumber,
+        );
+
+    return JSON.parse(
+      Buffer.from(result)
+        .toString('utf8'),
+    );
   }
 }

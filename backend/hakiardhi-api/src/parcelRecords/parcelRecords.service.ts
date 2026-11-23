@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { InitiatedTransferResult, ParcelDetailsDto, parcelDto } from "./parcelrecords.types.js";
 import { FabricService } from "../fabric/fabric.service.js";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { AuthService } from "../auth/auth.service.js";
 
 @Injectable()
@@ -31,12 +31,17 @@ export class ParcelRecordsService {
                         select: {
                             landOwner: {
                                 select: {
-                                    name: true
+                                    name: true,
+                                    phoneNumber: true
                                 }
                             },
                             landOwnerId: true,
                             titleNumber: true,
-                            titleVersionNumber: true
+                            titleVersionNumber: true,
+                            sha256: true,
+                            registeredAt: true,
+                            createdAt: true,
+                            updateAt: true
                         }
                     }
                 }
@@ -61,14 +66,15 @@ export class ParcelRecordsService {
             titleVersion: a?.ownershipRecords?.titleNumber ?? "",
             ledgerConfirmed: true,
             ownerId: a.ownershipRecords?.landOwnerId ?? "",
-            ownerPhone: '',
-            registrationArea: '',
-            sha256: '',
-            status: ''
+            ownerPhone: a.ownershipRecords?.landOwner.phoneNumber ?? "",
+            registrationArea: a.ownershipRecords?.registeredAt ?? "",
+            sha256: a.ownershipRecords?.sha256 ?? "" ,
+            status: "Acive",
+            createdAt: a.ownershipRecords?.createdAt ?? new Date(),
+            updateAt: a.ownershipRecords?.updateAt ?? new Date()
         };
         return p;
     }
-
 
     async SearchPercel(params: string): Promise<parcelDto[]>{
         const records = await this.prisma.landParcels
@@ -170,24 +176,48 @@ export class ParcelRecordsService {
 
     }
 
-
     async Initialtitle(id: string) {
-        const details = await this.GetParcelRecord(id);
-        this.fabric.initiateTile({
-            county: details.county,
-            docType: "TitleRecord",
-            owner: details.ownerName,
-            ownerNationalIdHash: "",
-            parcelNumber: "",
-            recordHash: "",
-            size: String(details.size),
-            status: "",
-            tenuer: "",
-            titleNumber: details.titleVersion,
-            updatedAt: "",
-            updatedBy: "",
-            version: details.titleVersion
-        })
+        try{
+            const details = await this.GetParcelRecord(id);
+    
+            const result = await this.fabric.initiateTile({
+                county: details.county,
+                docType: "TitleRecord",
+                owner: details.ownerName,
+                ownerNationalIdHash: this.sha256(details.ownerId),
+                parcelNumber: details.parcelNumber,
+                recordHash: details.sha256,
+                size: String(details.size),
+                status: details.status,
+                tenuer: details.tenure,
+                titleNumber: details.titleVersion,
+                updatedAt: details.createdAt.toString(),
+                updatedBy: details.createdAt.toString(),
+                version: details.titleVersion
+            });
+    
+            return result;
+        } catch (e) {
+            console.log(e);
+            throw new BadRequestException("An Error occured")
+        }
+    }
+
+    async GetBlockchainTitleRecord(id: string){
+        try{
+            const res = await this.fabric.getTitleDetails(id);
+            return res;
+        } catch (e){
+            console.log(e);
+            throw new BadRequestException("An error occured");
+        }
+    }
+
+
+    sha256(value: string): string {
+        return createHash('sha256')
+            .update(value, 'utf8')
+            .digest('hex');
     }
 
 }
