@@ -1,9 +1,33 @@
-How to add contract
-cd config/
-run peer lifecycle chaincode package landcontract.tar.gz --path ../chaincode --lang node --label landcontract1
+# Haki Ardhi — Hyperledger Fabric Network & Chaincode Guide
 
-export CORE_PEER_ADDRESS=localhost:7051
-export CORE_PEER_LOCALMSPID=LandOfficerMSP
-export CORE_PEER_MSPCONFIGPATH=/home/ruel/Hakiardhi/blockchain/organizations/peerOrganizations/landofficer.hakiardhi.local/users/Admin@landofficer.hakiardhi.local/msp
-export CORE_PEER_ADDRESS=peer0.landofficer.hakiardhi.local:7051
+This document covers bringing up the **Haki Ardhi** Hyperledger Fabric network (`haki-ardhi-channel`), verifying all four organizations, packaging/deploying the TypeScript/Node.js `LandContract` chaincode (`hakiardhi`), and rolling out chaincode upgrades.
+
+---
+
+## 1. Network Topology & Endpoints
+
+| Component | Hostname | Port(s) | MSP ID |
+| :--- | :--- | :--- | :--- |
+| **Orderer (gRPC)** | `orderer.hakiardhi.local` | `7050` | `OrdererMSP` |
+| **Orderer (Admin)** | `orderer.hakiardhi.local` | `7053` | `OrdererMSP` |
+| **Land Officer Peer** | `peer0.landofficer.hakiardhi.local` | `7051` | `LandOfficerMSP` |
+| **Verification Officer Peer** | `peer0.verificationofficer.hakiardhi.local` | `8051` | `VerificationOfficerMSP` |
+| **Registrar Peer** | `peer0.registrar.hakiardhi.local` | `9051` | `RegistrarMSP` |
+| **Land Owner Peer** | `peer0.landowner.hakiardhi.local` | `10051` | `LandOwnerMSP` |
+
+* **Channel Name:** `haki-ardhi-channel`
+* **Chaincode Name:** `hakiardhi`
+* **Chaincode Runtime:** `node` (`fabric-contract-api` + `fabric-chaincode-node`)
+
+---
+
+## 2. Initial Network Bring-Up & Verification
+
+### Step 1: Start Containers & Join Peers to Channel
+Use your network script to bring up the orderer, peers, CouchDB/state containers, and `cli`, and join all four peers to `haki-ardhi-channel`:
+
+```bash
+./hakiardhi-network.sh up
+
+CC_VERSION=1.3 CC_SEQUENCE=5 CC_LANG=node CC_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode ./hakiardhi-chaincode.sh
 

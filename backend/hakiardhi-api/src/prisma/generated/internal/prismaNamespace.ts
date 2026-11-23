@@ -1104,7 +1104,10 @@ export const OwnershipRecordsScalarFieldEnum = {
   legerRefernce: 'legerRefernce',
   registeredAt: 'registeredAt',
   sha256: 'sha256',
+  titleNumber: 'titleNumber',
+  titleVersionNumber: 'titleVersionNumber',
   blockchainRecord: 'blockchainRecord',
+  updateById: 'updateById',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
@@ -1119,7 +1122,7 @@ export const TransactionHistoryScalarFieldEnum = {
   buyerId: 'buyerId',
   actorId: 'actorId',
   action: 'action',
-  status: 'status',
+  stage: 'stage',
   transactionType: 'transactionType',
   cost: 'cost',
   createdAt: 'createdAt',
@@ -1145,6 +1148,7 @@ export const RequestLogsScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   transactionId: 'transactionId',
+  status: 'status',
   createdAt: 'createdAt',
   updateat: 'updateat'
 } as const

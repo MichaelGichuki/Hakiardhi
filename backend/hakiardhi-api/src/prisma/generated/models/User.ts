@@ -201,6 +201,7 @@ export type UserWhereInput = {
   sessions?: Prisma.SessionListRelationFilter
   requestLogs?: Prisma.RequestLogsListRelationFilter
   transactionHistories?: Prisma.TransactionHistoryListRelationFilter
+  ownershipRecords?: Prisma.OwnershipRecordsListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -214,6 +215,7 @@ export type UserOrderByWithRelationInput = {
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   requestLogs?: Prisma.RequestLogsOrderByRelationAggregateInput
   transactionHistories?: Prisma.TransactionHistoryOrderByRelationAggregateInput
+  ownershipRecords?: Prisma.OwnershipRecordsOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +232,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   sessions?: Prisma.SessionListRelationFilter
   requestLogs?: Prisma.RequestLogsListRelationFilter
   transactionHistories?: Prisma.TransactionHistoryListRelationFilter
+  ownershipRecords?: Prisma.OwnershipRecordsListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -269,6 +272,7 @@ export type UserCreateInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   requestLogs?: Prisma.RequestLogsCreateNestedManyWithoutUserInput
   transactionHistories?: Prisma.TransactionHistoryCreateNestedManyWithoutActorInput
+  ownershipRecords?: Prisma.OwnershipRecordsCreateNestedManyWithoutUpdateByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -282,6 +286,7 @@ export type UserUncheckedCreateInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   requestLogs?: Prisma.RequestLogsUncheckedCreateNestedManyWithoutUserInput
   transactionHistories?: Prisma.TransactionHistoryUncheckedCreateNestedManyWithoutActorInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedCreateNestedManyWithoutUpdateByInput
 }
 
 export type UserUpdateInput = {
@@ -295,6 +300,7 @@ export type UserUpdateInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   requestLogs?: Prisma.RequestLogsUpdateManyWithoutUserNestedInput
   transactionHistories?: Prisma.TransactionHistoryUpdateManyWithoutActorNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUpdateManyWithoutUpdateByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -308,6 +314,7 @@ export type UserUncheckedUpdateInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   requestLogs?: Prisma.RequestLogsUncheckedUpdateManyWithoutUserNestedInput
   transactionHistories?: Prisma.TransactionHistoryUncheckedUpdateManyWithoutActorNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedUpdateManyWithoutUpdateByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -370,6 +377,11 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
@@ -385,6 +397,22 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutOwnershipRecordsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnershipRecordsInput, Prisma.UserUncheckedCreateWithoutOwnershipRecordsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnershipRecordsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutOwnershipRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnershipRecordsInput, Prisma.UserUncheckedCreateWithoutOwnershipRecordsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnershipRecordsInput
+  upsert?: Prisma.UserUpsertWithoutOwnershipRecordsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnershipRecordsInput, Prisma.UserUpdateWithoutOwnershipRecordsInput>, Prisma.UserUncheckedUpdateWithoutOwnershipRecordsInput>
 }
 
 export type UserCreateNestedOneWithoutTransactionHistoriesInput = {
@@ -429,6 +457,74 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
 }
 
+export type UserCreateWithoutOwnershipRecordsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role: string
+  password: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  requestLogs?: Prisma.RequestLogsCreateNestedManyWithoutUserInput
+  transactionHistories?: Prisma.TransactionHistoryCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutOwnershipRecordsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role: string
+  password: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  requestLogs?: Prisma.RequestLogsUncheckedCreateNestedManyWithoutUserInput
+  transactionHistories?: Prisma.TransactionHistoryUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutOwnershipRecordsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnershipRecordsInput, Prisma.UserUncheckedCreateWithoutOwnershipRecordsInput>
+}
+
+export type UserUpsertWithoutOwnershipRecordsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnershipRecordsInput, Prisma.UserUncheckedUpdateWithoutOwnershipRecordsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnershipRecordsInput, Prisma.UserUncheckedCreateWithoutOwnershipRecordsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnershipRecordsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnershipRecordsInput, Prisma.UserUncheckedUpdateWithoutOwnershipRecordsInput>
+}
+
+export type UserUpdateWithoutOwnershipRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  requestLogs?: Prisma.RequestLogsUpdateManyWithoutUserNestedInput
+  transactionHistories?: Prisma.TransactionHistoryUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnershipRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  requestLogs?: Prisma.RequestLogsUncheckedUpdateManyWithoutUserNestedInput
+  transactionHistories?: Prisma.TransactionHistoryUncheckedUpdateManyWithoutActorNestedInput
+}
+
 export type UserCreateWithoutTransactionHistoriesInput = {
   id?: string
   email: string
@@ -439,6 +535,7 @@ export type UserCreateWithoutTransactionHistoriesInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   requestLogs?: Prisma.RequestLogsCreateNestedManyWithoutUserInput
+  ownershipRecords?: Prisma.OwnershipRecordsCreateNestedManyWithoutUpdateByInput
 }
 
 export type UserUncheckedCreateWithoutTransactionHistoriesInput = {
@@ -451,6 +548,7 @@ export type UserUncheckedCreateWithoutTransactionHistoriesInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   requestLogs?: Prisma.RequestLogsUncheckedCreateNestedManyWithoutUserInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedCreateNestedManyWithoutUpdateByInput
 }
 
 export type UserCreateOrConnectWithoutTransactionHistoriesInput = {
@@ -479,6 +577,7 @@ export type UserUpdateWithoutTransactionHistoriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   requestLogs?: Prisma.RequestLogsUpdateManyWithoutUserNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUpdateManyWithoutUpdateByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransactionHistoriesInput = {
@@ -491,6 +590,7 @@ export type UserUncheckedUpdateWithoutTransactionHistoriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   requestLogs?: Prisma.RequestLogsUncheckedUpdateManyWithoutUserNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedUpdateManyWithoutUpdateByNestedInput
 }
 
 export type UserCreateWithoutRequestLogsInput = {
@@ -503,6 +603,7 @@ export type UserCreateWithoutRequestLogsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   transactionHistories?: Prisma.TransactionHistoryCreateNestedManyWithoutActorInput
+  ownershipRecords?: Prisma.OwnershipRecordsCreateNestedManyWithoutUpdateByInput
 }
 
 export type UserUncheckedCreateWithoutRequestLogsInput = {
@@ -515,6 +616,7 @@ export type UserUncheckedCreateWithoutRequestLogsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   transactionHistories?: Prisma.TransactionHistoryUncheckedCreateNestedManyWithoutActorInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedCreateNestedManyWithoutUpdateByInput
 }
 
 export type UserCreateOrConnectWithoutRequestLogsInput = {
@@ -543,6 +645,7 @@ export type UserUpdateWithoutRequestLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   transactionHistories?: Prisma.TransactionHistoryUpdateManyWithoutActorNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUpdateManyWithoutUpdateByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRequestLogsInput = {
@@ -555,6 +658,7 @@ export type UserUncheckedUpdateWithoutRequestLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   transactionHistories?: Prisma.TransactionHistoryUncheckedUpdateManyWithoutActorNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedUpdateManyWithoutUpdateByNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -567,6 +671,7 @@ export type UserCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   requestLogs?: Prisma.RequestLogsCreateNestedManyWithoutUserInput
   transactionHistories?: Prisma.TransactionHistoryCreateNestedManyWithoutActorInput
+  ownershipRecords?: Prisma.OwnershipRecordsCreateNestedManyWithoutUpdateByInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -579,6 +684,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   requestLogs?: Prisma.RequestLogsUncheckedCreateNestedManyWithoutUserInput
   transactionHistories?: Prisma.TransactionHistoryUncheckedCreateNestedManyWithoutActorInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedCreateNestedManyWithoutUpdateByInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -607,6 +713,7 @@ export type UserUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   requestLogs?: Prisma.RequestLogsUpdateManyWithoutUserNestedInput
   transactionHistories?: Prisma.TransactionHistoryUpdateManyWithoutActorNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUpdateManyWithoutUpdateByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -619,6 +726,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   requestLogs?: Prisma.RequestLogsUncheckedUpdateManyWithoutUserNestedInput
   transactionHistories?: Prisma.TransactionHistoryUncheckedUpdateManyWithoutActorNestedInput
+  ownershipRecords?: Prisma.OwnershipRecordsUncheckedUpdateManyWithoutUpdateByNestedInput
 }
 
 
@@ -630,12 +738,14 @@ export type UserCountOutputType = {
   sessions: number
   requestLogs: number
   transactionHistories: number
+  ownershipRecords: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   requestLogs?: boolean | UserCountOutputTypeCountRequestLogsArgs
   transactionHistories?: boolean | UserCountOutputTypeCountTransactionHistoriesArgs
+  ownershipRecords?: boolean | UserCountOutputTypeCountOwnershipRecordsArgs
 }
 
 /**
@@ -669,6 +779,13 @@ export type UserCountOutputTypeCountTransactionHistoriesArgs<ExtArgs extends run
   where?: Prisma.TransactionHistoryWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOwnershipRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnershipRecordsWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -681,6 +798,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   requestLogs?: boolean | Prisma.User$requestLogsArgs<ExtArgs>
   transactionHistories?: boolean | Prisma.User$transactionHistoriesArgs<ExtArgs>
+  ownershipRecords?: boolean | Prisma.User$ownershipRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -719,6 +837,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   requestLogs?: boolean | Prisma.User$requestLogsArgs<ExtArgs>
   transactionHistories?: boolean | Prisma.User$transactionHistoriesArgs<ExtArgs>
+  ownershipRecords?: boolean | Prisma.User$ownershipRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -730,6 +849,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     requestLogs: Prisma.$RequestLogsPayload<ExtArgs>[]
     transactionHistories: Prisma.$TransactionHistoryPayload<ExtArgs>[]
+    ownershipRecords: Prisma.$OwnershipRecordsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1136,6 +1256,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   requestLogs<T extends Prisma.User$requestLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$requestLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RequestLogsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactionHistories<T extends Prisma.User$transactionHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transactionHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ownershipRecords<T extends Prisma.User$ownershipRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownershipRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipRecordsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1634,6 +1755,30 @@ export type User$transactionHistoriesArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.TransactionHistoryScalarFieldEnum | Prisma.TransactionHistoryScalarFieldEnum[]
+}
+
+/**
+ * User.ownershipRecords
+ */
+export type User$ownershipRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnershipRecords
+   */
+  select?: Prisma.OwnershipRecordsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnershipRecords
+   */
+  omit?: Prisma.OwnershipRecordsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnershipRecordsInclude<ExtArgs> | null
+  where?: Prisma.OwnershipRecordsWhereInput
+  orderBy?: Prisma.OwnershipRecordsOrderByWithRelationInput | Prisma.OwnershipRecordsOrderByWithRelationInput[]
+  cursor?: Prisma.OwnershipRecordsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OwnershipRecordsScalarFieldEnum | Prisma.OwnershipRecordsScalarFieldEnum[]
 }
 
 /**

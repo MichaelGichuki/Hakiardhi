@@ -28,6 +28,7 @@ export type RequestLogsMinAggregateOutputType = {
   id: string | null
   userId: string | null
   transactionId: string | null
+  status: boolean | null
   createdAt: Date | null
   updateat: Date | null
 }
@@ -36,6 +37,7 @@ export type RequestLogsMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   transactionId: string | null
+  status: boolean | null
   createdAt: Date | null
   updateat: Date | null
 }
@@ -44,6 +46,7 @@ export type RequestLogsCountAggregateOutputType = {
   id: number
   userId: number
   transactionId: number
+  status: number
   createdAt: number
   updateat: number
   _all: number
@@ -54,6 +57,7 @@ export type RequestLogsMinAggregateInputType = {
   id?: true
   userId?: true
   transactionId?: true
+  status?: true
   createdAt?: true
   updateat?: true
 }
@@ -62,6 +66,7 @@ export type RequestLogsMaxAggregateInputType = {
   id?: true
   userId?: true
   transactionId?: true
+  status?: true
   createdAt?: true
   updateat?: true
 }
@@ -70,6 +75,7 @@ export type RequestLogsCountAggregateInputType = {
   id?: true
   userId?: true
   transactionId?: true
+  status?: true
   createdAt?: true
   updateat?: true
   _all?: true
@@ -151,6 +157,7 @@ export type RequestLogsGroupByOutputType = {
   id: string
   userId: string
   transactionId: string
+  status: boolean | null
   createdAt: Date
   updateat: Date
   _count: RequestLogsCountAggregateOutputType | null
@@ -180,6 +187,7 @@ export type RequestLogsWhereInput = {
   id?: Prisma.UuidFilter<"RequestLogs"> | string
   userId?: Prisma.UuidFilter<"RequestLogs"> | string
   transactionId?: Prisma.UuidFilter<"RequestLogs"> | string
+  status?: Prisma.BoolNullableFilter<"RequestLogs"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"RequestLogs"> | Date | string
   updateat?: Prisma.DateTimeFilter<"RequestLogs"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -190,6 +198,7 @@ export type RequestLogsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
+  status?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateat?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -203,6 +212,7 @@ export type RequestLogsWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.RequestLogsWhereInput | Prisma.RequestLogsWhereInput[]
   userId?: Prisma.UuidFilter<"RequestLogs"> | string
   transactionId?: Prisma.UuidFilter<"RequestLogs"> | string
+  status?: Prisma.BoolNullableFilter<"RequestLogs"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"RequestLogs"> | Date | string
   updateat?: Prisma.DateTimeFilter<"RequestLogs"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -213,6 +223,7 @@ export type RequestLogsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
+  status?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateat?: Prisma.SortOrder
   _count?: Prisma.RequestLogsCountOrderByAggregateInput
@@ -227,12 +238,14 @@ export type RequestLogsScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"RequestLogs"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"RequestLogs"> | string
   transactionId?: Prisma.UuidWithAggregatesFilter<"RequestLogs"> | string
+  status?: Prisma.BoolNullableWithAggregatesFilter<"RequestLogs"> | boolean | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RequestLogs"> | Date | string
   updateat?: Prisma.DateTimeWithAggregatesFilter<"RequestLogs"> | Date | string
 }
 
 export type RequestLogsCreateInput = {
   id?: string
+  status?: boolean | null
   createdAt: Date | string
   updateat: Date | string
   user: Prisma.UserCreateNestedOneWithoutRequestLogsInput
@@ -243,12 +256,14 @@ export type RequestLogsUncheckedCreateInput = {
   id?: string
   userId: string
   transactionId: string
+  status?: boolean | null
   createdAt: Date | string
   updateat: Date | string
 }
 
 export type RequestLogsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRequestLogsNestedInput
@@ -259,6 +274,7 @@ export type RequestLogsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -267,12 +283,14 @@ export type RequestLogsCreateManyInput = {
   id?: string
   userId: string
   transactionId: string
+  status?: boolean | null
   createdAt: Date | string
   updateat: Date | string
 }
 
 export type RequestLogsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -281,6 +299,7 @@ export type RequestLogsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -299,6 +318,7 @@ export type RequestLogsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateat?: Prisma.SortOrder
 }
@@ -307,6 +327,7 @@ export type RequestLogsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateat?: Prisma.SortOrder
 }
@@ -315,6 +336,7 @@ export type RequestLogsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateat?: Prisma.SortOrder
 }
@@ -403,8 +425,13 @@ export type RequestLogsUncheckedUpdateManyWithoutTransactionNestedInput = {
   deleteMany?: Prisma.RequestLogsScalarWhereInput | Prisma.RequestLogsScalarWhereInput[]
 }
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
+}
+
 export type RequestLogsCreateWithoutUserInput = {
   id?: string
+  status?: boolean | null
   createdAt: Date | string
   updateat: Date | string
   transaction: Prisma.TransactionHistoryCreateNestedOneWithoutRequestLogsInput
@@ -413,6 +440,7 @@ export type RequestLogsCreateWithoutUserInput = {
 export type RequestLogsUncheckedCreateWithoutUserInput = {
   id?: string
   transactionId: string
+  status?: boolean | null
   createdAt: Date | string
   updateat: Date | string
 }
@@ -450,12 +478,14 @@ export type RequestLogsScalarWhereInput = {
   id?: Prisma.UuidFilter<"RequestLogs"> | string
   userId?: Prisma.UuidFilter<"RequestLogs"> | string
   transactionId?: Prisma.UuidFilter<"RequestLogs"> | string
+  status?: Prisma.BoolNullableFilter<"RequestLogs"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"RequestLogs"> | Date | string
   updateat?: Prisma.DateTimeFilter<"RequestLogs"> | Date | string
 }
 
 export type RequestLogsCreateWithoutTransactionInput = {
   id?: string
+  status?: boolean | null
   createdAt: Date | string
   updateat: Date | string
   user: Prisma.UserCreateNestedOneWithoutRequestLogsInput
@@ -464,6 +494,7 @@ export type RequestLogsCreateWithoutTransactionInput = {
 export type RequestLogsUncheckedCreateWithoutTransactionInput = {
   id?: string
   userId: string
+  status?: boolean | null
   createdAt: Date | string
   updateat: Date | string
 }
@@ -497,12 +528,14 @@ export type RequestLogsUpdateManyWithWhereWithoutTransactionInput = {
 export type RequestLogsCreateManyUserInput = {
   id?: string
   transactionId: string
+  status?: boolean | null
   createdAt: Date | string
   updateat: Date | string
 }
 
 export type RequestLogsUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transaction?: Prisma.TransactionHistoryUpdateOneRequiredWithoutRequestLogsNestedInput
@@ -511,6 +544,7 @@ export type RequestLogsUpdateWithoutUserInput = {
 export type RequestLogsUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -518,6 +552,7 @@ export type RequestLogsUncheckedUpdateWithoutUserInput = {
 export type RequestLogsUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -525,12 +560,14 @@ export type RequestLogsUncheckedUpdateManyWithoutUserInput = {
 export type RequestLogsCreateManyTransactionInput = {
   id?: string
   userId: string
+  status?: boolean | null
   createdAt: Date | string
   updateat: Date | string
 }
 
 export type RequestLogsUpdateWithoutTransactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRequestLogsNestedInput
@@ -539,6 +576,7 @@ export type RequestLogsUpdateWithoutTransactionInput = {
 export type RequestLogsUncheckedUpdateWithoutTransactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -546,6 +584,7 @@ export type RequestLogsUncheckedUpdateWithoutTransactionInput = {
 export type RequestLogsUncheckedUpdateManyWithoutTransactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateat?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -556,6 +595,7 @@ export type RequestLogsSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   id?: boolean
   userId?: boolean
   transactionId?: boolean
+  status?: boolean
   createdAt?: boolean
   updateat?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -566,6 +606,7 @@ export type RequestLogsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   userId?: boolean
   transactionId?: boolean
+  status?: boolean
   createdAt?: boolean
   updateat?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -576,6 +617,7 @@ export type RequestLogsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   userId?: boolean
   transactionId?: boolean
+  status?: boolean
   createdAt?: boolean
   updateat?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -586,11 +628,12 @@ export type RequestLogsSelectScalar = {
   id?: boolean
   userId?: boolean
   transactionId?: boolean
+  status?: boolean
   createdAt?: boolean
   updateat?: boolean
 }
 
-export type RequestLogsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "transactionId" | "createdAt" | "updateat", ExtArgs["result"]["requestLogs"]>
+export type RequestLogsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "transactionId" | "status" | "createdAt" | "updateat", ExtArgs["result"]["requestLogs"]>
 export type RequestLogsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   transaction?: boolean | Prisma.TransactionHistoryDefaultArgs<ExtArgs>
@@ -614,6 +657,7 @@ export type $RequestLogsPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: string
     userId: string
     transactionId: string
+    status: boolean | null
     createdAt: Date
     updateat: Date
   }, ExtArgs["result"]["requestLogs"]>
@@ -1044,6 +1088,7 @@ export interface RequestLogsFieldRefs {
   readonly id: Prisma.FieldRef<"RequestLogs", 'String'>
   readonly userId: Prisma.FieldRef<"RequestLogs", 'String'>
   readonly transactionId: Prisma.FieldRef<"RequestLogs", 'String'>
+  readonly status: Prisma.FieldRef<"RequestLogs", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"RequestLogs", 'DateTime'>
   readonly updateat: Prisma.FieldRef<"RequestLogs", 'DateTime'>
 }

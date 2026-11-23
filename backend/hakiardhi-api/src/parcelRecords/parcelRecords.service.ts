@@ -13,7 +13,7 @@ export class ParcelRecordsService {
         private readonly auth: AuthService
     ){}
 
-    async GetParcelRecord(id: string){
+    async GetParcelRecord(id: string):Promise<ParcelDetailsDto>{
         let a = await this.prisma.landParcels
             .findFirst({
                 where: { parcelNumber: {
@@ -34,7 +34,9 @@ export class ParcelRecordsService {
                                     name: true
                                 }
                             },
-                            landOwnerId: true
+                            landOwnerId: true,
+                            titleNumber: true,
+                            titleVersionNumber: true
                         }
                     }
                 }
@@ -56,7 +58,7 @@ export class ParcelRecordsService {
             Sha: 'true',
             size: a?.Size,
             tenure: 'Freehold',//a?.tenure?? 
-            titleVersion: '',
+            titleVersion: a?.ownershipRecords?.titleNumber ?? "",
             ledgerConfirmed: true,
             ownerId: a.ownershipRecords?.landOwnerId ?? "",
             ownerPhone: '',
@@ -139,7 +141,7 @@ export class ParcelRecordsService {
                     cost: 0,
                     createdAt: Date.now.toString(),
                     refrerence: data.reference,
-                    status: 'Pending',
+                    stage: 'LandOwnerApproval',
                     transactionType: data.transferType,
                     updateAt: Date.now().toString(),
                     buyerId: buyerlandOwnerId,
@@ -159,6 +161,7 @@ export class ParcelRecordsService {
                         transactionId: transId.id,
                         id: randomUUID(),
                         updateat: Date.now().toString(),
+                        status: null,
                         userId: data.parcel.ownerId
                     }
                 ]
@@ -168,9 +171,23 @@ export class ParcelRecordsService {
     }
 
 
-    async test() {
-        const a = await this.fabric.getCallerIdentity()
-        console.log(a)
+    async Initialtitle(id: string) {
+        const details = await this.GetParcelRecord(id);
+        this.fabric.initiateTile({
+            county: details.county,
+            docType: "TitleRecord",
+            owner: details.ownerName,
+            ownerNationalIdHash: "",
+            parcelNumber: "",
+            recordHash: "",
+            size: String(details.size),
+            status: "",
+            tenuer: "",
+            titleNumber: details.titleVersion,
+            updatedAt: "",
+            updatedBy: "",
+            version: details.titleVersion
+        })
     }
 
 }

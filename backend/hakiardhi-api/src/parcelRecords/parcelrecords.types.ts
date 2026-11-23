@@ -52,3 +52,27 @@ export interface InitiatedTransferResult {
   payloadDigest: string
   txId: string
 }
+
+export enum TitleStatus {
+  ACTIVE = 'ACTIVE',
+  UNDER_TRANSFER = 'UNDER_TRANSFER',
+  SUPERSEDED = 'SUPERSEDED',
+  REVOKED = 'REVOKED'
+}
+
+export interface TitleRecordOnChain {
+  docType: 'TitleRecord';
+  parcelNumber: string;
+  titleNumber: string;
+  version: string;
+  recordHash: string;
+  ownerNationalIdHash: string;
+  owner: string;
+  size: string;
+  county: string;
+  tenuer: string;
+  status: string;
+  activeTransferId?: string;
+  updatedAt: string;
+  updatedBy: string;
+}
