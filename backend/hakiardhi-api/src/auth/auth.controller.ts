@@ -16,7 +16,7 @@ import { JwtAuthGuard } from '../gaurds/jwt-auth.guard.js';
 import type { Signin, SignUp } from './auth.types.js';
 import type { Request, Response } from 'express';
 
-const COOKIE_NAME = 'refresh_token';
+export const COOKIE_NAME = 'refresh_token';
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
 
 const COOKIE_OPTIONS = {

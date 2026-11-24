@@ -1,5 +1,6 @@
 import api from "../api/axios";
 import type {
+  InitiatedTransferResult,
   ParcelDetailsDto,
   parcelDto,
   Uploadresponse,
@@ -21,4 +22,6 @@ export const parcelRecords = {
       },
       params: { type },
     }),
+  initiateTransferPage: (data: InitiatedTransferResult) => api.post(`/parcelRecords/trasfer`, data)
+  
 };

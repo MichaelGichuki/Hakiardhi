@@ -423,7 +423,7 @@ export class FabricService
 
     await this.landOfficerContract
       .submitTransaction(
-        'InitiateTransfer',
+        'initiateTransfer',
         transferId,
         parcelId,
         ownershipVersion,

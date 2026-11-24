@@ -92,6 +92,7 @@ export function InitiateTransferPage({
   const [parcelInput, setParcelInput] = useState(initialParcelNumber)
   const [selectedParcel, setSelectedParcel] = useState<ParcelDetailsDto | null>()
   const [parcelLookupError, setParcelLookupError] = useState('')
+  const [isLoading, setIsLoading] = useState<boolean>();
 
   const [transferType, setTransferType] = useState<TransferType>('Sale / Transfer')
   const [buyerName, setBuyerName] = useState('')
@@ -181,8 +182,7 @@ export function InitiateTransferPage({
       setDocuments(prev => [...prev, entry])
       setNewDoc(null)
     } catch (e) {
-      console.log(e);
-      
+      console.log(e); 
     }
     
   }
@@ -191,7 +191,7 @@ export function InitiateTransferPage({
     setDocuments(prev => prev.filter(doc => doc.id !== id))
   }
 
-  const handleInitiateSubmit = (e: React.FormEvent) => {
+  const handleInitiateSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
     setFormError('')
 
@@ -249,6 +249,14 @@ export function InitiateTransferPage({
     }
 
     console.log(result);
+    setIsLoading(true);
+    try{
+      await parcelRecords.initiateTransferPage(result);
+    } catch (e){
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
     
     // setSubmittedTransfer(result)
     // onTransferInitiated?.(result)
@@ -681,7 +689,6 @@ export function InitiateTransferPage({
                     type='file'
                     max={1}
                     accept=".pdf"
-                    // value={newDocName}
                     onChange={e => setNewDoc(e.target.files?.[0] ?? null)}
                     placeholder="e.g. stamp-duty-receipt-2026.pdf"
                   />
@@ -757,7 +764,7 @@ export function InitiateTransferPage({
               )}
 
               <div className="button-row">
-                <button type="submit" className="btn primary full-width">
+                <button disabled={isLoading} type="submit" className="btn primary full-width">
                   Initiate transfer &amp; request owner consent <ArrowRight size={15} />
                 </button>
               </div>
