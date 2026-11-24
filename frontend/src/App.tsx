@@ -12,7 +12,7 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import PageStructure from "./Components/PageStructure";
 import { Dashboard } from "./Pages/Dashboard";
-
+import ParcelTransfer from "./Pages/ParcelTransfer";
 
 const originalRecord = {
   owner: "Mary Wanjiku Kamau",
@@ -35,7 +35,6 @@ function App() {
       dbRecord[k as keyof typeof originalRecord] !==
       originalRecord[k as keyof typeof originalRecord],
   );
-
 
   const auditRows = [
     [
@@ -121,7 +120,7 @@ function App() {
       path: "/dashboard",
       element: (
         <PageStructure>
-          <Dashboard   />
+          <Dashboard />
         </PageStructure>
       ),
     },
@@ -177,16 +176,24 @@ function App() {
         </PageStructure>
       ),
     },
+    {
+      path: "/transfer",
+      element: (
+        <PageStructure>
+          <ParcelTransfer />
+        </PageStructure>
+      ),
+    },
   ]);
 
   return (
     <div className="app-shell">
       <main className="main-area">
-          <RouterProvider router={router} />,
-        <footer className="app-footer">
+        <RouterProvider router={router} />,
+        {/* <footer className="app-footer">
           HAKIARDHI · NATIONAL LAND REGISTRY PROTOTYPE · SYNTHETIC DEMONSTRATION
           DATA
-        </footer>
+        </footer> */}
       </main>
     </div>
   );

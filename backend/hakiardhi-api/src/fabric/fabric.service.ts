@@ -16,6 +16,8 @@ import {
 import * as grpc from '@grpc/grpc-js';
 import { promises as fs } from 'fs';
 import { createPrivateKey } from 'crypto';
+import { ConfigService } from '@nestjs/config';
+import { TitleRecordOnChain } from '../parcelRecords/parcelrecords.types.js';
 
 @Injectable()
 export class FabricService
@@ -33,12 +35,14 @@ export class FabricService
   private verificationOfficerContract!: Contract;
   private registrarContract!: Contract;
 
-  private readonly channelName = 'mychannel';
+  private readonly channelName = 'haki-ardhi-channel';
   private readonly chaincodeName = 'hakiardhi';
 
-  private readonly fabricBasePath =
-    '/home/ruel/Hakiardhi/blockchain/organizations/peerOrganizations';
+  private readonly fabricBasePath : string;
 
+  constructor(private config: ConfigService){
+    this.fabricBasePath = this.config.getOrThrow<string>('FABRIC_BASE_PATH')
+  }
 
   // ========================================================
   // NESTJS LIFECYCLE
@@ -568,6 +572,63 @@ export class FabricService
         .evaluateTransaction(
           'GetTransferHistory',
           transferId,
+        );
+
+    return JSON.parse(
+      Buffer.from(result)
+        .toString('utf8'),
+    );
+  }
+
+
+  // ========================================================
+  // REGISTER INITIAL TITLE
+  // ========================================================
+  async initiateTile(
+    record: TitleRecordOnChain
+  ): Promise<any> {
+
+    const parcelNumber = record.parcelNumber;
+    const titleNumber = record.titleNumber;
+    const recordHash = record.recordHash;
+    const ownerNationalIdHash = record.ownerNationalIdHash;
+    const county = record.county;
+    const owner = record.owner;
+    const size = record.size;
+    const tenuer = record.tenuer;
+
+    await this.landOfficerContract
+      .submitTransaction(
+        'registerInitialTitle',
+        parcelNumber,
+        titleNumber,
+        recordHash,
+        ownerNationalIdHash,
+        county,
+        owner,
+        size,
+        tenuer
+      );
+
+    return {
+      success: true,
+      message: `Title ${parcelNumber} initialized successfully`,
+    };
+  }
+
+  // ========================================================
+  // GET PARCEL TITLE
+  // ========================================================
+
+  async getTitleDetails(
+    parcelNumber: string,
+  ): Promise<any> {
+
+    const result =
+      await this.landOfficerContract
+        .evaluateTransaction(
+          'getTitle',
+          parcelNumber,
         );
 
     return JSON.parse(

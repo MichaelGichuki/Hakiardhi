@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { PageHeading } from "../Components/PageHeading";
 import { Card } from "../Components/Card";
 import { ArrowRight, Landmark, LockKeyhole } from "lucide-react";
+import { authApi } from "../service/auth";
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { loginComplete } from "../app/slice/authslice";
 
 export function LoginPage({
   message,
@@ -10,15 +13,53 @@ export function LoginPage({
   message: string;
   setMessage: (v: string) => void;
 }) {
-  const [role, setRole] = useState("Government Staff");
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<Boolean>(false)
+  const [role, setRole] = useState("Landowner");
   const [identity, setIdentity] = useState("");
   const [pin, setPin] = useState("");
+
+  const handleLogin = async () => {
+    if(isLoading) return;
+
+    if (identity == "" || pin == "") {
+      setMessage("Please enter both ID and password/PIN.");
+      return;
+    }
+
+    try {
+      setIsLoading(true)
+      const res = await authApi.signin({
+        email: identity,
+        password: pin,
+      });
+      dispatch(loginComplete(res.data.user))
+      switch(res.data.user.role){
+        case "Admin":
+          navigate('/dashboard')
+          break;
+          case "LandOwner":
+            navigate('/landowner')
+          break;            
+        case "Registar":
+          navigate('/audit');
+          break;
+        case "VerificationOfficer":
+          navigate('/audit');
+        break;
+      }
+
+    } catch (err) {
+      setMessage(`Demo authentication only for ${role}. Credentials have not been verified.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
-      <PageHeading
-        title="Secure Access to HakiArdhi"
-        subtitle="Role-based authentication for the National Land Registry."
-      />
       <Card className="login-card section-gap">
         <div className="login-emblem">
           <Landmark size={26} />
@@ -26,15 +67,6 @@ export function LoginPage({
         <h2>Welcome to HakiArdhi</h2>
         <p className="muted">Sign in using your authorized account</p>
         <label className="field-label">Access category</label>
-        <select
-          className="text-input"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        >
-          <option>Government Staff</option>
-          <option>Registered Landowner / Citizen</option>
-          <option>Public Title Verification</option>
-        </select>
         <label className="field-label">National ID / Staff Number</label>
         <input
           className="text-input"
@@ -50,17 +82,14 @@ export function LoginPage({
           onChange={(e) => setPin(e.target.value)}
           placeholder="Enter password or PIN"
         />
-        <button
-          className="btn primary full-width"
-          onClick={() =>
-            setMessage(
-              identity && pin
-                ? `Demo authentication only for ${role}. Credentials have not been verified.`
-                : "Please enter both ID and password/PIN.",
-            )
-          }
-        >
-          Authenticate securely <ArrowRight size={15} />
+        <button disabled={Boolean(isLoading)} className="btn primary full-width" onClick={handleLogin}>
+          {!isLoading ? (
+            <>
+              Authenticate securely <ArrowRight size={15} />
+            </>
+          ) : (
+            "Loading ..."
+          )}
         </button>
         {message && <div className="notice">{message}</div>}
         <div className="login-security">

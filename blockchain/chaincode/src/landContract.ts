@@ -15,7 +15,11 @@ export class LandContract extends Contract {
     parcelNumber: string,
     titleNumber: string,
     recordHash: string,
-    ownerNationalIdHash: string
+    ownerNationalIdHash: string,
+    county: string,
+    owner: string,
+    size: string,
+    tenuer: string,
   ): Promise<void> {
     const key = ctx.stub.createCompositeKey('TITLE', [parcelNumber]);
     const existing = await ctx.stub.getState(key);
@@ -30,6 +34,10 @@ export class LandContract extends Contract {
       version: 1,
       recordHash,
       ownerNationalIdHash,
+      county,
+      owner,
+      size,
+      tenuer,
       status: TitleStatus.ACTIVE,
       updatedAt: new Date(ctx.stub.getTxTimestamp().seconds.low * 1000).toISOString(),
       updatedBy: ctx.clientIdentity.getID()
@@ -182,6 +190,10 @@ export class LandContract extends Contract {
       ownerNationalIdHash: transfer.buyerHash,
       status: TitleStatus.ACTIVE,
       updatedAt: timestamp,
+      county: currentTitle.county,
+      owner: "",
+      size: "",
+      tenuer: "",
       updatedBy: ctx.clientIdentity.getID()
     };
 

@@ -14,7 +14,7 @@ Organizations:
     Name: OrdererMSP
     ID: OrdererMSP
 
-    MSPDir: ./organizations/ordererOrganizations/hakiardhi.local/msp
+    MSPDir: ../organizations/ordererOrganizations/hakiardhi.local/msp
 
     Policies:
       Readers:
@@ -40,7 +40,7 @@ Organizations:
     Name: LandOfficerMSP
     ID: LandOfficerMSP
 
-    MSPDir: ./organizations/peerOrganizations/landofficer.hakiardhi.local/msp
+    MSPDir: ../organizations/peerOrganizations/landofficer.hakiardhi.local/msp
 
     Policies:
       Readers:
@@ -71,7 +71,7 @@ Organizations:
     Name: VerificationOfficerMSP
     ID: VerificationOfficerMSP
 
-    MSPDir: ./organizations/peerOrganizations/verificationofficer.hakiardhi.local/msp
+    MSPDir: ../organizations/peerOrganizations/verificationofficer.hakiardhi.local/msp
 
     Policies:
       Readers:
@@ -102,7 +102,7 @@ Organizations:
     Name: RegistrarMSP
     ID: RegistrarMSP
 
-    MSPDir: ./organizations/peerOrganizations/registrar.hakiardhi.local/msp
+    MSPDir: ../organizations/peerOrganizations/registrar.hakiardhi.local/msp
 
     Policies:
       Readers:
@@ -133,7 +133,7 @@ Organizations:
     Name: LandOwnerMSP
     ID: LandOwnerMSP
 
-    MSPDir: ./organizations/peerOrganizations/landowner.hakiardhi.local/msp
+    MSPDir: ../organizations/peerOrganizations/landowner.hakiardhi.local/msp
 
     Policies:
       Readers:
@@ -228,8 +228,8 @@ Orderer: &OrdererDefaults
     Consenters:
       - Host: orderer.hakiardhi.local
         Port: 7050
-        ClientTLSCert: ./organizations/ordererOrganizations/hakiardhi.local/orderers/orderer.hakiardhi.local/tls/server.crt
-        ServerTLSCert: ./organizations/ordererOrganizations/hakiardhi.local/orderers/orderer.hakiardhi.local/tls/server.crt
+        ClientTLSCert: ../organizations/ordererOrganizations/hakiardhi.local/orderers/orderer.hakiardhi.local/tls/server.crt
+        ServerTLSCert: ../organizations/ordererOrganizations/hakiardhi.local/orderers/orderer.hakiardhi.local/tls/server.crt
 
   BatchTimeout: 2s
 
@@ -296,7 +296,7 @@ Channel: &ChannelDefaults
 
 Profiles:
 
-  HakiArdhiChannel:
+  haki-ardhi-channel:
     <<: *ChannelDefaults
 
     Orderer:

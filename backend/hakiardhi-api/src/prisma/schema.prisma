@@ -1,0 +1,150 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String       @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  name      String?
+  role      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions  Session[]
+  requestLogs RequestLogs[]
+  transactionHistories TransactionHistory[]
+  ownershipRecords OwnershipRecords[]
+}
+
+model LandParcels {
+    id String @id @default(uuid()) @db.Uuid
+    parcelNumber String @unique
+    lat Float
+    log Float
+    Size Float
+    county String
+    tenure String
+    parcelOriginId String? @db.Uuid
+    parcelOrigin LandParcels? @relation("ParcelLineage", references: [id], fields: [parcelOriginId])
+    isActive Boolean
+    createdAt DateTime
+    updateAt DateTime
+    ownershipRecords OwnershipRecords?
+    landParcels LandParcels[] @relation("ParcelLineage")
+    inspectionLogs InspectionLog[]
+    transactionHistories TransactionHistory[]
+}
+
+
+model LandOwner {
+    id String @id @default(uuid()) @db.Uuid
+    name String
+    registration String @unique
+    phoneNumber String
+    createdAt DateTime
+    updateAt DateTime
+    ownershipRecords OwnershipRecords[]
+    landownerTransactionHistories TransactionHistory[] @relation("landowner")
+    buyerTransactionHistories TransactionHistory[] @relation("buyer")
+}
+
+model OwnershipRecords {
+  id String @id @default(uuid()) @db.Uuid
+  landParcelId String @unique @db.Uuid
+  landParcel LandParcels @relation(references: [id], fields: [landParcelId])
+  landOwnerId String @db.Uuid
+  landOwner LandOwner @relation(fields: [landOwnerId], references: [id])
+  legerRefernce String
+  registeredAt String
+  sha256 String
+  titleNumber String @unique
+  titleVersionNumber Int
+  blockchainRecord String
+  updateById String? @db.Uuid
+  updateBy User? @relation(fields: [updateById], references: [id])
+  createdAt DateTime
+  updateAt DateTime
+}
+
+model TransactionHistory {
+  id String @id @default(uuid()) @db.Uuid
+  refrerence String @unique
+  landParcelId String @db.Uuid
+  landparcel LandParcels @relation(fields: [landParcelId], references: [id])
+  landOwnerId String @db.Uuid
+  landOwner LandOwner @relation("landowner", fields: [landOwnerId], references: [id])
+  buyerId String @db.Uuid
+  buyer LandOwner @relation("buyer", fields: [buyerId], references: [id])
+  actorId String @db.Uuid
+  actor User @relation(fields: [actorId], references: [id])
+  action String
+  stage String
+  transactionType String
+  cost Float
+  createdAt DateTime
+  updateAt DateTime
+  requestLogs RequestLogs[]
+  transferDocuments TransferDocuments[]
+}
+
+model TransferDocuments {
+  id String @id @default(uuid()) @db.Uuid
+  documentType String
+  documentHash String
+  trasnferId String? @db.Uuid
+  transferHistory TransactionHistory? @relation(fields: [trasnferId], references: [id])
+  createdAt DateTime
+  fileName String
+  isDeleted Boolean @default(false)
+}
+
+
+
+model InspectionLog {
+  id String @id @default(uuid()) @db.Uuid
+  checkedAt DateTime
+  landParcelId String @db.Uuid
+  landparcel LandParcels @relation(fields: [landParcelId], references: [id])
+  changedFeilds String?
+  digest String
+  verdict String
+}
+
+model RequestLogs {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields: [userId], references: [id])
+  transactionId String @db.Uuid
+  transaction TransactionHistory @relation(fields: [transactionId], references: [id])
+  status Boolean?
+  createdAt DateTime
+  updateat DateTime
+}
+
+model Session {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           String    @db.Uuid
+  refreshTokenHash String
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  lastUsedAt       DateTime  @default(now())
+
+  userAgent        String?
+  ipAddress        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// npx prisma generate
+//npx prisma migrate dev --name {name of migreation}

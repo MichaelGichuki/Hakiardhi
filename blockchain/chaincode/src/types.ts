@@ -21,6 +21,10 @@ export interface TitleRecordOnChain {
   version: number;
   recordHash: string;
   ownerNationalIdHash: string;
+  owner: string;
+  size: string;
+  county: string;
+  tenuer: string;
   status: TitleStatus;
   activeTransferId?: string;
   updatedAt: string;
