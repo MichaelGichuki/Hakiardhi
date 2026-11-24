@@ -32,7 +32,8 @@ export class ParcelRecordsService {
                             landOwner: {
                                 select: {
                                     name: true,
-                                    phoneNumber: true
+                                    phoneNumber: true,
+                                    registration: true
                                 }
                             },
                             landOwnerId: true,
@@ -66,6 +67,7 @@ export class ParcelRecordsService {
             titleVersion: a?.ownershipRecords?.titleNumber ?? "",
             ledgerConfirmed: true,
             ownerId: a.ownershipRecords?.landOwnerId ?? "",
+            ownerReg: a.ownershipRecords?.landOwner.registration ?? "",
             ownerPhone: a.ownershipRecords?.landOwner.phoneNumber ?? "",
             registrationArea: a.ownershipRecords?.registeredAt ?? "",
             sha256: a.ownershipRecords?.sha256 ?? "" ,
@@ -109,69 +111,97 @@ export class ParcelRecordsService {
         return l
     }
 
-    async Transfer(data: InitiatedTransferResult, sesseionId: string){
-        // chack if buyer landlord exist
-        let buyerlandOwnerId =( await this.prisma.landOwner
-            .findFirst({
-                where: {
-                    registration: data.buyerId
-                },
-                select:{
-                    id: true
-                }
-            }))?.id;
+    async UpladSupportDocument(filename: string ,documentType: string){
         
-        if (buyerlandOwnerId == null){
-            // create landowner
-            const landowner = await this.prisma.landOwner.create({
-                data: {
-                    createdAt: Date.now().toString(),
-                    name: data.buyerName,
-                    phoneNumber: data.buyerPhone,
-                    registration: data.buyerId,
-                    id: randomUUID(),
-                    updateAt: Date.now().toString()
-                }
-            });
-            buyerlandOwnerId = landowner["id"];
-        }
-
-        const actorId = await this.auth.getUserId(sesseionId)
-        // add transaction history
-        const transId = await this.prisma.transactionHistory
+        const document = await this.prisma.transferDocuments
             .create({
-                data: {
+                data : {
+                    createdAt: new Date().toISOString(),
+                    documentHash: this.sha256(filename),
+                    documentType: documentType,
+                    fileName: filename,
                     id: randomUUID(),
-                    action: "Transfer",
-                    actorId: actorId,
-                    cost: 0,
-                    createdAt: Date.now.toString(),
-                    refrerence: data.reference,
-                    stage: 'LandOwnerApproval',
-                    transactionType: data.transferType,
-                    updateAt: Date.now().toString(),
-                    buyerId: buyerlandOwnerId,
-                    landOwnerId: data.parcel.ownerId
+                    isDeleted: false,
                 },
                 select: {
-                    id: true
+                    id: true,
+                    documentHash: true,
+                    fileName: true
                 }
-            });
+            })
+        return document
+    }
 
-        // add landlord request to authenticate
-        await this.prisma.requestLogs
-            .createMany({
-                data: [
-                    {
-                        createdAt: Date.now().toString(),
-                        transactionId: transId.id,
-                        id: randomUUID(),
-                        updateat: Date.now().toString(),
-                        status: null,
-                        userId: data.parcel.ownerId
+    async Transfer(data: InitiatedTransferResult, sesseionId: string){
+        try {
+            // chack if buyer landlord exist
+            let buyerlandOwnerId =( await this.prisma.landOwner
+                .findFirst({
+                    where: {
+                        registration: data.buyerId
+                    },
+                    select:{
+                        id: true
                     }
-                ]
-            });
+                }))?.id;
+            
+            if (buyerlandOwnerId == null){
+                // create landowner
+                const landowner = await this.prisma.landOwner.create({
+                    data: {
+                        createdAt: Date.now().toString(),
+                        name: data.buyerName,
+                        phoneNumber: data.buyerPhone,
+                        registration: data.buyerId,
+                        id: randomUUID(),
+                        updateAt: Date.now().toString()
+                    }
+                });
+                buyerlandOwnerId = landowner["id"];
+            }
+    
+            const actorId = await this.auth.getUserId(sesseionId)
+            // add transaction history
+            const transId = await this.prisma.transactionHistory
+                .create({
+                    data: {
+                        id: randomUUID(),
+                        action: "Transfer",
+                        actorId: actorId,
+                        cost: 0,
+                        createdAt: Date.now.toString(),
+                        refrerence: data.reference,
+                        stage: 'LandOwnerApproval',
+                        transactionType: data.transferType,
+                        updateAt: Date.now().toString(),
+                        buyerId: buyerlandOwnerId,
+                        landOwnerId: data.parcel.ownerId,
+                        landParcelId: data.parcel.parcelId
+                    },
+                    select: {
+                        id: true
+                    }
+                });
+    
+            // add landlord request to authenticate
+            await this.prisma.requestLogs
+                .createMany({
+                    data: [
+                        {
+                            createdAt: Date.now().toString(),
+                            transactionId: transId.id,
+                            id: randomUUID(),
+                            updateat: Date.now().toString(),
+                            status: null,
+                            userId: data.parcel.ownerId
+                        }
+                    ]
+                });
+
+        } catch (e){
+            console.log(e);
+            throw new BadRequestException("An error occured");
+        }
 
 
     }
@@ -212,7 +242,6 @@ export class ParcelRecordsService {
             throw new BadRequestException("An error occured");
         }
     }
-
 
     sha256(value: string): string {
         return createHash('sha256')

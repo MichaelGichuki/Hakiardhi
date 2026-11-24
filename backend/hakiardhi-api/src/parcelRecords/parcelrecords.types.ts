@@ -6,6 +6,7 @@ export type ParcelDetailsDto = {
     registrationDate: Date;
     size: number;
     ownerName: string;
+    ownerReg: string;
     bdRecord: Boolean;
     Sha: string;
     blockchainTransaction: Boolean;

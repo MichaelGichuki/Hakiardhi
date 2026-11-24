@@ -14,7 +14,6 @@ export function Dashboard() {
   const navigate = useNavigate();
   const [dash, setdashDetails] = useState<CommandCenter>();
   const go = (next: Page) => {
-    // setPage(next);
     navigate(`/${next}`);
   };
 
@@ -93,44 +92,17 @@ export function Dashboard() {
                     </td>
                   </tr>
                 ))}
-                <tr>
+                {/* <tr>
                   <td>TR-2026-0841</td>
                   <td>KJD/LOI/4581</td>
                   <td>Owner consent</td>
                   <td>
                     <Badge tone="amber">High</Badge>
                   </td>
-                </tr>
-                {/* <tr>
-                  <td>TR-2026-0839</td>
-                  <td>NAI/BLK/0912</td>
-                  <td>Document review</td>
-                  <td>
-                    <Badge tone="blue">Normal</Badge>
-                  </td>
-                </tr>
-                <tr>
-                  <td>TR-2026-0836</td>
-                  <td>KIAM/3321</td>
-                  <td>Registrar</td>
-                  <td>
-                    <Badge tone="amber">High</Badge>
-                  </td>
-                </tr>
-                <tr>
-                  <td>TR-2026-0834</td>
-                  <td>MAC/0918</td>
-                  <td>Initiated</td>
-                  <td>
-                    <Badge tone="blue">Normal</Badge>
-                  </td>
                 </tr> */}
               </tbody>
             </table>
           </div>
-          <button className="btn" onClick={() => go("workflow")}>
-            Open workflow <ArrowRight size={14} />
-          </button>
         </Card>
         <Card>
           <div className="card-heading">

@@ -18,11 +18,8 @@ model User {
   updatedAt DateTime @updatedAt
 
   sessions  Session[]
-
   requestLogs RequestLogs[]
-
   transactionHistories TransactionHistory[]
-
   ownershipRecords OwnershipRecords[]
 }
 
@@ -42,6 +39,7 @@ model LandParcels {
     ownershipRecords OwnershipRecords?
     landParcels LandParcels[] @relation("ParcelLineage")
     inspectionLogs InspectionLog[]
+    transactionHistories TransactionHistory[]
 }
 
 
@@ -78,6 +76,8 @@ model OwnershipRecords {
 model TransactionHistory {
   id String @id @default(uuid()) @db.Uuid
   refrerence String @unique
+  landParcelId String @db.Uuid
+  landparcel LandParcels @relation(fields: [landParcelId], references: [id])
   landOwnerId String @db.Uuid
   landOwner LandOwner @relation("landowner", fields: [landOwnerId], references: [id])
   buyerId String @db.Uuid
@@ -91,6 +91,18 @@ model TransactionHistory {
   createdAt DateTime
   updateAt DateTime
   requestLogs RequestLogs[]
+  transferDocuments TransferDocuments[]
+}
+
+model TransferDocuments {
+  id String @id @default(uuid()) @db.Uuid
+  documentType String
+  documentHash String
+  trasnferId String? @db.Uuid
+  transferHistory TransactionHistory? @relation(fields: [trasnferId], references: [id])
+  createdAt DateTime
+  fileName String
+  isDeleted Boolean @default(false)
 }
 
 

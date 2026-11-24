@@ -43,6 +43,11 @@ export type OwnershipRecords = Prisma.OwnershipRecordsModel
  */
 export type TransactionHistory = Prisma.TransactionHistoryModel
 /**
+ * Model TransferDocuments
+ * 
+ */
+export type TransferDocuments = Prisma.TransferDocumentsModel
+/**
  * Model InspectionLog
  * 
  */

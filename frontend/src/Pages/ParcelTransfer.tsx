@@ -38,9 +38,6 @@ interface ParcelRecord {
 }
 
 
-
-
-
 export interface ParcelTransfer {
   initialParcelNumber?: string
   officerName?: string
@@ -50,83 +47,25 @@ export interface ParcelTransfer {
   onTransferInitiated?: (result: InitiatedTransferResult) => void
 }
 
-const SYNTHETIC_PARCELS: Record<string, ParcelRecord> = {
-  'KJD/LOI/4581': {
-    parcelNumber: 'KJD/LOI/4581',
-    ownerName: 'Mary Wanjiku Kamau',
-    ownerId: '24819032',
-    ownerPhone: '+254 712 340 891',
-    county: 'Kajiado',
-    registrationArea: 'Loitokitok',
-    sizeHa: '0.045 Ha',
-    tenure: 'Freehold',
-    titleVersion: 'Version 1',
-    status: 'Registered',
-    sha256: '7c2e9f8a1b6d4c3e5f0a7b9d2e1c8f6a4b3d9e0f2a5c7b1d8e6f4a9c3b2d1e0f',
-    ledgerConfirmed: true,
-  },
-  'KJD/LOI/4590': {
-    parcelNumber: 'KJD/LOI/4590',
-    ownerName: 'Mary Wanjiku Kamau',
-    ownerId: '24819032',
-    ownerPhone: '+254 712 340 891',
-    county: 'Kajiado',
-    registrationArea: 'Loitokitok',
-    sizeHa: '0.080 Ha',
-    tenure: 'Freehold',
-    titleVersion: 'Version 1',
-    status: 'Registered',
-    sha256: '92d0a4b7e1f3c5896a2b4d6e8f0192837465564738291a0b2c3d4e5f6a7b8c9d',
-    ledgerConfirmed: true,
-  },
-  'NAI/BLK/0912': {
-    parcelNumber: 'NAI/BLK/0912',
-    ownerName: 'Samuel Kiprop Cheruiyot',
-    ownerId: '19847210',
-    ownerPhone: '+254 722 809 114',
-    county: 'Nairobi',
-    registrationArea: 'Westlands',
-    sizeHa: '0.120 Ha',
-    tenure: 'Leasehold',
-    titleVersion: 'Version 2',
-    status: 'Registered',
-    sha256: '4f8b2c10d9e8f7a6b5c4d3e2f1a09b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a',
-    ledgerConfirmed: true,
-  },
-  'KIAM/3321': {
-    parcelNumber: 'KIAM/3321',
-    ownerName: 'Grace Njeri Mwangi',
-    ownerId: '22190485',
-    ownerPhone: '+254 701 552 908',
-    county: 'Kiambu',
-    registrationArea: 'Limuru',
-    sizeHa: '0.250 Ha',
-    tenure: 'Freehold',
-    titleVersion: 'Version 1',
-    status: 'Registered',
-    sha256: '81c2a63f5e4d3c2b1a0987654321fedcba0987654321abcdef0123456789abcd',
-    ledgerConfirmed: true,
-  },
-}
 
-const DEFAULT_DOCS: SupportingDocument[] = [
-  {
-    id: 'doc-1',
-    docType: 'Executed Land Sale Agreement',
-    fileName: 'sale-agreement-KJD-LOI-4581.pdf',
-    fileSizeLabel: '1.4 MB',
-    hashPreview: '0x9a4f...c812',
-    verified: true,
-  },
-  {
-    id: 'doc-2',
-    docType: 'Land Control Board (LCB) Consent',
-    fileName: 'lcb-consent-loitokitok-2026.pdf',
-    fileSizeLabel: '820 KB',
-    hashPreview: '0x4d18...73ab',
-    verified: true,
-  },
-]
+// const DEFAULT_DOCS: SupportingDocument[] = [
+//   {
+//     id: 'doc-1',
+//     docType: 'Executed Land Sale Agreement',
+//     fileName: 'sale-agreement-KJD-LOI-4581.pdf',
+//     fileSizeLabel: '1.4 MB',
+//     hashPreview: '0x9a4f...c812',
+//     verified: true,
+//   },
+//   {
+//     id: 'doc-2',
+//     docType: 'Land Control Board (LCB) Consent',
+//     fileName: 'lcb-consent-loitokitok-2026.pdf',
+//     fileSizeLabel: '820 KB',
+//     hashPreview: '0x4d18...73ab',
+//     verified: true,
+//   },
+// ]
 
 function computeDeterministicDigest(input: string): string {
   let h1 = 0xdeadbeef
@@ -148,25 +87,24 @@ export function InitiateTransferPage({
   registryOffice = 'Nairobi Registry',
   onBackToWorkflow,
   onOpenParcelSearch,
-  onTransferInitiated,
 }: ParcelTransfer) {
 
   const [parcelInput, setParcelInput] = useState(initialParcelNumber)
   const [selectedParcel, setSelectedParcel] = useState<ParcelDetailsDto | null>()
   const [parcelLookupError, setParcelLookupError] = useState('')
-  const [step, setStep] = useState<number>(1);
 
   const [transferType, setTransferType] = useState<TransferType>('Sale / Transfer')
-  const [buyerName, setBuyerName] = useState('Peter Mwangi Njoroge')
-  const [buyerId, setBuyerId] = useState('27945108')
-  const [buyerPhone, setBuyerPhone] = useState('+254 723 619 402')
-  const [considerationKes, setConsiderationKes] = useState('2,850,000')
+  const [buyerName, setBuyerName] = useState('')
+  const [buyerId, setBuyerId] = useState('')
+  const [buyerPhone, setBuyerPhone] = useState('')
+  const [considerationKes, setConsiderationKes] = useState('')
   const [consentChannel, setConsentChannel] = useState<'Landowner Portal' | 'USSD (*483*55#)' | 'Both (Portal + USSD)'>('Both (Portal + USSD)')
-  const [registryCounty, setRegistryCounty] = useState<string>('Kajiado')
+  const [registryCounty, setRegistryCounty] = useState<string>('')
 
-  const [documents, setDocuments] = useState<SupportingDocument[]>(DEFAULT_DOCS)
+  const [documents, setDocuments] = useState<SupportingDocument[]>([])
   const [newDocType, setNewDocType] = useState('Rates & Rent Clearance Certificate')
-  const [newDocName, setNewDocName] = useState('')
+  const [newDoc, setNewDoc] = useState<File | null>(null)
+  const [searching, setSearching] = useState(false);
 
   const [checklist, setChecklist] = useState({
     proprietorMatched: true,
@@ -197,6 +135,7 @@ export function InitiateTransferPage({
       return
     }
     try {
+      setSearching(true);
       const res = await parcelRecords.getParcels(normalized);
       if (res.status !== 200) {
         setSelectedParcel(null)
@@ -211,23 +150,41 @@ export function InitiateTransferPage({
       setSubmittedTransfer(null)
     } catch {
       
+    } finally {
+      setSearching(false);
     }
 
   }
 
-  const handleAddDocument = () => {
-    const cleanName = newDocName.trim() || `${newDocType.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.pdf`
-    const digest = computeDeterministicDigest(`${newDocType}:${cleanName}:${Date.now()}`)
-    const entry: SupportingDocument = {
-      id: `doc-${Date.now()}`,
-      docType: newDocType,
-      fileName: cleanName,
-      fileSizeLabel: '640 KB',
-      hashPreview: `0x${digest.slice(0, 4)}...${digest.slice(-4)}`,
-      verified: true,
+  const handleAddDocument = async () => {
+    
+    try {
+      const formData = new FormData();
+      if (!newDoc) {
+        return;
+      }
+
+      
+      formData.append('file', newDoc);
+      console.log("file:",newDoc);
+      console.log("formdata:",formData.getAll("file"));
+      const res =( await parcelRecords.uploadSupportDocuments(newDocType, formData)).data;
+    
+      const entry: SupportingDocument = {
+        id: res.id,
+        docType: newDocType,
+        fileName: res.fileName,
+        fileSizeLabel: '640 KB',
+        hashPreview: res.documentHash,
+        verified: true,
+      }
+      setDocuments(prev => [...prev, entry])
+      setNewDoc(null)
+    } catch (e) {
+      console.log(e);
+      
     }
-    setDocuments(prev => [...prev, entry])
-    setNewDocName('')
+    
   }
 
   const handleRemoveDocument = (id: string) => {
@@ -489,8 +446,8 @@ export function InitiateTransferPage({
                   }}
                   placeholder="e.g. KJD/LOI/4581"
                 />
-                <button type="button" className="btn primary" onClick={handleLookupParcel}>
-                  <Search size={14} /> Verify parcel
+                <button disabled={searching} type="button" className="btn primary" onClick={handleLookupParcel}>
+                  <Search size={14} /> {searching? "Searching..." : "Verify parcel"}
                 </button>
               </div>
               <small className="muted">
@@ -523,7 +480,7 @@ export function InitiateTransferPage({
                     </div>
                     <div>
                       <span>Proprietor National ID</span>
-                      <b>{selectedParcel.ownerId}</b>
+                      <b>{selectedParcel.ownerReg}</b>
                     </div>
                     <div>
                       <span>County &amp; Registry Section</span>
@@ -721,11 +678,14 @@ export function InitiateTransferPage({
                 <div className="search-row">
                   <input
                     id="doc-file-input"
-                    value={newDocName}
-                    onChange={e => setNewDocName(e.target.value)}
+                    type='file'
+                    max={1}
+                    accept=".pdf"
+                    // value={newDocName}
+                    onChange={e => setNewDoc(e.target.files?.[0] ?? null)}
                     placeholder="e.g. stamp-duty-receipt-2026.pdf"
                   />
-                  <button type="button" className="btn" onClick={handleAddDocument}>
+                  <button type="button"  className="btn" onClick={handleAddDocument}>
                     <Upload size={14} /> Anchor hash
                   </button>
                 </div>

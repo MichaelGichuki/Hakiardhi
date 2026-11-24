@@ -56,6 +56,7 @@ export const ModelName = {
   LandOwner: 'LandOwner',
   OwnershipRecords: 'OwnershipRecords',
   TransactionHistory: 'TransactionHistory',
+  TransferDocuments: 'TransferDocuments',
   InspectionLog: 'InspectionLog',
   RequestLogs: 'RequestLogs',
   Session: 'Session'
@@ -140,6 +141,7 @@ export type OwnershipRecordsScalarFieldEnum = (typeof OwnershipRecordsScalarFiel
 export const TransactionHistoryScalarFieldEnum = {
   id: 'id',
   refrerence: 'refrerence',
+  landParcelId: 'landParcelId',
   landOwnerId: 'landOwnerId',
   buyerId: 'buyerId',
   actorId: 'actorId',
@@ -152,6 +154,19 @@ export const TransactionHistoryScalarFieldEnum = {
 } as const
 
 export type TransactionHistoryScalarFieldEnum = (typeof TransactionHistoryScalarFieldEnum)[keyof typeof TransactionHistoryScalarFieldEnum]
+
+
+export const TransferDocumentsScalarFieldEnum = {
+  id: 'id',
+  documentType: 'documentType',
+  documentHash: 'documentHash',
+  trasnferId: 'trasnferId',
+  createdAt: 'createdAt',
+  fileName: 'fileName',
+  isDeleted: 'isDeleted'
+} as const
+
+export type TransferDocumentsScalarFieldEnum = (typeof TransferDocumentsScalarFieldEnum)[keyof typeof TransferDocumentsScalarFieldEnum]
 
 
 export const InspectionLogScalarFieldEnum = {

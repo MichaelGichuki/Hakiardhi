@@ -402,6 +402,7 @@ export const ModelName = {
   LandOwner: 'LandOwner',
   OwnershipRecords: 'OwnershipRecords',
   TransactionHistory: 'TransactionHistory',
+  TransferDocuments: 'TransferDocuments',
   InspectionLog: 'InspectionLog',
   RequestLogs: 'RequestLogs',
   Session: 'Session'
@@ -420,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "landParcels" | "landOwner" | "ownershipRecords" | "transactionHistory" | "inspectionLog" | "requestLogs" | "session"
+    modelProps: "user" | "landParcels" | "landOwner" | "ownershipRecords" | "transactionHistory" | "transferDocuments" | "inspectionLog" | "requestLogs" | "session"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -794,6 +795,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TransferDocuments: {
+      payload: Prisma.$TransferDocumentsPayload<ExtArgs>
+      fields: Prisma.TransferDocumentsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TransferDocumentsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TransferDocumentsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload>
+        }
+        findFirst: {
+          args: Prisma.TransferDocumentsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TransferDocumentsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload>
+        }
+        findMany: {
+          args: Prisma.TransferDocumentsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload>[]
+        }
+        create: {
+          args: Prisma.TransferDocumentsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload>
+        }
+        createMany: {
+          args: Prisma.TransferDocumentsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TransferDocumentsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload>[]
+        }
+        delete: {
+          args: Prisma.TransferDocumentsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload>
+        }
+        update: {
+          args: Prisma.TransferDocumentsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload>
+        }
+        deleteMany: {
+          args: Prisma.TransferDocumentsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TransferDocumentsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TransferDocumentsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload>[]
+        }
+        upsert: {
+          args: Prisma.TransferDocumentsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferDocumentsPayload>
+        }
+        aggregate: {
+          args: Prisma.TransferDocumentsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTransferDocuments>
+        }
+        groupBy: {
+          args: Prisma.TransferDocumentsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransferDocumentsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TransferDocumentsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransferDocumentsCountAggregateOutputType> | number
+        }
+      }
+    }
     InspectionLog: {
       payload: Prisma.$InspectionLogPayload<ExtArgs>
       fields: Prisma.InspectionLogFieldRefs
@@ -1118,6 +1193,7 @@ export type OwnershipRecordsScalarFieldEnum = (typeof OwnershipRecordsScalarFiel
 export const TransactionHistoryScalarFieldEnum = {
   id: 'id',
   refrerence: 'refrerence',
+  landParcelId: 'landParcelId',
   landOwnerId: 'landOwnerId',
   buyerId: 'buyerId',
   actorId: 'actorId',
@@ -1130,6 +1206,19 @@ export const TransactionHistoryScalarFieldEnum = {
 } as const
 
 export type TransactionHistoryScalarFieldEnum = (typeof TransactionHistoryScalarFieldEnum)[keyof typeof TransactionHistoryScalarFieldEnum]
+
+
+export const TransferDocumentsScalarFieldEnum = {
+  id: 'id',
+  documentType: 'documentType',
+  documentHash: 'documentHash',
+  trasnferId: 'trasnferId',
+  createdAt: 'createdAt',
+  fileName: 'fileName',
+  isDeleted: 'isDeleted'
+} as const
+
+export type TransferDocumentsScalarFieldEnum = (typeof TransferDocumentsScalarFieldEnum)[keyof typeof TransferDocumentsScalarFieldEnum]
 
 
 export const InspectionLogScalarFieldEnum = {
@@ -1419,6 +1508,7 @@ export type GlobalOmitConfig = {
   landOwner?: Prisma.LandOwnerOmit
   ownershipRecords?: Prisma.OwnershipRecordsOmit
   transactionHistory?: Prisma.TransactionHistoryOmit
+  transferDocuments?: Prisma.TransferDocumentsOmit
   inspectionLog?: Prisma.InspectionLogOmit
   requestLogs?: Prisma.RequestLogsOmit
   session?: Prisma.SessionOmit

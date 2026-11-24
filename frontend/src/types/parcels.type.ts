@@ -14,6 +14,7 @@ export type ParcelDetailsDto = {
     size: number;
     ownerName: string;
     bdRecord: Boolean;
+    ownerReg: string;
     Sha: string;
     blockchainTransaction: Boolean;
     titleVersion: string;
@@ -51,4 +52,10 @@ export interface InitiatedTransferResult {
   documents: SupportingDocument[]
   payloadDigest: string
   txId: string
+}
+
+export interface Uploadresponse {
+  id : string;
+  documentHash : string;
+  fileName : string;
 }
