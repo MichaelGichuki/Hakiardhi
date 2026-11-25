@@ -1,10 +1,15 @@
-import { Landmark, Printer } from "lucide-react";
+import { Landmark, Printer, Search } from "lucide-react";
 import { PageHeading } from "../Components/PageHeading";
 import { Badge } from "../Components/Badge";
 import { useState } from "react";
+import { Card } from "../Components/Card";
 
 export function CertificatePage() {
   const [copied, setCopied] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchError, setSearchError] = useState("");
+  const [selected, selectParcel] = useState("");
   return (
     <>
       <PageHeading
@@ -16,6 +21,49 @@ export function CertificatePage() {
           </button>
         }
       />
+      <Card>
+        <div className="search-row">
+          <input
+            id="tamper-parcel-search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                selectParcel(searchQuery);
+              }
+            }}
+            placeholder="e.g. KJD/LOI/4581 or NYR/KGN/1104"
+          />
+          <button
+            disabled={isSearching}
+            type="button"
+            className="btn primary"
+            onClick={() => selectParcel(searchQuery)}
+          >
+            <Search size={14} />{" "}
+            {isSearching ? "Running check..." : "Run integrity check"}
+          </button>
+        </div>
+        <div className="tamper-quick-chips">
+          {/* <span className="muted">Indexed parcels:</span>
+          {Object.keys(LEDGER_PARCELS).map((code) => {
+            const hasDiff = Boolean(dbOverrides[code]);
+            return (
+              <button
+                key={code}
+                type="button"
+                className={`tamper-chip ${activeParcelNumber === code ? "selected" : ""} ${hasDiff ? "dirty" : ""}`}
+                onClick={() => selectParcel(code)}
+              >
+                <span>{code}</span>
+                {hasDiff && <AlertTriangle size={12} />}
+              </button>
+            );
+          })} */}
+        </div>
+      </Card>
+
       <div className="certificate-wrap section-gap" id="print-certificate">
         <div className="certificate">
           <div className="cert-country">REPUBLIC OF KENYA</div>

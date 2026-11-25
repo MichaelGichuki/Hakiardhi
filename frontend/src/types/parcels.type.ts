@@ -59,3 +59,54 @@ export interface Uploadresponse {
   documentHash : string;
   fileName : string;
 }
+
+export interface ParcelIntegrityRecord {
+  parcelNumber: string;
+  owner: string;
+  size: string;
+  county: string;
+  registrationArea: string;
+  tenure: "Freehold" | "Leasehold";
+  titleVersion: string;
+  lastVerified: string;
+  anchoredSha256: string;
+  txId: string;
+}
+
+export type ValidateTamper = {
+  bdRecord: ParcelIntegrityRecord;
+  anchorRecord: ParcelIntegrityRecord;
+}
+
+export type Request = {
+  requestId: string;
+  parcelNumber: string;
+  ProposedBy: string;
+  transactionType: string;
+  applicationDate: Date;
+}
+
+export type LandOwnerDash = {
+  properties: number;
+  incommingRequest: number;
+  completedRequest: number;
+  propertyList: ParcelDetailsDto[];
+  request: Request[]
+}
+
+export type TransactionHistory = {
+  timestamp: Date;
+  actor: string;
+  action: string;
+  reference: string;
+  transactionsId: string;
+  status: string;
+}
+
+export type AuditDash = {
+  ledgerTransactions: number;
+  currentBlock: number;
+  networkPeers: number;
+  integrityIssues: number;
+  transactionsHistory: TransactionHistory[];
+}
