@@ -283,7 +283,7 @@ export class ParcelRecordsService {
               actorId,
               cost: 0,
               createdAt: new Date(),
-              refrerence: data.reference,
+              refrerence: `TR-${new Date().getFullYear}-${new Date().getMilliseconds()}`,
               stage: 'LandOwnerApproval',
               transactionType: data.transferType,
               updateAt: new Date(),
@@ -433,8 +433,8 @@ export class ParcelRecordsService {
         parcelNumber: blockchainRecord.parcelNumber,
         registrationArea: blockchainRecord.county,
         size: String(blockchainRecord.size),
-        tenure: blockchainRecord.tenure,
-        titleVersion: blockchainRecord.titleVersion,
+        tenure: blockchainRecord.tenuer,
+        titleVersion: blockchainRecord.version,
         txId: ""
       },
       bdRecord: {

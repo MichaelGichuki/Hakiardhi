@@ -108,5 +108,4 @@ export type AuditDash = {
   currentBlock: number;
   networkPeers: number;
   integrityIssues: number;
-  transactionsHistory: TransactionHistory[];
 }

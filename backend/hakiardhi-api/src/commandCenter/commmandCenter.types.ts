@@ -26,3 +26,19 @@ export type logDetails = {
     time: string;
     status: string;
 }
+
+export type AuditDash = {
+  ledgerTransactions: number;
+  currentBlock: number;
+  networkPeers: number;
+  integrityIssues: number;
+}
+
+export type TransactionHistory = {
+  timestamp: Date;
+  actor: string;
+  action: string;
+  reference: string;
+  transactionsId: string;
+  status: string;
+}

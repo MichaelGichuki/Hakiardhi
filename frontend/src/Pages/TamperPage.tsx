@@ -25,60 +25,6 @@ export interface TamperDetectionPageProps {
   onParcelSelected?: (parcelNumber: string) => void;
 }
 
-// const LEDGER_PARCELS: Record<string, ParcelIntegrityRecord> = {
-//   "KJD/LOI/4581": {
-//     parcelNumber: "KJD/LOI/4581",
-//     owner: "Mary Wanjiku Kamau",
-//     size: "0.045 Ha",
-//     county: "Kajiado",
-//     registrationArea: "Loitokitok",
-//     tenure: "Freehold",
-//     titleVersion: "Version 1",
-//     lastVerified: "20 Nov 2026 · 10:15",
-//     anchoredSha256:
-//       "7c2e9f8a1b6d4c3e5f0a7b9d2e1c8f6a4b3d9e0f2a5c7b1d8e6f4a9c3b2d1e0f",
-//     txId: "0x7a31...b90e",
-//   },
-//   "KJD/LOI/4590": {
-//     parcelNumber: "KJD/LOI/4590",
-//     owner: "Mary Wanjiku Kamau",
-//     size: "0.080 Ha",
-//     county: "Kajiado",
-//     registrationArea: "Loitokitok",
-//     tenure: "Freehold",
-//     titleVersion: "Version 1",
-//     lastVerified: "20 Nov 2026 · 09:40",
-//     anchoredSha256:
-//       "92d0a4b7e1f3c5896a2b4d6e8f0192837465564738291a0b2c3d4e5f6a7b8c9d",
-//     txId: "0x92d0...3e61",
-//   },
-//   "NAI/BLK/0912": {
-//     parcelNumber: "NAI/BLK/0912",
-//     owner: "Samuel Kiprop Cheruiyot",
-//     size: "0.120 Ha",
-//     county: "Nairobi",
-//     registrationArea: "Westlands",
-//     tenure: "Leasehold",
-//     titleVersion: "Version 2",
-//     lastVerified: "19 Nov 2026 · 16:05",
-//     anchoredSha256:
-//       "4f8b2c10d9e8f7a6b5c4d3e2f1a09b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a",
-//     txId: "0x4f8b...2c10",
-//   },
-//   "NYR/KGN/1104": {
-//     parcelNumber: "NYR/KGN/1104",
-//     owner: "Josephine Wambui Wachira",
-//     size: "0.310 Ha",
-//     county: "Nyeri",
-//     registrationArea: "Kieni",
-//     tenure: "Freehold",
-//     titleVersion: "Version 1",
-//     lastVerified: "20 Nov 2026 · 08:52",
-//     anchoredSha256:
-//       "3b92e12a8c4f1092837465afbecd0192837465fabcde0123456789abcdef0123",
-//     txId: "0x3b92...e12a",
-//   },
-// };
 
 const MUTABLE_FIELDS: Array<{
   key: "owner" | "size" | "county" | "tenure";
@@ -127,9 +73,6 @@ function computeCanonicalDigest(record: {
 }
 
 export function TamperPage() {
-  // const normalizedInitial = "initialParcelNumber".trim().toUpperCase();
-  // const initialAnchor =
-  //   LEDGER_PARCELS[normalizedInitial] ?? LEDGER_PARCELS["KJD/LOI/4581"];
 
   const [isSearching, setIsSearching] = useState(false);
   const [record, setRecord] = useState<ValidateTamper | undefined>();
@@ -165,20 +108,6 @@ export function TamperPage() {
     handlerSearch(searchQuery);
   }, [searchQuery])
 
-  // const [scanHistory, setScanHistory] = useState<TamperAuditLogEntry[]>([
-  //   {
-  //     id: "scan-init-1",
-  //     timestamp: "Today · 10:15",
-  //     parcelNumber: initialAnchor.parcelNumber,
-  //     outcome: "VERIFIED",
-  //     changedFields: [],
-  //     digestSnapshot: initialAnchor.anchoredSha256,
-  //   },
-  // ]);
-
-  // const anchorRecord =
-  //   LEDGER_PARCELS[activeParcelNumber] ?? LEDGER_PARCELS["KJD/LOI/4581"];
-
   const currentDbValues = useMemo(() => {
     if (record == null){
       return {
@@ -197,23 +126,6 @@ export function TamperPage() {
     };
   }, [record, dbOverrides]);
 
-  const blockchainVariables = useMemo(() => {
-    if (record == null){
-      return {
-        owner : "",
-        size : "",
-        county : "",
-        tenure : ""
-      }
-    }
-    const override = record.anchorRecord
-    return {
-      owner: override?.owner,
-      size: override?.size,
-      county: override?.county,
-      tenure: override?.tenure,
-    };
-  }, [record, dbOverrides]);
 
   const tamperedFields = useMemo(() => {
     const anchor = record?.anchorRecord;
@@ -258,17 +170,7 @@ export function TamperPage() {
       hour: "2-digit",
       minute: "2-digit",
     });
-    // setScanHistory((prev) => [
-    //   {
-    //     id: `scan-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-    //     timestamp: `Today · ${nowLabel}`,
-    //     parcelNumber: parcelNum,
-    //     outcome,
-    //     changedFields: changed,
-    //     digestSnapshot: digest,
-    //   },
-    //   ...prev.slice(0, 7),
-    // ]);
+
   };
 
   const selectParcel = async (rawQuery: string) => {
@@ -286,7 +188,6 @@ export function TamperPage() {
       
       setRecord(record.data)
       const match = record.data.bdRecord;
-      // setSearchQuery(match.parcelNumber);
       setActiveParcelNumber(match.parcelNumber);
 
       const ov = record.data.anchorRecord
@@ -312,62 +213,6 @@ export function TamperPage() {
       setIsSearching(false);
     }
   };
-
-  // const handleFieldChange = (
-  //   key: "owner" | "size" | "county" | "tenure",
-  //   value: string,
-  // ) => {
-  //   setDbOverrides((prev) => ({
-  //     ...prev,
-  //     [anchorRecord.parcelNumber]: {
-  //       owner: prev[anchorRecord.parcelNumber]?.owner ?? anchorRecord.owner,
-  //       size: prev[anchorRecord.parcelNumber]?.size ?? anchorRecord.size,
-  //       county: prev[anchorRecord.parcelNumber]?.county ?? anchorRecord.county,
-  //       tenure: prev[anchorRecord.parcelNumber]?.tenure ?? anchorRecord.tenure,
-  //       [key]: value,
-  //     },
-  //   }));
-  // };
-
-  // const handleSimulateTamper = () => {
-  //   const tamperedOwner = `${anchorRecord.owner.split(" ")[0]} Otieno (UNAUTHORIZED EDIT)`;
-  //   const nextDb = {
-  //     ...currentDbValues,
-  //     owner: tamperedOwner,
-  //   };
-  //   setDbOverrides((prev) => ({
-  //     ...prev,
-  //     [anchorRecord.parcelNumber]: nextDb,
-  //   }));
-  //   const nextDigest = computeCanonicalDigest({
-  //     parcelNumber: anchorRecord.parcelNumber,
-  //     owner: nextDb.owner,
-  //     size: nextDb.size,
-  //     county: nextDb.county,
-  //     tenure: nextDb.tenure,
-  //     titleVersion: anchorRecord.titleVersion,
-  //   });
-  //   recordScanEvent(
-  //     anchorRecord.parcelNumber,
-  //     "TAMPER DETECTED",
-  //     ["Registered proprietor"],
-  //     nextDigest,
-  //   );
-  // };
-
-  // const handleRestoreRecord = () => {
-  //   setDbOverrides((prev) => {
-  //     const copy = { ...prev };
-  //     delete copy[anchorRecord.parcelNumber];
-  //     return copy;
-  //   });
-  //   recordScanEvent(
-  //     anchorRecord.parcelNumber,
-  //     "RESTORED",
-  //     [],
-  //     anchorRecord.anchoredSha256,
-  //   );
-  // };
 
   return (
     <div className="tamper-rework-page">
