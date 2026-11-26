@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -9,7 +9,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { parcelRecords } from "../service/parcels";
-import type { ParcelIntegrityRecord } from "../types/parcels.type";
+import type { parcelDto, ParcelIntegrityRecord, ValidateTamper } from "../types/parcels.type";
 
 interface TamperAuditLogEntry {
   id: string;
@@ -109,7 +109,7 @@ function computeCanonicalDigest(record: {
     record.size.trim(),
     record.county.trim(),
     record.tenure.trim(),
-    record.titleVersion.trim(),
+    // record.titleVersion.trim(),
   ].join("|");
 
   let h1 = 0x9e3779b9;
@@ -132,10 +132,11 @@ export function TamperPage() {
   //   LEDGER_PARCELS[normalizedInitial] ?? LEDGER_PARCELS["KJD/LOI/4581"];
 
   const [isSearching, setIsSearching] = useState(false);
-  const [anchorRecord, setAnchorRecord] = useState<ParcelIntegrityRecord | undefined>();
+  const [record, setRecord] = useState<ValidateTamper | undefined>();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchError, setSearchError] = useState("");
   const [activeParcelNumber, setActiveParcelNumber] = useState<string>();
+  const [list, setList] = useState<parcelDto[]>([]);
 
   // Map of parcelNumber -> mutable database values (owner, size, county, tenure)
   const [dbOverrides, setDbOverrides] = useState<
@@ -149,6 +150,20 @@ export function TamperPage() {
       }
     >
   >({});
+
+  const handlerSearch = async (search: string) => {
+    try{
+      const res = await parcelRecords.searchParcels(search);
+      setList(res.data);
+    } catch{
+
+    }
+  }
+
+
+  useEffect(() => {
+    handlerSearch(searchQuery);
+  }, [searchQuery])
 
   // const [scanHistory, setScanHistory] = useState<TamperAuditLogEntry[]>([
   //   {
@@ -165,7 +180,7 @@ export function TamperPage() {
   //   LEDGER_PARCELS[activeParcelNumber] ?? LEDGER_PARCELS["KJD/LOI/4581"];
 
   const currentDbValues = useMemo(() => {
-    if (anchorRecord == null){
+    if (record == null){
       return {
         owner : "",
         size : "",
@@ -173,44 +188,64 @@ export function TamperPage() {
         tenure : ""
       }
     }
-    const override = dbOverrides[anchorRecord.parcelNumber];
+    const override = record.bdRecord
     return {
-      owner: override?.owner ?? anchorRecord.owner,
-      size: override?.size ?? anchorRecord.size,
-      county: override?.county ?? anchorRecord.county,
-      tenure: override?.tenure ?? anchorRecord.tenure,
+      owner: override?.owner,
+      size: override?.size,
+      county: override?.county,
+      tenure: override?.tenure,
     };
-  }, [anchorRecord, dbOverrides]);
+  }, [record, dbOverrides]);
+
+  const blockchainVariables = useMemo(() => {
+    if (record == null){
+      return {
+        owner : "",
+        size : "",
+        county : "",
+        tenure : ""
+      }
+    }
+    const override = record.anchorRecord
+    return {
+      owner: override?.owner,
+      size: override?.size,
+      county: override?.county,
+      tenure: override?.tenure,
+    };
+  }, [record, dbOverrides]);
 
   const tamperedFields = useMemo(() => {
+    const anchor = record?.anchorRecord;
+    const dbRecord = record?.bdRecord;
     const diffs: string[] = [];
-    if (anchorRecord == undefined) return []
-    if (currentDbValues.owner.trim() !== anchorRecord.owner)
+    if (dbRecord == undefined || anchor == undefined) return []
+    if (currentDbValues.owner.trim() !== anchor.owner)
       diffs.push("Registered proprietor");
-    if (currentDbValues.size.trim() !== anchorRecord.size)
+    if (currentDbValues.size.trim() !== anchor.size)
       diffs.push("Parcel size");
-    if (currentDbValues.county.trim() !== anchorRecord.county)
+    if (currentDbValues.county.trim() !== anchor.county)
       diffs.push("County");
-    if (currentDbValues.tenure !== anchorRecord.tenure) diffs.push("Tenure");
+    if (currentDbValues.tenure !== anchor.tenure) diffs.push("Tenure");
     return diffs;
-  }, [anchorRecord, currentDbValues]);
+  }, [record, currentDbValues]);
 
   const isTampered = tamperedFields.length > 0;
 
   const computedDbDigest = useMemo(
     () =>
       {
-        if (anchorRecord == undefined) return 
+        if (record == undefined) return 
         return computeCanonicalDigest({
-        parcelNumber: anchorRecord.parcelNumber,
+        parcelNumber: record.anchorRecord.parcelNumber,
         owner: currentDbValues.owner,
         size: currentDbValues.size,
         county: currentDbValues.county,
         tenure: currentDbValues.tenure,
-        titleVersion: anchorRecord.titleVersion,
+        titleVersion: record.anchorRecord.titleVersion,
       })
       },
-    [anchorRecord, currentDbValues],
+    [record, currentDbValues],
   );
 
   const recordScanEvent = (
@@ -245,14 +280,14 @@ export function TamperPage() {
       return;
     }
     try {
-      setIsSearching(true);
-      const record = await parcelRecords.validateTitle(code);
-      const match = record.data.bdRecord;
-
       setSearchError("");
-      setSearchQuery(match.parcelNumber);
+      setIsSearching(true);
+      const record = await parcelRecords.checkTamper(code);
+      
+      setRecord(record.data)
+      const match = record.data.bdRecord;
+      // setSearchQuery(match.parcelNumber);
       setActiveParcelNumber(match.parcelNumber);
-      // onParcelSelected?.(match.parcelNumber);
 
       const ov = record.data.anchorRecord
       const diffs: string[] = []
@@ -268,11 +303,13 @@ export function TamperPage() {
         match.anchoredSha256
       )
     } catch (error) {
+      console.log(error);
+      
       setSearchError(
         `Parcel "${code}" was not found in the ledger index. Try KJD/LOI/4581, KJD/LOI/4590, NAI/BLK/0912, or NYR/KGN/1104.`,
       );
     } finally {
-      setIsSearching(true);
+      setIsSearching(false);
     }
   };
 
@@ -367,7 +404,7 @@ export function TamperPage() {
             Select Parcel to Inspect
           </h3>
           <span className="badge blue">
-            Active Target: {anchorRecord?.parcelNumber}
+            Active Target: {}
           </span>
         </div>
 
@@ -399,21 +436,19 @@ export function TamperPage() {
         </div>
 
         <div className="tamper-quick-chips">
-          {/* <span className="muted">Indexed parcels:</span>
-          {Object.keys(LEDGER_PARCELS).map((code) => {
-            const hasDiff = Boolean(dbOverrides[code]);
+          <span className="muted">Indexed parcels:</span>
+          {list.map((code, index) => {
             return (
               <button
-                key={code}
+                key={index}
                 type="button"
-                className={`tamper-chip ${activeParcelNumber === code ? "selected" : ""} ${hasDiff ? "dirty" : ""}`}
-                onClick={() => selectParcel(code)}
+                className="tamper-chip"
+                onClick={() => setSearchQuery(code.parcelNumber)}
               >
-                <span>{code}</span>
-                {hasDiff && <AlertTriangle size={12} />}
+                <span>{code.parcelNumber}</span>
               </button>
             );
-          })} */}
+          })}
         </div>
 
         {searchError && (
@@ -429,11 +464,11 @@ export function TamperPage() {
           <div>
             <h3>
               Step 2: Live Database vs. Blockchain Anchor (
-              {anchorRecord?.parcelNumber})
+              {record?.anchorRecord?.parcelNumber})
             </h3>
             <small className="muted">
-              {anchorRecord?.registrationArea} · {anchorRecord?.titleVersion} ·
-              Last verified {anchorRecord?.lastVerified}
+              {record?.anchorRecord.registrationArea} · {record?.anchorRecord.titleVersion} ·
+              Last verified {record?.anchorRecord.lastVerified}
             </small>
           </div>
           <span className={`badge ${isTampered ? "red" : "green"}`}>
@@ -497,7 +532,7 @@ export function TamperPage() {
             <div className="tamper-digest-box">
               <small className="muted">Computed live record digest</small>
               <div className="hash">
-                {isTampered ? computedDbDigest : anchorRecord?.anchoredSha256}
+                {isTampered ? computedDbDigest : record?.anchorRecord?.anchoredSha256}
               </div>
             </div>
           </div>
@@ -514,26 +549,26 @@ export function TamperPage() {
 
             {MUTABLE_FIELDS.map((field) => {
               const fieldChanged =
-                currentDbValues[field.key].trim() !== anchorRecord?.[field.key];
+                currentDbValues[field.key].trim() !== record?.anchorRecord?.[field.key];
               return (
                 <div
                   className={`anchor-field ${fieldChanged ? "tamper-anchor-diff" : ""}`}
                   key={field.key}
                 >
                   <small>{field.expectedLabel}</small>
-                  <b>{anchorRecord?.[field.key]}</b>
+                  <b>{record?.anchorRecord?.[field.key]}</b>
                 </div>
               );
             })}
 
             <div className="detail-pair">
               <span>Endorsing Transaction ID</span>
-              <b>{anchorRecord?.txId}</b>
+              <b>{record?.anchorRecord?.txId}</b>
             </div>
 
             <div className="tamper-digest-box">
               <small className="muted">Anchored SHA-256 digest on ledger</small>
-              <div className="hash">{anchorRecord?.anchoredSha256}</div>
+              <div className="hash">{record?.anchorRecord?.anchoredSha256}</div>
             </div>
           </div>
         </div>
@@ -543,7 +578,7 @@ export function TamperPage() {
           <div className="tamper-alert" role="alert">
             <div>
               <AlertTriangle size={24} /> TAMPER DETECTED ON{" "}
-              {anchorRecord?.parcelNumber}
+              {record?.anchorRecord?.parcelNumber}
             </div>
             <b>
               CRITICAL INTEGRITY VIOLATION — MISMATCH IN:{" "}
@@ -553,7 +588,7 @@ export function TamperPage() {
               The mutable database record no longer matches the cryptographic
               anchor recorded on the Hyperledger Fabric ledger. Any pending
               transfer or title issuance on{" "}
-              <strong>{anchorRecord?.parcelNumber}</strong> must be automatically
+              <strong>{record?.anchorRecord.parcelNumber}</strong> must be automatically
               frozen until a registrar and security audit resolve the
               discrepancy.
             </p>
@@ -561,7 +596,7 @@ export function TamperPage() {
         ) : (
           <div className="confidence">
             <CheckCircle2 size={17} /> Integrity verified for{" "}
-            {anchorRecord?.parcelNumber}. Database fields and SHA-256 digest
+            {record?.anchorRecord.parcelNumber}. Database fields and SHA-256 digest
             match the ledger anchor.
           </div>
         )}

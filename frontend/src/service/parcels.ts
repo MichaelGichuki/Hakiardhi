@@ -16,8 +16,6 @@ export const parcelRecords = {
     }),
   getParcels: (id: string) =>
     api.get<ParcelDetailsDto>(`/parcelRecords/${encodeURIComponent(id)}`),
-  validateTitle: (id: string) =>
-    api.get<ValidateTamper>(`/parcelRecords/${encodeURIComponent(id)}`),
   uploadSupportDocuments: (type: string, data: FormData) =>
     api.post<Uploadresponse>(`/parcelRecords/upload-support`, data, {
       headers: {
@@ -25,6 +23,8 @@ export const parcelRecords = {
       },
       params: { type },
     }),
-  initiateTransferPage: (data: InitiatedTransferResult) => api.post(`/parcelRecords/trasfer`, data)
-  
+  initiateTransferPage: (data: InitiatedTransferResult) =>
+    api.post(`/parcelRecords/trasfer`, data),
+  checkTamper: (id: string) =>
+    api.get<ValidateTamper>(`/parcelRecords/check-tamper/${encodeURIComponent(id)}`),
 };

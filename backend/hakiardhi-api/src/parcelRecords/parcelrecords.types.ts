@@ -21,6 +21,17 @@ export type ParcelDetailsDto = {
     updateAt: Date;
 }
 
+export type CreateParcelDto = {
+    parcelNumber: string;
+    ownerId: string;
+    county: string;
+    tenure: 'Freehold' | 'Leasehold';
+    size: number;
+    titleVersion: number;
+    ownerName: string;
+    registrationArea: string;
+}
+
 export type parcelDto = {
     parcelId: string;
     parcelNumber: string;
@@ -78,4 +89,22 @@ export interface TitleRecordOnChain {
   activeTransferId?: string;
   updatedAt: string;
   updatedBy: string;
+}
+
+export interface ParcelIntegrityRecord {
+  parcelNumber: string;
+  owner: string;
+  size: string;
+  county: string;
+  registrationArea: string;
+  tenure: "Freehold" | "Leasehold";
+  titleVersion: string;
+  lastVerified: string;
+  anchoredSha256: string;
+  txId: string;
+}
+
+export type ValidateTamper = {
+  bdRecord: ParcelIntegrityRecord;
+  anchorRecord: ParcelIntegrityRecord;
 }

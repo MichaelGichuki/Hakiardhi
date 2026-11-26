@@ -16,7 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 import { existsSync, mkdirSync } from 'fs';
-import type { InitiatedTransferResult } from './parcelrecords.types.js';
+import type { CreateParcelDto, InitiatedTransferResult } from './parcelrecords.types.js';
 import { COOKIE_NAME } from '../auth/auth.controller.js';
 import type { Request, Response } from 'express';
 
@@ -87,6 +87,18 @@ export class ParcelRecordsController {
   @Get('/sync')
   async syncRecord(){
     await this.parcelService.SyncToBlockchain()
+  }
+
+  @Post('/create-parcel')
+  async Createparcel(
+    @Body() data: CreateParcelDto,
+  ) {
+    return await this.parcelService.CreateParcelRecord(data);
+  }
+
+  @Get('/check-tamper/:id')
+  async checkTamper(@Param('id') id: string) {
+    return this.parcelService.CheckTamper(id);
   }
 
   @Get(':id')

@@ -20,9 +20,9 @@ export function ParcelPage({
   setSearched: (v: boolean) => void;
 }) {
 
-  const [list, setList] = useState<parcelDto[]>()
+  const [list, setList] = useState<parcelDto[]>();
   const debouncedSearch = useDebounce(query, 100);
-   const [selected, setSelected] = useState<ParcelDetailsDto | undefined>()
+  const [selected, setSelected] = useState<ParcelDetailsDto | undefined>()
 
    const getParcel = async (id: string) => {
     try{
