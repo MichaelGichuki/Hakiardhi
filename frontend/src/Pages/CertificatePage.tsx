@@ -3,6 +3,7 @@ import { PageHeading } from "../Components/PageHeading";
 import { Badge } from "../Components/Badge";
 import { useState } from "react";
 import { Card } from "../Components/Card";
+import type { ParcelDetailsDto } from "../types/parcels.type";
 
 export function CertificatePage() {
   const [copied, setCopied] = useState(false);
@@ -10,6 +11,15 @@ export function CertificatePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchError, setSearchError] = useState("");
   const [selected, selectParcel] = useState("");
+  const [parcel, setParcel] = useState<ParcelDetailsDto | undefined>()
+
+
+  const handleSearch = () => {
+
+  }
+
+
+
   return (
     <>
       <PageHeading
@@ -42,7 +52,7 @@ export function CertificatePage() {
             onClick={() => selectParcel(searchQuery)}
           >
             <Search size={14} />{" "}
-            {isSearching ? "Running check..." : "Run integrity check"}
+            {isSearching ? "Fetching..." : "Search"}
           </button>
         </div>
         <div className="tamper-quick-chips">
@@ -64,7 +74,7 @@ export function CertificatePage() {
         </div>
       </Card>
 
-      <div className="certificate-wrap section-gap" id="print-certificate">
+      { parcel && <div className="certificate-wrap section-gap" id="print-certificate">
         <div className="certificate">
           <div className="cert-country">REPUBLIC OF KENYA</div>
           <div className="cert-seal">
@@ -75,36 +85,36 @@ export function CertificatePage() {
           <div className="cert-rule" />
           <Badge tone="amber">VERSION 2 · SUPERSEDES VERSION 1</Badge>
           <p className="cert-intro">CERTIFICATE OF TITLE</p>
-          <div className="cert-parcel">KJD/LOI/4581</div>
+          <div className="cert-parcel">{parcel?.parcelNumber}</div>
           <p>
             This certifies that the registered proprietor of the parcel
             described below is:
           </p>
-          <h2 className="cert-owner">MARY WANJIKU KAMAU</h2>
+          <h2 className="cert-owner">{parcel?.ownerName}</h2>
           <div className="cert-details">
             <div>
               <small>COUNTY</small>
-              <b>Kajiado</b>
+              <b>{parcel?.county}</b>
             </div>
             <div>
               <small>REGISTRATION AREA</small>
-              <b>Loitokitok</b>
+              <b>{parcel?.county}</b>
             </div>
             <div>
               <small>AREA</small>
-              <b>0.045 Hectares</b>
+              <b>{parcel?.size} Hectares</b>
             </div>
             <div>
               <small>TENURE</small>
-              <b>Freehold</b>
+              <b>{parcel?.tenure}</b>
             </div>
             <div>
               <small>REGISTERED</small>
-              <b>14 March 2018</b>
+              <b>{parcel?.registrationDate.toDateString()}</b>
             </div>
             <div>
               <small>TITLE VERSION</small>
-              <b>Version 2</b>
+              <b>Version {parcel?.titleVersion}</b>
             </div>
           </div>
           <div className="cert-rule" />
@@ -114,7 +124,7 @@ export function CertificatePage() {
               <b>HA-KJD-4581-V2-2026</b>
               <small>BLOCKCHAIN SHA-256 DIGEST</small>
               <div className="hash">
-                7c2e9f8a1b6d4c3e5f0a7b9d2e1c8f6a4b3d9e0f2a5c7b1d8e6f4a9c3b2d1e0f
+                {parcel?.sha256}
               </div>
             </div>
             <div className="qr-wrap">
@@ -151,7 +161,7 @@ export function CertificatePage() {
             ownership claims.
           </p>
         </div>
-      </div>
+      </div>}
     </>
   );
 }
