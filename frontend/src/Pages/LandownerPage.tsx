@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import type { LandOwnerDash } from "../types/parcels.type";
+import { commandService } from "../service/commonService";
 
 export function LandownerPage({
   decision,
@@ -26,9 +27,21 @@ export function LandownerPage({
     request: []
   });
 
+  const handlerFetch = async () => {
+    try {
+      const res = await commandService.landownerDash();
+      setDetails(res.data);
+    } catch {
+      
+    }
+  }
+
+  const handleApproval = async () => {
+    
+  }
 
   useEffect(() => {
-    // fetch request
+    handlerFetch();
   }, [])
 
   return (

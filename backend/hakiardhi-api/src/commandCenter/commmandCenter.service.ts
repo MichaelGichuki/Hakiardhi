@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   AuditDash,
   CommandCenterResponse,
+  LandOwnerDash,
   ProcessQueueDetails,
+  Request,
   TransactionHistory,
 } from './commmandCenter.types.js';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { parcelDto } from '../parcelRecords/parcelrecords.types.js';
 
 @Injectable()
 export class CommandCenterService {
@@ -129,26 +132,148 @@ export class CommandCenterService {
         id: true,
       },
       where: {
-        actor : {
-            name: {
-                contains: search,
-                mode: 'insensitive'
-            }
+        actor: {
+          name: {
+            contains: search,
+            mode: 'insensitive',
+          },
         },
         stage: {
-            contains: search,
-            mode: 'insensitive' 
-        }
-      }
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
     });
 
     return list.map<TransactionHistory>((value) => ({
       action: value.action,
-      actor: value.actor.name ?? "",
+      actor: value.actor.name ?? '',
       reference: value.refrerence,
       status: value.stage,
       timestamp: value.createdAt,
       transactionsId: value.id,
     }));
+  }
+
+  async LandlordDash(refreshToken: string): Promise<LandOwnerDash> {
+    const [sessionId, secret, ...extra] = refreshToken.split('.');
+
+    if (!sessionId || !secret || extra.length > 0) {
+      throw new BadRequestException('Invalid request');
+    }
+
+    const userId = (
+      await this.prisma.session.findUnique({
+        where: { id: sessionId },
+        select: {
+          user: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      })
+    )?.user.id;
+
+    if (userId == undefined) throw new BadRequestException('Invalid request');
+
+    const completedRequest = await this.prisma.transactionHistory.count({
+      where: {
+        buyerId: {
+          equals: userId,
+        },
+        stage: {
+          contains: 'Complete',
+          mode: 'insensitive',
+        },
+      },
+    });
+    const request = await this.prisma.requestLogs.findMany({
+      where: {
+        userId: {
+          equals: userId,
+        },
+        status: {
+          equals: null,
+        },
+      },
+      select: {
+        createdAt: true,
+        id: true,
+        transactionId: true,
+        transaction: {
+          select : {
+            transactionType: true,
+            landparcel: {
+              select: {
+                parcelNumber: true
+              }
+            },
+            actor: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    const records = await this.prisma.landParcels.findMany({
+      where: {
+        ownershipRecords: {
+          landOwnerId: {
+            equals: userId,
+          },
+        },
+      },
+      select: {
+        parcelNumber: true,
+        id: true,
+        county: true,
+        ownershipRecords: {
+          select: {
+            landParcel: {
+              select: {
+                Size: true,
+              }
+            },
+            landOwner: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const l = records.map<parcelDto>((value: any) => {
+      return {
+        parcelId: value.id,
+        county: value.county,
+        ownerName: value.ownershipRecords?.landOwner.name,
+        parcelNumber: value.parcelNumber,
+        size: value.landParcel.size
+      };
+    });
+
+    const r = request.map<Request>((value) => ({
+      applicationDate: value.createdAt,
+      parcelNumber: value.transaction.landparcel.parcelNumber,
+      ProposedBy: value.transaction.actor.name ?? "",
+      requestId: value.id,
+      transactionType: value.transaction.transactionType,
+      transferId: value.transactionId      
+    }))
+
+
+    return {
+      completedRequest: completedRequest,
+      incommingRequest:r.length,
+      properties: l.length,
+      propertyList: l,
+      request: r,
+    };
   }
 }

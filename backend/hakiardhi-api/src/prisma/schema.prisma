@@ -119,6 +119,7 @@ model InspectionLog {
 
 model RequestLogs {
   id String @id @default(uuid()) @db.Uuid
+  requestId String @unique
   userId String @db.Uuid
   user User @relation(fields: [userId], references: [id])
   transactionId String @db.Uuid

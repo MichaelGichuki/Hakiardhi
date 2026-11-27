@@ -37,6 +37,7 @@ export type parcelDto = {
     parcelNumber: string;
     county: string;
     ownerName: string;
+    size?: number;
 }
 
 export type TransferType = 'Sale / Transfer' | 'Subdivision' | 'Succession / Transmission' | 'Charge / Leasehold Assignment'
@@ -107,4 +108,10 @@ export interface ParcelIntegrityRecord {
 export type ValidateTamper = {
   bdRecord: ParcelIntegrityRecord;
   anchorRecord: ParcelIntegrityRecord;
+}
+
+export type LandlorAprovalDto = {
+  transferId: string;
+  requestId: string;
+  rejected: boolean;
 }

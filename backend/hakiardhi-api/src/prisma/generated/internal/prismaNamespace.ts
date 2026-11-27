@@ -1235,6 +1235,7 @@ export type InspectionLogScalarFieldEnum = (typeof InspectionLogScalarFieldEnum)
 
 export const RequestLogsScalarFieldEnum = {
   id: 'id',
+  requestId: 'requestId',
   userId: 'userId',
   transactionId: 'transactionId',
   status: 'status',

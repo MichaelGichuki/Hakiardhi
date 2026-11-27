@@ -1,3 +1,4 @@
+import { parcelDto } from "../parcelRecords/parcelrecords.types.js";
 
 export type CommandCenterResponse = {
     dashDetails : DashdetailsDto;
@@ -42,3 +43,22 @@ export type TransactionHistory = {
   transactionsId: string;
   status: string;
 }
+
+export type LandOwnerDash = {
+  properties: number;
+  incommingRequest: number;
+  completedRequest: number;
+  propertyList: parcelDto[];
+  request: Request[]
+}
+
+
+export type Request = {
+  requestId: string;
+  transferId: string;
+  parcelNumber: string;
+  ProposedBy: string;
+  transactionType: string;
+  applicationDate: Date;
+}
+

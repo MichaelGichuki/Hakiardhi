@@ -3,6 +3,7 @@ export type parcelDto = {
     parcelNumber: string;
     county: string;
     ownerName: string;
+    size?: number
 }
 
 export type ParcelDetailsDto = {
@@ -80,6 +81,7 @@ export type ValidateTamper = {
 
 export type Request = {
   requestId: string;
+  transferId: string;
   parcelNumber: string;
   ProposedBy: string;
   transactionType: string;
@@ -90,7 +92,7 @@ export type LandOwnerDash = {
   properties: number;
   incommingRequest: number;
   completedRequest: number;
-  propertyList: ParcelDetailsDto[];
+  propertyList: parcelDto[];
   request: Request[]
 }
 

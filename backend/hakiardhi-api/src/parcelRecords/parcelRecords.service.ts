@@ -8,6 +8,7 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import {
   CreateParcelDto,
   InitiatedTransferResult,
+  LandlorAprovalDto,
   ParcelDetailsDto,
   parcelDto,
   ValidateTamper,
@@ -322,6 +323,7 @@ export class ParcelRecordsService {
                 updateat: new Date(),
                 status: null,
                 userId: data.parcel.ownerId,
+                requestId: transaction.id
               },
             ],
           });
@@ -451,6 +453,33 @@ export class ParcelRecordsService {
       }
     }
 
+  }
+
+  async LandownerApproveTransfer(data: LandlorAprovalDto){
+    try {
+      await this.prisma.requestLogs.update({
+        where: {
+          id: data.requestId
+        },
+        data: {
+          status: data.rejected
+        }
+      });
+      if(data.rejected){
+        await this.prisma.transactionHistory.update({
+          where: {
+            id: data.transferId
+          },
+          data: {
+            stage: "Rejected By Landowner"
+          }
+        });
+        return "Rejected";
+      }
+      return await this.fabric.confirmTransfer(data.transferId);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   sha256(value: string): string {
